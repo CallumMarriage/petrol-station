@@ -30,4 +30,4 @@ target/
 
 #Gradle
 .gralde
-build/*
+build
