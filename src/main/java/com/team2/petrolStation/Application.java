@@ -5,7 +5,7 @@ package com.team2.petrolStation;
  */
 public class Application {
 
-    public void main(String[] args){
+    public static void main(String[] args){
         System.out.println("Hell world");
     }
 }
