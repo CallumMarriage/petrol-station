@@ -1,4 +1,4 @@
-package com.team2;
+package com.team2.petrolStation;
 
 /**
  * Created by callummarriage on 15/05/2018.
