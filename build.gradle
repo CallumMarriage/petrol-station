@@ -4,8 +4,6 @@ description 'A Java application to simulate a Petrol station.'
 
 apply plugin: 'java'
 apply plugin: 'application'
-apply plugin: 'pmd'
-apply plugin: 'checkstyle'
 apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.8
@@ -14,7 +12,7 @@ targetCompatibility = 1.8
 mainClassName = "com.team2.petrolStation.Application"
 
 repositories {
-    mavenLocal()
+    mavenCentral()
 }
 
 dependencies {
@@ -29,10 +27,6 @@ jar {
                 'Implementation-Version': version
     }
 }
-
-// Build order
-jar.dependsOn pmdMain
-jar.dependsOn checkstyleMain
 
 publishing {
     publications {
