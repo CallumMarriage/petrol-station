@@ -6,6 +6,7 @@ package com.team2.petrolStation;
 public class Application {
 
     public static void main(String[] args){
-        System.out.println("Hello world");
+        System.out.println("Hello There!");
+        System.out.println("General Kenobi");
     }
 }
