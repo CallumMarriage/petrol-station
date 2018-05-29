@@ -1,7 +1,9 @@
 package com.team2.petrolStation.model.customer.vehicle;
 
 /**
- * Created by callummarriage on 25/05/2018.
+ * Models the values assigned to a Truck object.
+ *
+ * @author callummarriage
  */
 public class Truck extends AbstractVehicle {
 }

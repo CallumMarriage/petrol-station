@@ -1,7 +1,9 @@
 package com.team2.petrolStation.model.customer;
 
 /**
- * Created by callummarriage on 24/05/2018.
+ * The customer interface ensures that the all customers can both manage transactions, they can also be treated the same when be assigned to their queues.
+ *
+ * @author callummarriage
  */
 public interface Customer {
 }

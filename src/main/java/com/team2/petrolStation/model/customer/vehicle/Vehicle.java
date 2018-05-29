@@ -3,7 +3,9 @@ package com.team2.petrolStation.model.customer.vehicle;
 import com.team2.petrolStation.model.customer.Customer;
 
 /**
- * Created by callummarriage on 24/05/2018.
+ * Vehicle allows all vehicles to return their size, and their fuel size when being managed by a pump.
+ *
+ * @author callummarriage
  */
 public interface Vehicle extends Customer {
 }

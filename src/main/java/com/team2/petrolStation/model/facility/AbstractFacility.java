@@ -1,7 +1,9 @@
 package com.team2.petrolStation.model.facility;
 
 /**
- * Created by callummarriage on 24/05/2018.
+ * Implements the process of assinging a customer to the best available service machine.
+ *
+ * @author callummarriage
  */
 public class AbstractFacility implements Facility{
 }
