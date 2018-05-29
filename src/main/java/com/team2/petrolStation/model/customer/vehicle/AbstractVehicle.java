@@ -1,7 +1,9 @@
 package com.team2.petrolStation.model.customer.vehicle;
 
 /**
- * Created by callummarriage on 24/05/2018.
+ * Allows for any vehicle to refuel, manage their fuel size and their size.
+ *
+ * @author callummarriage
  */
 public class AbstractVehicle implements Vehicle {
 }

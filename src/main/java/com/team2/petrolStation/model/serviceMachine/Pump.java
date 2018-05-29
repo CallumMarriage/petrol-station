@@ -1,7 +1,9 @@
 package com.team2.petrolStation.model.serviceMachine;
 
 /**
- * Created by callummarriage on 24/05/2018.
+ * Allows for a maximum number of vehicles in its queue.
+ *
+ * @author callummarriage
  */
 public class Pump extends AbstractServiceMachine {
 }

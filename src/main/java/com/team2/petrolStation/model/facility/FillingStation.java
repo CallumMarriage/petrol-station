@@ -1,7 +1,10 @@
 package com.team2.petrolStation.model.facility;
 
 /**
- * Created by callummarriage on 24/05/2018.
+ * The filling station manages the refueling of all of the vehicles at the front of all of the pump queues.
+ * The filling station should return a map of drivers that have finished with the pumps that their vehicles are at.
+ *
+ * @author callummarriage
  */
 public class FillingStation extends AbstractFacility {
 }

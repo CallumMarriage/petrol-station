@@ -1,7 +1,9 @@
 package com.team2.petrolStation.model.serviceMachine;
 
 /**
- * Created by callummarriage on 24/05/2018.
+ * Provides implementation of the basic queue functions.
+ *
+ * @author callummarriage
  */
-public class AbstractServiceMachine implements ServiceMachine {
+public abstract class AbstractServiceMachine implements ServiceMachine {
 }
