@@ -6,4 +6,6 @@ package com.team2.petrolStation.model.customer;
  * @author callummarriage
  */
 public interface Customer {
+
+    Boolean act(Integer value);
 }
