@@ -5,5 +5,5 @@ package com.team2.petrolStation.model.facility;
  *
  * @author callummarriage
  */
-public class AbstractFacility {
+public abstract class AbstractFacility {
 }
