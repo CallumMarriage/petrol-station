@@ -1,11 +1,14 @@
 package java.com.team2.model.facility;
 
 import com.team2.petrolStation.model.customer.Customer;
+import com.team2.petrolStation.model.customer.Driver;
 import com.team2.petrolStation.model.customer.vehicle.Motorbike;
 import com.team2.petrolStation.model.customer.vehicle.SmallCar;
 import com.team2.petrolStation.model.customer.vehicle.Truck;
+import com.team2.petrolStation.model.customer.vehicle.Vehicle;
 import com.team2.petrolStation.model.facility.Facility;
 import com.team2.petrolStation.model.facility.FillingStation;
+import com.team2.petrolStation.model.facility.Shop;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -30,6 +33,5 @@ public class FacilityTest {
         assertEquals(2, facility.findBestServiceMachine());
         facility.addCustomerToServiceMachine(2, motorbike);
         assertEquals(0, facility.findBestServiceMachine());
-
     }
 }
