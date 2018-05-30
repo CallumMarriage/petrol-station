@@ -6,10 +6,7 @@ import com.team2.petrolStation.model.customer.vehicle.Vehicle;
 import com.team2.petrolStation.model.serviceMachine.Pump;
 import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Implements the process of assinging a customer to the best available service machine.
@@ -28,10 +25,10 @@ public abstract class AbstractFacility {
             this.customerServers = customerServers;
         }
 
-    public List<Customer> manageTransactions(){
-        List<Customer> finishedCustomers = new ArrayList<>();
-        for(ServiceMachine serviceMachine : customerServers){
-            finishedCustomers.add(serviceMachine.act());
+    public Map<Integer, Customer> manageTransactions(){
+        Map<Integer, Customer> finishedCustomers = new HashMap<>();
+        for(int i = 0; i < customerServers.length; i++) {
+            finishedCustomers.put(i, customerServers[i].act());
         }
         return finishedCustomers;
     }

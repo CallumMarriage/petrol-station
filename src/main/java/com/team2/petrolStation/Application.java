@@ -74,7 +74,7 @@ public class Application {
     }
 
     public Collection<Customer> generateVehicles(){
-
+        return null;
     }
 
     public void setChanceOfTruck(Collection<Customer> customers){
