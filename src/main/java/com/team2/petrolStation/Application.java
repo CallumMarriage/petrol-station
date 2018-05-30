@@ -40,8 +40,9 @@ public class Application {
         //create the vehicles for the round
         Collection<Customer> vehicles = generateVehicles();
 
+        moneyLost += fillingStation.getFinishedCustomers(vehicles);
         //put all of the vehicles into the queues for the pumps and refuel the ones at the front of each queue
-        Map<Integer, Customer> finishedAtPump = fillingStation.manageTransactions(vehicles);
+        Map<Integer, Customer> finishedAtPump = fillingStation.manageTransactions();
 
         //alter the change of trucks arriving based on the time the trucks took to finish refuelling
         setChanceOfTruck(finishedAtPump.values());
@@ -56,11 +57,14 @@ public class Application {
             moneyLost += customer.getMaximumSpend();
         }
         //add customers to the shop floor, simulate time on the shop and floor and return finished drivers. All drivers that did not shop should add the lost amount to the lost money tally.
-        List<Driver> finishedAtShop = shop.addToShopFloor(customers.get(1));
-
-        //add the drivers who have left the shop floor to the queues for the tills and do transactions
+        shop.addToShopFloor(customers.get(1));
+        List<Customer> finishedAtShop = shop.getDriversFinished();
+                //add the drivers who have left the shop floor to the queues for the tills and do transactions
         finishedAtShop.addAll(nonShoppingCustomers);
-        Map<Integer, Customer> finishedCustomers = shop.manageTransactions(finishedAtShop);
+
+        shop.getFinishedCustomers(finishedAtShop);
+
+        Map<Integer, Customer> finishedCustomers = shop.manageTransactions();
 
         //add the money from all the finished customers to the overall amount.
         for(Customer customer : finishedCustomers.values() ){

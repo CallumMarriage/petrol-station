@@ -15,6 +15,12 @@ import java.util.*;
  */
 public class Shop extends AbstractFacility {
 
+    private List<Driver> shopFloor;
+
+    public Shop(){
+        shopFloor = new ArrayList<>();
+    }
+
     public List<List<Driver>> decideToGoToShop(Map <Integer, Customer> customers){
         List<Driver> customersNotGoingToShop = new ArrayList<>();
         List<Driver> customersGoingToShop = new ArrayList<>();
@@ -39,5 +45,20 @@ public class Shop extends AbstractFacility {
         allCustomers.add(customersGoingToShop);
 
         return allCustomers;
+    }
+
+    public void addToShopFloor(List<Driver> drivers){
+        shopFloor.addAll(drivers);
+    }
+
+    public List<Customer> getDriversFinished(){
+        List<Customer> finishedDrivers = new ArrayList<Customer>();
+        for(Driver driver :  shopFloor){
+            if(driver.act(10)){
+                finishedDrivers.add(driver);
+            }
+        }
+
+        return finishedDrivers;
     }
 }
