@@ -15,12 +15,14 @@ public class Driver implements Customer {
     private Integer timeInShop;
     private Integer currentTimeInShop;
     private Integer maximumSpend;
+    private Integer pumpNumber;
 
-    public Driver(Integer currentSpend ){
+    public Driver(Integer currentSpend, Integer pumpNumber ){
         this.currentSpend = currentSpend;
         this.timeInShop = 0;
         this.maximumSpend = 0;
         this.currentTimeInShop = 0;
+        this.pumpNumber = pumpNumber;
     }
 
     @Override
@@ -39,17 +41,6 @@ public class Driver implements Customer {
 
     public void setTimeInShop(Integer timeInShop) {
         this.timeInShop = timeInShop;
-    }
-
-    public boolean decideToGoToShop(Vehicle vehicle){
-        if( vehicle instanceof Motorbike ){
-            return false;
-        }
-        if(vehicle.getTimeInQueue() < vehicle.getMaxQueueTime()){
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public void setCurrentSpend(Integer spendInShop){
