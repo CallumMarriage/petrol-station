@@ -13,7 +13,7 @@ import java.util.*;
  *
  * @author callummarriage
  */
-public abstract class AbstractFacility {
+public class Facility {
 
     ServiceMachine[] customerServers;
 
@@ -25,10 +25,15 @@ public abstract class AbstractFacility {
             this.customerServers = customerServers;
         }
 
-    public Map<Integer, Customer> manageTransactions(){
+    public Map<Integer, Customer> manageTransactions() throws Exception {
         Map<Integer, Customer> finishedCustomers = new HashMap<>();
         for(int i = 0; i < customerServers.length; i++) {
-            finishedCustomers.put(i, customerServers[i].act());
+            Customer customer = customerServers[i].act();
+            if(customer != null){
+                finishedCustomers.put(i, customerServers[i].act());
+            } else {
+                throw new Exception("Problem with managing transactions");
+            }
         }
         return finishedCustomers;
     }

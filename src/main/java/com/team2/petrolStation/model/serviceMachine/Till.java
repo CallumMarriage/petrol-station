@@ -16,6 +16,14 @@ public class Till extends AbstractServiceMachine {
 
     @Override
     public Customer act() {
+        if(getVehiclesInQueue().size() > 0) {
+            Customer customer = getVehiclesInQueue().peek();
+            if (customer.act(1)) {
+                this.customerQueue.remove();
+                System.out.println("Customer left succesfully");
+                return customer;
+            }
+        }
         return null;
     }
 

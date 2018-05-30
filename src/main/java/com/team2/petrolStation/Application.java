@@ -31,12 +31,16 @@ public class Application {
         Double moneyGained = 0.0;
         Shop shop = new Shop();
         FillingStation fillingStation = new FillingStation();
-        for(int i = 0; i < numOfTurns; i+=10 ){
-            simulateRound(fillingStation, shop, moneyLost, moneyGained);
+        try {
+            for (int i = 0; i < numOfTurns; i += 10) {
+                simulateRound(fillingStation, shop, moneyLost, moneyGained);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
-    public void simulateRound(FillingStation fillingStation, Shop shop, Double moneyLost, Double moneyGained){
+    public void simulateRound(FillingStation fillingStation, Shop shop, Double moneyLost, Double moneyGained) throws Exception{
         //create the vehicles for the round
         Collection<Customer> vehicles = generateVehicles();
 

@@ -13,7 +13,7 @@ import java.util.*;
  *
  * @author callummarriage
  */
-public class Shop extends AbstractFacility {
+public class Shop extends Facility {
 
     private List<Driver> shopFloor;
 

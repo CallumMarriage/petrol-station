@@ -13,7 +13,7 @@ import java.util.Queue;
  */
 public abstract class AbstractServiceMachine implements ServiceMachine {
 
-    private Queue<Customer> customerQueue;
+    Queue<Customer> customerQueue;
 
     public AbstractServiceMachine(){
         customerQueue = new LinkedList<>();

@@ -1,7 +1,10 @@
 package com.team2.petrolStation.model.serviceMachine;
 
 import com.team2.petrolStation.model.customer.Customer;
+import com.team2.petrolStation.model.customer.Driver;
+import com.team2.petrolStation.model.customer.vehicle.Vehicle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +28,13 @@ public class Pump extends AbstractServiceMachine {
 
     @Override
     public Customer act() {
+        List<Vehicle> finishedVehicles = new ArrayList<>();
+        if(getVehiclesInQueue().size() > 0) {
+            Customer customer = getVehiclesInQueue().peek();
+            if (customer.act(1)) {
+                return customer;
+            }
+        }
         return null;
     }
 

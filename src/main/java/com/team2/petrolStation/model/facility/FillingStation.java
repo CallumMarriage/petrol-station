@@ -10,7 +10,5 @@ import java.util.Map;
  *
  * @author callummarriage
  */
-public class FillingStation extends AbstractFacility {
-
-    public Map<Integer, Customer> convertVehiclesToDrivers();
+public class FillingStation extends Facility {
 }

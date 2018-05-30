@@ -59,5 +59,7 @@ public class Driver implements Customer {
         this.maximumSpend = maximumSpend;
     }
 
-
+    public Integer getPumpNumber() {
+        return pumpNumber;
+    }
 }
