@@ -19,26 +19,24 @@ public class Facility {
 
     public ServiceMachine[] getCustomersServers() {
             return customerServers;
-        }
+    }
 
     public void setCustomerServers(ServiceMachine[] customerServers) {
             this.customerServers = customerServers;
         }
 
-    public Map<Integer, Customer> manageTransactions() throws Exception {
+    public Map<Integer, Customer> manageTransactions() {
         Map<Integer, Customer> finishedCustomers = new HashMap<>();
         for(int i = 0; i < customerServers.length; i++) {
             Customer customer = customerServers[i].act();
             if(customer != null){
-                finishedCustomers.put(i, customerServers[i].act());
-            } else {
-                throw new Exception("Problem with managing transactions");
+                finishedCustomers.put(i, customer);
             }
         }
         return finishedCustomers;
     }
 
-    public double getFinishedCustomers(Collection<Customer> customers ){
+    public double addCustomerToMachine(Collection<Customer> customers ){
 
         double lostVehicles = 0.0;
         for (Customer customer : customers) {
@@ -47,6 +45,7 @@ public class Facility {
                 if(customer instanceof Vehicle) {
                     Vehicle vehicle = (Vehicle) customer;
                     lostVehicles += vehicle.getMaxFuel() * 0.5;
+                    System.out.println("A customer had to leave");
                 } else {
                     System.out.println("ERROR ASSIGNING CUSTOMER TO TILL");
                 }

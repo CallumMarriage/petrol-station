@@ -7,5 +7,7 @@ package com.team2.petrolStation.model.customer;
  */
 public interface Customer {
 
+    Double getSize();
+
     Boolean act(Integer value);
 }

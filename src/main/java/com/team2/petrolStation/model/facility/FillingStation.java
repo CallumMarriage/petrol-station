@@ -1,8 +1,8 @@
 package com.team2.petrolStation.model.facility;
 
-import com.team2.petrolStation.model.customer.Customer;
+import com.team2.petrolStation.model.serviceMachine.Pump;
+import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 
-import java.util.Map;
 
 /**
  * The filling station manages the refueling of all of the vehicles at the front of all of the pump queues.
@@ -11,4 +11,10 @@ import java.util.Map;
  * @author callummarriage
  */
 public class FillingStation extends Facility {
+    public FillingStation(Integer numOfServiceMachines) {
+        customerServers = new ServiceMachine[numOfServiceMachines];
+        for(int i = 0; i < numOfServiceMachines; i++){
+            customerServers[i] = new Pump();
+        }
+    }
 }

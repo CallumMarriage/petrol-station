@@ -47,6 +47,7 @@ public class AbstractVehicle implements Vehicle {
         if((this.currentFuel + value ) >= this.maxFuel){
             return true;
         } else{
+            this.timeInQueue += 10;
             this.currentFuel += value;
             return false;
         }
@@ -55,11 +56,6 @@ public class AbstractVehicle implements Vehicle {
     @Override
     public Double getSize() {
         return this.size;
-    }
-
-    @Override
-    public void setSize(Double size) {
-        this.size = size;
     }
 
     @Override

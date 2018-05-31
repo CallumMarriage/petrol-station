@@ -9,10 +9,6 @@ import com.team2.petrolStation.model.customer.Customer;
  */
 public interface Vehicle extends Customer {
 
-    Double getSize();
-
-    void setSize(Double size);
-
     Integer getTimeInQueue();
 
     void setTimeInQueue(Integer time);

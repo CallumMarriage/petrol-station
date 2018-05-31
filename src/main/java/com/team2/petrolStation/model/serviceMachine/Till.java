@@ -28,8 +28,8 @@ public class Till extends AbstractServiceMachine {
     }
 
     @Override
-    public boolean addCustomer(Customer vehicle) {
-
+    public boolean addCustomer(Customer customer) {
+        customerQueue.add(customer);
         return true;
     }
 }

@@ -10,6 +10,7 @@ import java.util.Random;
 public class Motorbike extends AbstractVehicle {
 
     public Motorbike(){
+        this.maxQueueTime = 0;
         this.maxFuel = 5;
         this.currentFuel = 0;
         this.timeInQueue = 0;

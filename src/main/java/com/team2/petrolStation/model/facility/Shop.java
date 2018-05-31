@@ -4,6 +4,8 @@ import com.team2.petrolStation.model.customer.Customer;
 import com.team2.petrolStation.model.customer.Driver;
 import com.team2.petrolStation.model.customer.vehicle.Motorbike;
 import com.team2.petrolStation.model.customer.vehicle.Vehicle;
+import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
+import com.team2.petrolStation.model.serviceMachine.Till;
 
 import java.util.*;
 
@@ -17,7 +19,11 @@ public class Shop extends Facility {
 
     private List<Driver> shopFloor;
 
-    public Shop(){
+    public Shop(Integer numOfServiceMachines){
+        customerServers = new ServiceMachine[numOfServiceMachines];
+        for(int i = 0; i < numOfServiceMachines; i++){
+            customerServers[i] = new Till();
+        }
         shopFloor = new ArrayList<>();
     }
 
@@ -32,11 +38,12 @@ public class Shop extends Facility {
             if( vehicle instanceof Motorbike){
 
                 customersNotGoingToShop.add(driver);
-            }
-            if(vehicle.getTimeInQueue() < vehicle.getMaxQueueTime()){
-                customersGoingToShop.add(driver);
             } else {
-                customersNotGoingToShop.add(driver);
+                if (vehicle.getTimeInQueue() < vehicle.getMaxQueueTime()) {
+                    customersGoingToShop.add(driver);
+                } else {
+                    customersNotGoingToShop.add(driver);
+                }
             }
         }
 

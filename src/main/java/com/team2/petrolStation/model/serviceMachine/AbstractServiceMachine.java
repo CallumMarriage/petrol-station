@@ -15,7 +15,7 @@ public abstract class AbstractServiceMachine implements ServiceMachine {
 
     Queue<Customer> customerQueue;
 
-    public AbstractServiceMachine(){
+    AbstractServiceMachine(){
         customerQueue = new LinkedList<>();
     }
 
@@ -29,8 +29,7 @@ public abstract class AbstractServiceMachine implements ServiceMachine {
         double sizeOfVehiclesInQueue = 0;
 
         for(Customer customer : customerQueue){
-            Vehicle vehicle = (Vehicle) customer;
-            sizeOfVehiclesInQueue+= vehicle.getSize();
+            sizeOfVehiclesInQueue += customer.getSize();
         }
 
         return sizeOfVehiclesInQueue;

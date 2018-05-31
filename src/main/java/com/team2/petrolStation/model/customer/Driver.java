@@ -16,6 +16,7 @@ public class Driver implements Customer {
     private Integer currentTimeInShop;
     private Integer maximumSpend;
     private Integer pumpNumber;
+    private Double size;
 
     public Driver(Integer currentSpend, Integer pumpNumber ){
         this.currentSpend = currentSpend;
@@ -23,6 +24,12 @@ public class Driver implements Customer {
         this.maximumSpend = 0;
         this.currentTimeInShop = 0;
         this.pumpNumber = pumpNumber;
+        this.size =1.0;
+    }
+
+    @Override
+    public Double getSize() {
+        return this.size;
     }
 
     @Override
