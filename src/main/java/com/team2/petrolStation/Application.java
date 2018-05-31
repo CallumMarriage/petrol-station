@@ -28,14 +28,14 @@ public class Application {
 
 
     public static void main(String[] args){
-        System.out.println("Welcome to the simulation");
-
         Double chanceOfTrucks = 0.02;
         Application application = new Application(chanceOfTrucks);
 
+        //replace this with gui values
         Integer numOfTurns = 0;
         Integer numPumps = 4;
         Integer numTills = 2;
+
         try {
             numOfTurns = convertTimeIntoSeconds("5h");
 
@@ -43,18 +43,10 @@ public class Application {
             e.printStackTrace();
             return;
         }
-        System.out.println("The duration will be " + numOfTurns + " seconds or " + (numOfTurns / 6) + " ticks \n");
 
-        /*
-        if(args[0] != null && args[1] != null && args[2] != null){
-            numOfTurns = Integer.parseInt(args[0]);
-            numPumps = Integer.parseInt(args[1]);
-            numTills = Integer.parseInt(args[2]);
-        } else {
-            System.out.println("Incorrect arguments");
-            return;
-        }*/
+        System.out.println("Welcome to the simulation\nThe duration will be " + numOfTurns + " seconds or " + (numOfTurns / 6) + " ticks \n");
 
+        //run the simulation using the inputed values
         application.simulate(numOfTurns, numPumps, numTills, p, q);
     }
 
@@ -68,9 +60,10 @@ public class Application {
 
     private void simulate(Integer numOfTurns, Integer numPumps, Integer numTills, Double p, Double q){
 
+        //build shop, filling station and the random that will be used throughout the application
         Shop shop = new Shop(numTills);
         FillingStation fillingStation = new FillingStation(numPumps);
-        Random random = new Random(8);
+        Random random = new Random(9);
 
         try {
             for (int i = 0; i < numOfTurns; i += 10) {
@@ -81,8 +74,19 @@ public class Application {
             return;
         }
 
+        //finally print out the money lost and gained.
         System.out.println("Money lost: " + moneyLost);
         System.out.println("Money gained: " + moneyGained);
+        System.out.println("\n");
+
+        System.out.println("Filling Station Pumps:");
+        fillingStation.printLeftOverCustomers();
+        System.out.println("Shop Tills:");
+        shop.printLeftOverCustomers();
+
+
+        System.out.println("Shop floor:");
+        System.out.println("Number of customers on the Shop floor " + shop.getShopFloor().size() + ".");
     }
 
     /**
@@ -131,6 +135,7 @@ public class Application {
         if(customers.get(1).size() > 0) {
             shop.addToShopFloor(customers.get(1));
              finishedAtShop = shop.getDriversFinished();
+             shop.removeDrivers(finishedAtShop);
             //add the drivers who have left the shop floor to the queues for the tills and do transactions
         }
 
@@ -139,6 +144,7 @@ public class Application {
         shop.addCustomerToMachine(finishedAtShop);
 
         Map<Integer, Customer> finishedCustomers = shop.manageTransactions();
+
         //add the money from all the finished customers to the overall amount.
         for (Customer customer : finishedCustomers.values()) {
             Driver driver = (Driver) customer;
@@ -205,10 +211,12 @@ public class Application {
         int i = 0;
         String identifier = "";
         String[] timeSplit = null;
-        while(!isIdentifier){
+        //split the time
+        while(!isIdentifier || i == identifiers.length){
             identifier = identifiers[i];
             timeSplit = time.split("((?<=" +  identifier + ")|(?=" + identifier + "))");
             if(timeSplit.length > 1){
+                //if there is an identifier return true
                 isIdentifier = true;
             }
             i++;
@@ -218,6 +226,7 @@ public class Application {
 
         try{
             number = Integer.parseInt(timeSplit[0]);
+            //if there is no identifier assume that the value is in seconds and return
             if(timeSplit.length == 1){
                 return number;
             }

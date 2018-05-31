@@ -76,7 +76,7 @@ public class Facility {
 
         for (int i = 0; i < customerServers.length; i++) {
             if (customerServers[i] != null) {
-                double pumpQueueSize = customerServers[i].getSizeOfVehiclesInQueue();
+                double pumpQueueSize = customerServers[i].getSizeOfCustomersInQueue();
                 boolean isValid = false;
                 if(customer instanceof Driver) {
                     isValid = true;
@@ -109,4 +109,16 @@ public class Facility {
         customerServers[positionOfPumpWithShortestTime].addCustomer(customer);
     }
 
+    public ServiceMachine[] getServiceMachines(){
+        return this.customerServers;
+    }
+
+    public void printLeftOverCustomers(){
+        Integer numCustomers = 0;
+        for(ServiceMachine pump : getServiceMachines()){
+            numCustomers += pump.getCustomersInQueue().size();
+        }
+
+        System.out.println("Number of customers at Service Machine: " + numCustomers + ".");
+    }
 }

@@ -18,7 +18,7 @@ public class Pump extends AbstractServiceMachine {
     @Override
     public void addCustomer(Customer vehicle) {
 
-        if((getSizeOfVehiclesInQueue() + vehicle.getSize()) <= MAX_QUEUE_SIZE){
+        if((getSizeOfCustomersInQueue() + vehicle.getSize()) <= MAX_QUEUE_SIZE){
             customerQueue.add(vehicle);
         }
     }
@@ -30,8 +30,8 @@ public class Pump extends AbstractServiceMachine {
      */
     @Override
     public Customer act() {
-        if(getVehiclesInQueue().size() > 0) {
-            Customer customer = getVehiclesInQueue().peek();
+        if(getCustomersInQueue().size() > 0) {
+            Customer customer = getCustomersInQueue().peek();
             if (customer.act(1)) {
                 return customer;
             }

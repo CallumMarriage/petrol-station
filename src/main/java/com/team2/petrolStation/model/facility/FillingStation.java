@@ -23,6 +23,6 @@ public class FillingStation extends Facility {
         if(customerServers[pumpNumber] == null){
             throw new PumpNotFoundException(pumpNumber);
         }
-        customerServers[pumpNumber].getVehiclesInQueue().remove();
+        customerServers[pumpNumber].getCustomersInQueue().remove();
     }
 }

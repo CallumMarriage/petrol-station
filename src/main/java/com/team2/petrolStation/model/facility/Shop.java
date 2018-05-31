@@ -83,6 +83,10 @@ public class Shop extends Facility {
         shopFloor.addAll(drivers);
     }
 
+    public List<Driver> getShopFloor(){
+        return shopFloor;
+    }
+
     /**
      * simulates drivers spending time loitering in the store.
      *
@@ -92,11 +96,16 @@ public class Shop extends Facility {
         List<Customer> finishedDrivers = new ArrayList<Customer>();
         for(Driver driver :  shopFloor){
             if(driver.act(10)){
-                shopFloor.remove(driver);
                 finishedDrivers.add(driver);
             }
         }
 
         return finishedDrivers;
+    }
+
+    public void removeDrivers(List<Customer> customers){
+        for(Customer driver : customers){
+            this.shopFloor.remove(driver);
+        }
     }
 }

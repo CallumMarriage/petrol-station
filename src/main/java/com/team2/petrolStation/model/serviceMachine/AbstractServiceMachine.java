@@ -19,12 +19,12 @@ public abstract class AbstractServiceMachine implements ServiceMachine {
     }
 
     @Override
-    public Queue<Customer> getVehiclesInQueue(){
+    public Queue<Customer> getCustomersInQueue(){
         return customerQueue;
     }
 
     @Override
-    public double getSizeOfVehiclesInQueue(){
+    public double getSizeOfCustomersInQueue(){
         double sizeOfVehiclesInQueue = 0;
 
         for(Customer customer : customerQueue){

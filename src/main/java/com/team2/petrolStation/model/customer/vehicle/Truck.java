@@ -16,6 +16,7 @@ public class Truck extends AbstractVehicle {
     public Truck(Random random){
         this.shopTime = random.nextInt(36 -24 +1  ) +24;
         this.maxFuel = random.nextInt(40 - 30 + 1) + 30;
+        this.shopPurchase = random.nextInt(20 - 15 + 1) + 15;
         this.currentFuel = 0;
         this.timeInQueue = 0;
     }

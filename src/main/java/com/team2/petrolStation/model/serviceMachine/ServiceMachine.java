@@ -12,9 +12,9 @@ import java.util.Queue;
 public interface ServiceMachine {
     void addCustomer(Customer vehicle);
 
-    Queue<Customer> getVehiclesInQueue();
+    Queue<Customer> getCustomersInQueue();
 
-    double getSizeOfVehiclesInQueue();
+    double getSizeOfCustomersInQueue();
 
     Customer act();
 }

@@ -40,7 +40,7 @@ public class Driver implements Customer {
         if((currentTimeInShop + value) >= timeInShop){
             return true;
         } else {
-            this.currentTimeInShop += value;
+            currentTimeInShop += value;
             return false;
         }
     }

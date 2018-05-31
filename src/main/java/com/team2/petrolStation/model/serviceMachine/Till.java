@@ -21,8 +21,8 @@ public class Till extends AbstractServiceMachine {
      */
     @Override
     public Customer act() {
-        if(getVehiclesInQueue().size() > 0) {
-            Driver customer = (Driver) getVehiclesInQueue().peek();
+        if(getCustomersInQueue().size() > 0) {
+            Driver customer = (Driver) getCustomersInQueue().peek();
 
             this.customerQueue.remove();
             System.out.println("Customer left succesfully spending: " + customer.getCurrentSpend());
