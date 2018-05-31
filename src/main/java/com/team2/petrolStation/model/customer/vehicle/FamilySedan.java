@@ -1,6 +1,5 @@
 package com.team2.petrolStation.model.customer.vehicle;
 
-import java.security.SecureRandom;
 import java.util.Random;
 
 import static com.team2.petrolStation.model.constants.VehicleConstants.*;

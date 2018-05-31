@@ -2,7 +2,6 @@ package com.team2.petrolStation.model.serviceMachine;
 
 import com.team2.petrolStation.model.customer.Customer;
 
-import java.util.List;
 import java.util.Queue;
 
 /**
@@ -14,7 +13,7 @@ public interface ServiceMachine {
     void addCustomer(Customer vehicle);
 
     Queue<Customer> getVehiclesInQueue();
-    
+
     double getSizeOfVehiclesInQueue();
 
     Customer act();

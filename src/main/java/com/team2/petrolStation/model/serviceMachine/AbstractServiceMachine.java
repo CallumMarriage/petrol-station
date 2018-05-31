@@ -1,7 +1,6 @@
 package com.team2.petrolStation.model.serviceMachine;
 
 import com.team2.petrolStation.model.customer.Customer;
-import com.team2.petrolStation.model.customer.vehicle.Vehicle;
 
 import java.util.LinkedList;
 import java.util.Queue;

@@ -3,8 +3,6 @@ package com.team2.petrolStation.model.serviceMachine;
 import com.team2.petrolStation.model.customer.Customer;
 import com.team2.petrolStation.model.customer.Driver;
 
-import java.util.Queue;
-
 /**
  * Models the till which are used in the Shop.
  *

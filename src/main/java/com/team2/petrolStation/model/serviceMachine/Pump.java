@@ -1,11 +1,6 @@
 package com.team2.petrolStation.model.serviceMachine;
 
 import com.team2.petrolStation.model.customer.Customer;
-import com.team2.petrolStation.model.customer.Driver;
-import com.team2.petrolStation.model.customer.vehicle.Vehicle;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.team2.petrolStation.model.constants.ServiceMachineConstants.MAX_QUEUE_SIZE;
 

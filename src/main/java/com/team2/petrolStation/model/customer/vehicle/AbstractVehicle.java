@@ -1,7 +1,5 @@
 package com.team2.petrolStation.model.customer.vehicle;
 
-import java.util.Random;
-
 /**
  * Allows for any vehicle to refuel, manage their fuel size and their size.
  *

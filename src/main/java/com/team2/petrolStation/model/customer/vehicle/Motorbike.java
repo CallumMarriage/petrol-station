@@ -1,7 +1,5 @@
 package com.team2.petrolStation.model.customer.vehicle;
 
-import java.util.Random;
-
 import static com.team2.petrolStation.model.constants.VehicleConstants.SIZE_OF_MOTORBIKE;
 
 /**
@@ -16,7 +14,6 @@ public class Motorbike extends AbstractVehicle {
         this.currentFuel = 0;
         this.timeInQueue = 0;
     }
-
 
     @Override
     public int getMaxQueueTime() {
