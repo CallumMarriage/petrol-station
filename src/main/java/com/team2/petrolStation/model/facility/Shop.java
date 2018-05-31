@@ -57,6 +57,9 @@ public class Shop extends Facility {
                     // add the amount that the customer is going to spend in the shop to the shop and add to the total.
                     driver.setMaximumSpend(vehicle.getMaxFuel() + vehicle.getShopPurchase());
 
+                    //add the time the driver will be spending in the shop.
+                    driver.setTimeInShop(vehicle.getShopTime());
+
                     //add the customers that are going to the shop to the list.s
                     customersGoingToShop.add(driver);
 
