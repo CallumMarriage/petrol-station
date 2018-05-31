@@ -36,7 +36,7 @@ public class Application {
         Integer numPumps = 4;
         Integer numTills = 2;
         try {
-            numOfTurns = convertTimeIntoSeconds("5h");
+            numOfTurns = convertTimeIntoSeconds("120m");
 
         } catch(InvalidInputException e){
             e.printStackTrace();
