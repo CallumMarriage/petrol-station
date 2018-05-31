@@ -1,7 +1,9 @@
 package com.team2.petrolStation.model.exceptions;
 
 /**
- * Created by callummarriage on 31/05/2018.
+ * When a pump associated with a driver can not be found
+ *
+ * @author callummarriage
  */
 public class PumpNotFoundException extends Exception {
 

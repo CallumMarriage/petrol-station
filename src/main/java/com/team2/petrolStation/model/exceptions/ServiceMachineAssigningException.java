@@ -1,7 +1,9 @@
 package com.team2.petrolStation.model.exceptions;
 
 /**
- * Created by callummarriage on 31/05/2018.
+ * When a driver can not be assigned to a till
+ *
+ * @author callummarriage
  */
 public class ServiceMachineAssigningException extends Exception {
 

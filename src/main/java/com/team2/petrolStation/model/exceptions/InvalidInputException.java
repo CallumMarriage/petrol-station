@@ -1,7 +1,9 @@
 package com.team2.petrolStation.model.exceptions;
 
 /**
- * Created by callummarriage on 31/05/2018.
+ * Called when a invalid from the gui has been detected
+ *
+ * @author callummarriage
  */
 public class InvalidInputException extends Exception{
 

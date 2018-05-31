@@ -13,6 +13,7 @@ import java.util.Queue;
 public class Till extends AbstractServiceMachine {
 
     public Till(){
+        super();
     }
 
     /**

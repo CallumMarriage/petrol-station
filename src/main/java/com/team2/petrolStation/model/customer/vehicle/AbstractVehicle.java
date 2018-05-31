@@ -15,9 +15,6 @@ public abstract class AbstractVehicle implements Vehicle {
     Integer shopPurchase;
     Integer shopTime;
 
-    AbstractVehicle(){
-    }
-
     public Integer getShopTime() {
         return shopTime;
     }

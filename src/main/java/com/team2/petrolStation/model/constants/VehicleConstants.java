@@ -1,7 +1,9 @@
 package com.team2.petrolStation.model.constants;
 
 /**
- * Created by callummarriage on 31/05/2018.
+ * Constants for vehicles and a driver constant
+ *
+ * @author callummarriage
  */
 public class VehicleConstants {
     //chances of the vehicles going to shop
@@ -15,6 +17,7 @@ public class VehicleConstants {
     public static final Double SIZE_OF_SMALL_CAR = 1.0;
     public static final Double SIZE_OF_MOTORBIKE = 0.75;
     public static final Double SIZE_OF_TRUCK = 2.0;
+    public static final Double SIZE_OF_DRIVER = 1.0;
 
     //Max queue times for vehicles
     public static final Integer MAX_QUEUE_TIME_TRUCK = 48;

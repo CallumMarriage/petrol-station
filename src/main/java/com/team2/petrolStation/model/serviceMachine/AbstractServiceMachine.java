@@ -34,14 +34,4 @@ public abstract class AbstractServiceMachine implements ServiceMachine {
 
         return sizeOfVehiclesInQueue;
     }
-
-    @Override
-    public boolean removeVehicle(){
-        if(customerQueue.size() > 0) {
-            customerQueue.remove();
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

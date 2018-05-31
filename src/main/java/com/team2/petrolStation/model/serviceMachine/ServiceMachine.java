@@ -14,9 +14,7 @@ public interface ServiceMachine {
     void addCustomer(Customer vehicle);
 
     Queue<Customer> getVehiclesInQueue();
-
-    boolean removeVehicle();
-
+    
     double getSizeOfVehiclesInQueue();
 
     Customer act();

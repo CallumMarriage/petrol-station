@@ -20,6 +20,7 @@ public class Shop extends Facility {
     private List<Driver> shopFloor;
 
     public Shop(Integer numOfServiceMachines){
+        //generate the service machines based on the number provided.
         customerServers = new ServiceMachine[numOfServiceMachines];
         for(int i = 0; i < numOfServiceMachines; i++){
             customerServers[i] = new Till();
@@ -30,8 +31,8 @@ public class Shop extends Facility {
     /**
      * This method splits the customers who have finished refueling into drivers that are going to spend time/money in the shop and those that are not.
      *
-     * @param customers
-     * @param random
+     * @param customers list of all vehicles who have finished with refueling
+     * @param random random used to generate the decisions
      * @return a list containing a list of drivers not going to the shop and another with those that are,
      */
     public List<List<Driver>> decideToGoToShop(Map <Integer, Customer> customers, Random random){

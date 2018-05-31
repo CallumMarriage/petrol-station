@@ -1,7 +1,9 @@
 package com.team2.petrolStation.model.constants;
 
 /**
- * Created by callummarriage on 31/05/2018.
+ * Constants for the service machines
+ *
+ * @author callummarriage
  */
 public class ServiceMachineConstants {
 

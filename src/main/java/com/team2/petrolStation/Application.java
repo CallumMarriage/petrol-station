@@ -11,8 +11,6 @@ import com.team2.petrolStation.model.facility.Shop;
 
 import java.util.*;
 
-import static com.team2.petrolStation.model.constants.PetrolStationConstants.*;
-
 /**
  * Application class allows for the running of simulations that generate vehicles and then refuels them and sends them to a shop to shop and or purchase their fuel.
  * It also keeps track of the amount of money gained and lost during the simulation.
