@@ -1,6 +1,7 @@
 package com.team2.petrolStation.model.serviceMachine;
 
 import com.team2.petrolStation.model.customer.Customer;
+import com.team2.petrolStation.model.customer.Driver;
 
 import java.util.Queue;
 
@@ -17,10 +18,10 @@ public class Till extends AbstractServiceMachine {
     @Override
     public Customer act() {
         if(getVehiclesInQueue().size() > 0) {
-            Customer customer = getVehiclesInQueue().peek();
+            Driver customer = (Driver) getVehiclesInQueue().peek();
             if (customer.act(1)) {
                 this.customerQueue.remove();
-                System.out.println("Customer left succesfully");
+                System.out.println("Customer left succesfully spending: " + customer.getCurrentSpend());
                 return customer;
             }
         }

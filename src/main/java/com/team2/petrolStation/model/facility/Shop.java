@@ -27,7 +27,7 @@ public class Shop extends Facility {
         shopFloor = new ArrayList<>();
     }
 
-    public List<List<Driver>> decideToGoToShop(Map <Integer, Customer> customers){
+    public List<List<Driver>> decideToGoToShop(Map <Integer, Customer> customers, Random random){
         List<Driver> customersNotGoingToShop = new ArrayList<>();
         List<Driver> customersGoingToShop = new ArrayList<>();
         for(Integer pump : customers.keySet()){
@@ -39,8 +39,11 @@ public class Shop extends Facility {
 
                 customersNotGoingToShop.add(driver);
             } else {
-                if (vehicle.getTimeInQueue() < vehicle.getMaxQueueTime()) {
+                if (vehicle.getTimeInQueue() < vehicle.getMaxQueueTime() && random.nextDouble() < vehicle.getChanceOfGoingToShop()) {
+
+                    driver.setMaximumSpend(vehicle.getMaxFuel() + vehicle.getShopPurchase());
                     customersGoingToShop.add(driver);
+
                 } else {
                     customersNotGoingToShop.add(driver);
                 }

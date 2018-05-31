@@ -28,6 +28,7 @@ public class Application {
 
 
     public static void main(String[] args){
+        System.out.println("Welcome to the simulation");
 
         Double chanceOfTrucks = 0.02;
         Application application = new Application(chanceOfTrucks);
@@ -42,7 +43,7 @@ public class Application {
             e.printStackTrace();
             return;
         }
-        System.out.println(numOfTurns);
+        System.out.println("The duration will be " + numOfTurns + " seconds or " + (numOfTurns / 6) + " ticks \n");
 
         /*
         if(args[0] != null && args[1] != null && args[2] != null){
@@ -79,7 +80,7 @@ public class Application {
         System.out.println("Money gained: " + moneyGained);
     }
 
-    public void simulateRound(FillingStation fillingStation, Shop shop, Random random, Double p, Double q){
+    private void simulateRound(FillingStation fillingStation, Shop shop, Random random, Double p, Double q){
         //create the vehicles for the round
         Collection<Customer> vehicles = generateVehicles(random, p, q);
 
@@ -98,8 +99,7 @@ public class Application {
         }
 
         setChanceOfTruck(finishedAtPump.values());
-        customers = shop.decideToGoToShop(finishedAtPump);
-
+        customers = shop.decideToGoToShop(finishedAtPump, random);
 
         Collection<Driver> nonShoppingCustomers = new ArrayList<>();
         //add the values lost to the overall lost
@@ -131,23 +131,23 @@ public class Application {
         }
     }
 
-    public List<Customer> generateVehicles(Random random,Double p,Double q){
+    private List<Customer> generateVehicles(Random random,Double p,Double q){
         List<Customer> vehicles = new ArrayList<>();
         if(random.nextDouble() < p){
-            vehicles.add(new Motorbike());
+            vehicles.add(new Motorbike(random));
             System.out.println("A motorbike has arrived");
         }
         if (random.nextDouble() < p ){
-            vehicles.add(new SmallCar());
+            vehicles.add(new SmallCar(random));
             System.out.println("A small car has arrived");
         }
         if (random.nextDouble() < chanceOfTruck){
-            vehicles.add(new Truck());
+            vehicles.add(new Truck(random));
             System.out.println("A truck has arrived");
         }
 
         if(random.nextDouble() < q){
-            vehicles.add(new FamilySedan());
+            vehicles.add(new FamilySedan(random));
             System.out.println("A family sedan has arrived");
         }
         return vehicles;

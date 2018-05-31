@@ -11,21 +11,13 @@ public interface Vehicle extends Customer {
 
     Integer getTimeInQueue();
 
-    void setTimeInQueue(Integer time);
-
-    void setMaxFuel(Integer maxFuel);
-
     Integer getMaxFuel();
 
     Integer getShopTime();
 
-    void setShopTime(Integer shopTime);
-
     Integer getShopPurchase();
-
-    void setShopPurchase(Integer shopPurchase);
 
     int getMaxQueueTime();
 
-    void setMaxQueueTimes(int queueTime);
+    Double getChanceOfGoingToShop();
 }

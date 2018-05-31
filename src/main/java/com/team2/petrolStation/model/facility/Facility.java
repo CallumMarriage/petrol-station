@@ -17,14 +17,6 @@ public class Facility {
 
     ServiceMachine[] customerServers;
 
-    public ServiceMachine[] getCustomersServers() {
-            return customerServers;
-    }
-
-    public void setCustomerServers(ServiceMachine[] customerServers) {
-            this.customerServers = customerServers;
-        }
-
     public Map<Integer, Customer> manageTransactions() {
         Map<Integer, Customer> finishedCustomers = new HashMap<>();
         for(int i = 0; i < customerServers.length; i++) {
@@ -73,7 +65,7 @@ public class Facility {
                         isValid = true;
                     }
                 }
-                if (isValid && ( i == 0 || pumpQueueSize < previous)) {
+                if (isValid && ( i == 0 || previous == -1 || pumpQueueSize < previous)) {
                     previous = pumpQueueSize;
                     positionOfPumpWithShortestTime = i;
                     if (pumpQueueSize == 0.0) {
@@ -94,6 +86,4 @@ public class Facility {
     private void addCustomerToBestMachine(int positionOfPumpWithShortestTime, Customer customer){
         customerServers[positionOfPumpWithShortestTime].addCustomer(customer);
     }
-
-
 }
