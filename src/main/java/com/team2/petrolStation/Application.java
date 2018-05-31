@@ -58,6 +58,15 @@ public class Application {
         q = 0.02;
     }
 
+    /**
+     * Simulates the petrol station and calls simulateRound for as long as chosen.
+     *
+     * @param numOfTurns number of turns in seconds
+     * @param numPumps number of pumps
+     * @param numTills number of tills
+     * @param p the chance of a small car of motorbike spawning
+     * @param q the chance of a truck spawning
+     */
     private void simulate(Integer numOfTurns, Integer numPumps, Integer numTills, Double p, Double q){
 
         //build shop, filling station and the random that will be used throughout the application
