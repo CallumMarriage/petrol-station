@@ -4,6 +4,8 @@ import com.team2.petrolStation.model.exceptions.PumpNotFoundException;
 import com.team2.petrolStation.model.serviceMachine.Pump;
 import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 
+import java.util.NoSuchElementException;
+
 
 /**
  * The filling station manages the refueling of all of the vehicles at the front of all of the pump queues.
@@ -23,6 +25,10 @@ public class FillingStation extends Facility {
         if(customerServers[pumpNumber] == null){
             throw new PumpNotFoundException(pumpNumber);
         }
-        customerServers[pumpNumber].getCustomersInQueue().remove();
+        try{
+            customerServers[pumpNumber].getCustomersInQueue().remove();
+        } catch (NoSuchElementException e){
+            return;
+        }
     }
 }

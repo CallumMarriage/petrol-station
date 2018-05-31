@@ -33,7 +33,7 @@ public class Application {
 
         //replace this with gui values
         Integer numOfTurns = 0;
-        Integer numPumps = 4;
+        Integer numPumps = 6;
         Integer numTills = 2;
 
         try {
@@ -100,15 +100,18 @@ public class Application {
      * @throws ServiceMachineAssigningException error trying to add customer to a service machine
      */
     private void simulateRound(FillingStation fillingStation, Shop shop, Random random, Double p, Double q) throws ServiceMachineAssigningException, PumpNotFoundException {
+
         //create the vehicles for the round
         Collection<Customer> vehicles = generateVehicles(random, p, q);
 
         if(vehicles.size() == 0){
             return;
         }
-        moneyLost += fillingStation.addCustomerToMachine(vehicles);
+
         //put all of the vehicles into the queues for the pumps and refuel the ones at the front of each queue
         Map<Integer, Customer> finishedAtPump = fillingStation.manageTransactions();
+
+        moneyLost += fillingStation.addCustomerToMachine(vehicles);
 
         List<List<Driver>> customers = new ArrayList<List<Driver>>();
 
@@ -118,6 +121,8 @@ public class Application {
         }
 
         setChanceOfTruck(finishedAtPump.values());
+
+        shop.decideToGoToShop(finishedAtPump, random);
         customers = shop.decideToGoToShop(finishedAtPump, random);
 
         Collection<Driver> nonShoppingCustomers = new ArrayList<>();
@@ -141,9 +146,9 @@ public class Application {
 
         finishedAtShop.addAll(nonShoppingCustomers);
 
-        shop.addCustomerToMachine(finishedAtShop);
-
         Map<Integer, Customer> finishedCustomers = shop.manageTransactions();
+
+        shop.addCustomerToMachine(finishedAtShop);
 
         //add the money from all the finished customers to the overall amount.
         for (Customer customer : finishedCustomers.values()) {
