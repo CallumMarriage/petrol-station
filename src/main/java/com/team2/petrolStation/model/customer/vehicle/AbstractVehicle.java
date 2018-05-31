@@ -15,7 +15,7 @@ public abstract class AbstractVehicle implements Vehicle {
     Integer shopPurchase;
     Integer shopTime;
 
-    AbstractVehicle(Random random){
+    AbstractVehicle(){
     }
 
     public Integer getShopTime() {
@@ -29,6 +29,11 @@ public abstract class AbstractVehicle implements Vehicle {
     @Override
     public abstract Double getChanceOfGoingToShop();
 
+    /**
+     * Refuels this vehicle, if the vehicle has finished refueling it returns true if not it adds to the current fuel level and returns false
+     * @param value the amount that the fuel will increase by
+     * @return boolean
+     */
     @Override
     public Boolean act(Integer value) {
         if((this.currentFuel + value ) >= this.maxFuel){

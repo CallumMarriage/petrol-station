@@ -11,8 +11,7 @@ import static com.team2.petrolStation.model.constants.VehicleConstants.SIZE_OF_M
  */
 public class Motorbike extends AbstractVehicle {
 
-    public Motorbike(Random random){
-        super(random);
+    public Motorbike(){
         this.maxFuel = 5;
         this.currentFuel = 0;
         this.timeInQueue = 0;

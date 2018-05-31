@@ -1,5 +1,6 @@
 package com.team2.petrolStation.model.facility;
 
+import com.team2.petrolStation.model.exceptions.PumpNotFoundException;
 import com.team2.petrolStation.model.serviceMachine.Pump;
 import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 
@@ -16,5 +17,12 @@ public class FillingStation extends Facility {
         for(int i = 0; i < numOfServiceMachines; i++){
             customerServers[i] = new Pump();
         }
+    }
+
+    public void removeCustomerFromPump(Integer pumpNumber) throws PumpNotFoundException{
+        if(customerServers[pumpNumber] == null){
+            throw new PumpNotFoundException(pumpNumber);
+        }
+        customerServers[pumpNumber].removeVehicle();
     }
 }

@@ -13,8 +13,6 @@ import static com.team2.petrolStation.model.constants.VehicleConstants.*;
 public class FamilySedan extends AbstractVehicle {
 
     public FamilySedan(Random random){
-        super(random);
-
         this.shopTime = random.nextInt(30 - 12 + 1) + 12;
         this.shopPurchase = random.nextInt(16 - 8 + 1) + 8;
         this.maxFuel = random.nextInt(18) + 12;

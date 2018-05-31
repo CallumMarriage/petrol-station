@@ -27,29 +27,47 @@ public class Shop extends Facility {
         shopFloor = new ArrayList<>();
     }
 
+    /**
+     * This method splits the customers who have finished refueling into drivers that are going to spend time/money in the shop and those that are not.
+     *
+     * @param customers
+     * @param random
+     * @return a list containing a list of drivers not going to the shop and another with those that are,
+     */
     public List<List<Driver>> decideToGoToShop(Map <Integer, Customer> customers, Random random){
+
         List<Driver> customersNotGoingToShop = new ArrayList<>();
         List<Driver> customersGoingToShop = new ArrayList<>();
+
         for(Integer pump : customers.keySet()){
 
+            //get the vehicle from that pump
             Vehicle vehicle = (Vehicle) customers.get(pump);
+            //make a driver based on the fuel level and pump from the vehicle
             Driver driver = new Driver(vehicle.getMaxFuel(), pump);
 
             if( vehicle instanceof Motorbike){
-
+                //motorbikes do not go to the shop
                 customersNotGoingToShop.add(driver);
             } else {
+                // Vehicles that have been in the queue for too long do not go, vehicles have a chance associated with them of going to the shop
                 if (vehicle.getTimeInQueue() < vehicle.getMaxQueueTime() && random.nextDouble() < vehicle.getChanceOfGoingToShop()) {
 
+                    // add the amount that the customer is going to spend in the shop to the shop and add to the total.
                     driver.setMaximumSpend(vehicle.getMaxFuel() + vehicle.getShopPurchase());
+
+                    //add the customers that are going to the shop to the list.s
                     customersGoingToShop.add(driver);
 
                 } else {
+
+                    //add thsoe that dont meet the previous criteria to the list of drivers not going to the shop.
                     customersNotGoingToShop.add(driver);
                 }
             }
         }
 
+        // add both lists into a list of lists so that they both can be returned.
         List<List<Driver>> allCustomers = new ArrayList<List<Driver>>();
         allCustomers.add(customersNotGoingToShop);
         allCustomers.add(customersGoingToShop);
@@ -61,10 +79,16 @@ public class Shop extends Facility {
         shopFloor.addAll(drivers);
     }
 
+    /**
+     * simulates drivers spending time loitering in the store.
+     *
+     * @return a list of customers who have finished shopping.
+     */
     public List<Customer> getDriversFinished(){
         List<Customer> finishedDrivers = new ArrayList<Customer>();
         for(Driver driver :  shopFloor){
             if(driver.act(10)){
+                shopFloor.remove(driver);
                 finishedDrivers.add(driver);
             }
         }

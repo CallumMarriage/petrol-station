@@ -15,22 +15,26 @@ public class Till extends AbstractServiceMachine {
     public Till(){
     }
 
+    /**
+     * simulates driver making purchase, if that has completed then it removes the customer from the queue, prints that it has left and returns the customer.
+     *
+     * @return finished customer
+     */
     @Override
     public Customer act() {
         if(getVehiclesInQueue().size() > 0) {
             Driver customer = (Driver) getVehiclesInQueue().peek();
-            if (customer.act(1)) {
-                this.customerQueue.remove();
-                System.out.println("Customer left succesfully spending: " + customer.getCurrentSpend());
-                return customer;
-            }
+
+            this.customerQueue.remove();
+            System.out.println("Customer left succesfully spending: " + customer.getCurrentSpend());
+            return customer;
+
         }
         return null;
     }
 
     @Override
-    public boolean addCustomer(Customer customer) {
+    public void addCustomer(Customer customer) {
         customerQueue.add(customer);
-        return true;
     }
 }

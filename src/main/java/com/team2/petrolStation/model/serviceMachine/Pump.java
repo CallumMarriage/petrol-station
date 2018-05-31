@@ -7,6 +7,8 @@ import com.team2.petrolStation.model.customer.vehicle.Vehicle;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.team2.petrolStation.model.constants.ServiceMachineConstants.MAX_QUEUE_SIZE;
+
 /**
  * Allows for a maximum number of vehicles in its queue.
  *
@@ -14,24 +16,23 @@ import java.util.List;
  */
 public class Pump extends AbstractServiceMachine {
 
-    private Double maxQueueSize;
-
     public Pump(){
         super();
-        maxQueueSize = 3.5;
     }
 
     @Override
-    public boolean addCustomer(Customer vehicle) {
+    public void addCustomer(Customer vehicle) {
 
-        if((getSizeOfVehiclesInQueue() + vehicle.getSize()) > maxQueueSize){
-            return false;
-        } else {
+        if((getSizeOfVehiclesInQueue() + vehicle.getSize()) <= MAX_QUEUE_SIZE){
             customerQueue.add(vehicle);
-            return true;
         }
     }
 
+    /**
+     * Refuels customer for one round and returns the customer if it has finished.
+     *
+     * @return The finished customer or null if the customer has not finished
+     */
     @Override
     public Customer act() {
         if(getVehiclesInQueue().size() > 0) {
@@ -41,9 +42,5 @@ public class Pump extends AbstractServiceMachine {
             }
         }
         return null;
-    }
-
-    public Double getMaxQueueSize() {
-        return maxQueueSize;
     }
 }

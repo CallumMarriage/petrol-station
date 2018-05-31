@@ -11,7 +11,7 @@ import java.util.Queue;
  * @author callummarriage
  */
 public interface ServiceMachine {
-    boolean addCustomer(Customer vehicle);
+    void addCustomer(Customer vehicle);
 
     Queue<Customer> getVehiclesInQueue();
 

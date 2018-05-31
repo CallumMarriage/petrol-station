@@ -4,6 +4,8 @@ import com.team2.petrolStation.model.customer.Customer;
 import com.team2.petrolStation.model.customer.Driver;
 import com.team2.petrolStation.model.customer.vehicle.*;
 import com.team2.petrolStation.model.exceptions.InvalidInputException;
+import com.team2.petrolStation.model.exceptions.PumpNotFoundException;
+import com.team2.petrolStation.model.exceptions.ServiceMachineAssigningException;
 import com.team2.petrolStation.model.facility.FillingStation;
 import com.team2.petrolStation.model.facility.Shop;
 
@@ -37,7 +39,7 @@ public class Application {
         Integer numPumps = 4;
         Integer numTills = 2;
         try {
-            numOfTurns = convertTimeIntoSeconds("120m");
+            numOfTurns = convertTimeIntoSeconds("5h");
 
         } catch(InvalidInputException e){
             e.printStackTrace();
@@ -57,6 +59,7 @@ public class Application {
 
         application.simulate(numOfTurns, numPumps, numTills, p, q);
     }
+
     public Application(Double chanceOfTrucks){
         moneyLost = 0.0;
         moneyGained = 0.0;
@@ -65,22 +68,36 @@ public class Application {
         q = 0.02;
     }
 
-    public void simulate(Integer numOfTurns, Integer numPumps, Integer numTills, Double p, Double q){
+    private void simulate(Integer numOfTurns, Integer numPumps, Integer numTills, Double p, Double q){
 
         Shop shop = new Shop(numTills);
         FillingStation fillingStation = new FillingStation(numPumps);
         Random random = new Random(8);
 
-        for (int i = 0; i < numOfTurns; i += 10) {
-            simulateRound(fillingStation, shop, random, p, q);
+        try {
+            for (int i = 0; i < numOfTurns; i += 10) {
+                simulateRound(fillingStation, shop, random, p, q);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return;
         }
-
 
         System.out.println("Money lost: " + moneyLost);
         System.out.println("Money gained: " + moneyGained);
     }
 
-    private void simulateRound(FillingStation fillingStation, Shop shop, Random random, Double p, Double q){
+    /**
+     * Simulates a single round
+     *
+     * @param fillingStation the filling station
+     * @param shop the shop
+     * @param random the random that will be used to generate the vehicles
+     * @param p the chance of a small car of motorbike spawning
+     * @param q the chance of a truck spawning
+     * @throws ServiceMachineAssigningException error trying to add customer to a service machine
+     */
+    private void simulateRound(FillingStation fillingStation, Shop shop, Random random, Double p, Double q) throws ServiceMachineAssigningException, PumpNotFoundException {
         //create the vehicles for the round
         Collection<Customer> vehicles = generateVehicles(random, p, q);
 
@@ -127,14 +144,23 @@ public class Application {
         //add the money from all the finished customers to the overall amount.
         for (Customer customer : finishedCustomers.values()) {
             Driver driver = (Driver) customer;
+            fillingStation.removeCustomerFromPump(driver.getPumpNumber());
             moneyGained += driver.getCurrentSpend();
         }
     }
 
+    /**
+     * generates vehicles
+     *
+     * @param random random
+     * @param p the chance of a small car of motorbike spawning
+     * @param q the chance of a truck spawning
+     * @return list of generated vehicles
+     */
     private List<Customer> generateVehicles(Random random,Double p,Double q){
         List<Customer> vehicles = new ArrayList<>();
         if(random.nextDouble() < p){
-            vehicles.add(new Motorbike(random));
+            vehicles.add(new Motorbike());
             System.out.println("A motorbike has arrived");
         }
         if (random.nextDouble() < p ){
@@ -166,6 +192,13 @@ public class Application {
         }
     }
 
+    /**
+     * Converts the time into seconds based on its identifier and returns the new value.
+     *
+     * @param time the amount of time the simulation will execute for.
+     * @return time in seconds
+     * @throws InvalidInputException time could not be converted.
+     */
     public static Integer convertTimeIntoSeconds(String time) throws InvalidInputException{
 
         String[] identifiers = {"h","m", "s"};
@@ -181,13 +214,15 @@ public class Application {
                 isIdentifier = true;
             }
             i++;
-
         }
 
         Integer number = 0;
 
         try{
             number = Integer.parseInt(timeSplit[0]);
+            if(timeSplit.length == 1){
+                return number;
+            }
             identifier = timeSplit[1];
             if(identifier.equals("m")){
                 number *= 60;

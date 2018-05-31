@@ -30,6 +30,12 @@ public class Driver implements Customer {
         return 1.0;
     }
 
+    /**
+     * Checks if driver has finished in shop.
+     *
+     * @param value the amount of time adding to the time spent in the shop.
+     * @return boolean
+     */
     @Override
     public Boolean act(Integer value) {
         if((currentTimeInShop + value) >= timeInShop){
@@ -38,10 +44,6 @@ public class Driver implements Customer {
             this.currentTimeInShop += value;
             return false;
         }
-    }
-
-    public Integer getTimeInShop() {
-        return timeInShop;
     }
 
     public void setTimeInShop(Integer timeInShop) {

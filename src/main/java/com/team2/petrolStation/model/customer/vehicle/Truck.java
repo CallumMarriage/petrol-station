@@ -15,8 +15,6 @@ import static com.team2.petrolStation.model.constants.VehicleConstants.SIZE_OF_T
 public class Truck extends AbstractVehicle {
 
     public Truck(Random random){
-        super(random);
-
         this.shopTime = random.nextInt(36 -24 +1  ) +24;
         this.maxFuel = random.nextInt(40 - 30 + 1) + 30;
         this.currentFuel = 0;
