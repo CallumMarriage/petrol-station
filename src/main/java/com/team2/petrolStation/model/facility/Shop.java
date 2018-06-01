@@ -7,7 +7,10 @@ import com.team2.petrolStation.model.customer.vehicle.Vehicle;
 import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 import com.team2.petrolStation.model.serviceMachine.Till;
 
+import java.text.DecimalFormat;
 import java.util.*;
+
+import static com.team2.petrolStation.model.constants.PetrolStationConstants.PRICE_OF_FUEL;
 
 /**
  * The shop contains a map of all of the drivers that are browsing the shop, it also manages the movement of drivers in and out of the shop floor.
@@ -45,7 +48,7 @@ public class Shop extends Facility {
             //get the vehicle from that pump
             Vehicle vehicle = (Vehicle) customers.get(pump);
             //make a driver based on the fuel level and pump from the vehicle
-            Driver driver = new Driver(vehicle.getMaxFuel(), pump);
+            Driver driver = new Driver((Math.round((vehicle.getMaxFuel() * PRICE_OF_FUEL)) * 100d /100d) , pump);
 
             if( vehicle instanceof Motorbike){
                 //motorbikes do not go to the shop
@@ -104,8 +107,6 @@ public class Shop extends Facility {
     }
 
     public void removeDrivers(List<Customer> customers){
-        for(Customer driver : customers){
-            this.shopFloor.remove(driver);
-        }
+        shopFloor.removeAll(customers);
     }
 }

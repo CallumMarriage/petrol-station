@@ -10,13 +10,13 @@ import static com.team2.petrolStation.model.constants.VehicleConstants.SIZE_OF_D
  */
 public class Driver implements Customer {
 
-    private Integer currentSpend;
+    private Double currentSpend;
     private Integer timeInShop;
     private Integer currentTimeInShop;
     private Integer maximumSpend;
     private Integer pumpNumber;
 
-    public Driver(Integer currentSpend, Integer pumpNumber ){
+    public Driver(Double currentSpend, Integer pumpNumber ){
         this.currentSpend = currentSpend;
         this.timeInShop = 0;
         this.maximumSpend = 0;

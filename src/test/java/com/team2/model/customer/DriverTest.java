@@ -22,7 +22,7 @@ public class DriverTest {
         Random random = new Random(1);
         Vehicle car = new SmallCar(random);
 
-        Driver driver = new Driver(car.getMaxFuel(), 1);
+        Driver driver = new Driver(car.getMaxFuel() * 1.20, 1);
         assertTrue(driver.getCurrentSpend() > 0);
 
         assertTrue(driver.act(1));

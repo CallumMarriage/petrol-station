@@ -20,11 +20,11 @@ public class VehicleConstants {
     public static final Double SIZE_OF_DRIVER = 1.0;
 
     //Max queue times for vehicles
-   /* public static final Integer MAX_QUEUE_TIME_TRUCK = 48;
-    public static final Integer MAX_QUEUE_TIME_FAMILY_SEDAN = 60;
-    public static final Integer MAX_QUEUE_TIME_SMALL_CAR = 30;*/
-
     public static final Integer MAX_QUEUE_TIME_TRUCK = 48;
+    public static final Integer MAX_QUEUE_TIME_FAMILY_SEDAN = 60;
+    public static final Integer MAX_QUEUE_TIME_SMALL_CAR = 30;
+
+    /*public static final Integer MAX_QUEUE_TIME_TRUCK = 48;
     public static final Integer MAX_QUEUE_TIME_FAMILY_SEDAN = 600;
-    public static final Integer MAX_QUEUE_TIME_SMALL_CAR = 300;
+    public static final Integer MAX_QUEUE_TIME_SMALL_CAR = 300;*/
 }

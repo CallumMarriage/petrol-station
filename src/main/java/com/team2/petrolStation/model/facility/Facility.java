@@ -9,6 +9,7 @@ import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 
 import java.util.*;
 
+import static com.team2.petrolStation.model.constants.PetrolStationConstants.PRICE_OF_FUEL;
 import static com.team2.petrolStation.model.constants.ServiceMachineConstants.MAX_QUEUE_SIZE;
 
 /**
@@ -52,7 +53,7 @@ public class Facility {
             if(bestMachine < 0){
                 if(customer instanceof Vehicle) {
                     Vehicle vehicle = (Vehicle) customer;
-                    lostVehicles += vehicle.getMaxFuel() * 0.5;
+                    lostVehicles += (vehicle.getMaxFuel() * PRICE_OF_FUEL) * 100d /100d;
                     System.out.println("A customer had to leave");
                 } else {
                     throw new ServiceMachineAssigningException();
@@ -70,7 +71,7 @@ public class Facility {
      * @param customer can be a driver or a vehicle
      * @return the position of the best service machine.
      */
-    private int findBestMachine(Customer customer) {
+     public int findBestMachine(Customer customer) {
         double previous = -1.0;
         int positionOfPumpWithShortestTime = 0;
 
@@ -87,7 +88,7 @@ public class Facility {
                         isValid = true;
                     }
                 }
-                if (isValid && ( i == 0 || previous == -1 || pumpQueueSize < previous)) {
+                if (isValid && ( i == 0 || previous == -1.0 || pumpQueueSize < previous)) {
                     previous = pumpQueueSize;
                     positionOfPumpWithShortestTime = i;
                     if (pumpQueueSize == 0.0) {
@@ -105,7 +106,7 @@ public class Facility {
         }
     }
 
-    private void addCustomerToBestMachine(int positionOfPumpWithShortestTime, Customer customer){
+    public void addCustomerToBestMachine(int positionOfPumpWithShortestTime, Customer customer){
         customerServers[positionOfPumpWithShortestTime].addCustomer(customer);
     }
 

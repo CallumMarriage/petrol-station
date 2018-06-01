@@ -1,8 +1,14 @@
 package com.team2.model.facility;
 
+import com.team2.petrolStation.model.customer.vehicle.Truck;
+import com.team2.petrolStation.model.customer.vehicle.Vehicle;
+import com.team2.petrolStation.model.facility.FillingStation;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
+import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * Created by callummarriage on 25/05/2018.
@@ -14,22 +20,20 @@ public class FillingStationTest {
 
     }
 
-    /*
     @Test
     public void testMaximumVehicles(){
 
-        Vehicle truck = new Truck();
-        Vehicle truck2 = new Truck();
-        Vehicle truck3 = new Truck();
+        Random random = new Random(2);
+        Vehicle truck = new Truck(random);
+        Vehicle truck2 = new Truck(random);
+        Vehicle truck3 = new Truck(random);
 
-        FillingStation facility = new FillingStation(1);
+        FillingStation facility = new FillingStation(2);
 
-        assertEquals(0, facility.findBestServiceMachine());
-        facility.addCustomerToServiceMachine(0, truck);
-        assertEquals(1, facility.findBestServiceMachine());
-        facility.addCustomerToServiceMachine(0, truck2);
-        assertEquals(-1, facility.findBestServiceMachine());
-        assertFalse(facility.addCustomerToBestMachine(0, truck3));
+        assertEquals(0, facility.findBestMachine(truck));
+        facility.addCustomerToBestMachine(0, truck);
+        assertEquals(1, facility.findBestMachine(truck2));
+        facility.addCustomerToBestMachine(1, truck2);
+        assertEquals(-1, facility.findBestMachine(truck3));
     }
-    */
 }

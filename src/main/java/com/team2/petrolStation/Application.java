@@ -11,6 +11,8 @@ import com.team2.petrolStation.model.facility.Shop;
 
 import java.util.*;
 
+import static com.team2.petrolStation.model.constants.PetrolStationConstants.SECONDS_PER_TICK;
+
 /**
  * Application class allows for the running of simulations that generate vehicles and then refuels them and sends them to a shop to shop and or purchase their fuel.
  * It also keeps track of the amount of money gained and lost during the simulation.
@@ -36,15 +38,16 @@ public class Application {
         Integer numPumps = 6;
         Integer numTills = 2;
 
+        String time = "5d";
         try {
-            numOfTurns = convertTimeIntoSeconds("5h");
+            numOfTurns = convertTimeIntoSeconds(time);
 
         } catch(InvalidInputException e){
             e.printStackTrace();
             return;
         }
 
-        System.out.println("Welcome to the simulation\nThe duration will be " + numOfTurns + " seconds or " + (numOfTurns / 6) + " ticks \n");
+        System.out.println("Welcome to the simulation\nThe duration will be " + numOfTurns + " seconds or " + (numOfTurns / SECONDS_PER_TICK) + " ticks \n");
 
         //run the simulation using the inputed values
         application.simulate(numOfTurns, numPumps, numTills, p, q);
@@ -75,7 +78,7 @@ public class Application {
         Random random = new Random(9);
 
         try {
-            for (int i = 0; i < numOfTurns; i += 10) {
+            for (int i = 0; i < numOfTurns; i += SECONDS_PER_TICK) {
                 simulateRound(fillingStation, shop, random, p, q);
             }
         } catch (Exception e){
@@ -113,14 +116,12 @@ public class Application {
         //create the vehicles for the round
         Collection<Customer> vehicles = generateVehicles(random, p, q);
 
-        if(vehicles.size() == 0){
-            return;
-        }
-
         //put all of the vehicles into the queues for the pumps and refuel the ones at the front of each queue
         Map<Integer, Customer> finishedAtPump = fillingStation.manageTransactions();
 
-        moneyLost += fillingStation.addCustomerToMachine(vehicles);
+        if(vehicles.size() >  0){
+            moneyLost += fillingStation.addCustomerToMachine(vehicles);
+        }
 
         List<List<Driver>> customers = new ArrayList<List<Driver>>();
 
@@ -131,7 +132,6 @@ public class Application {
 
         setChanceOfTruck(finishedAtPump.values());
 
-        shop.decideToGoToShop(finishedAtPump, random);
         customers = shop.decideToGoToShop(finishedAtPump, random);
 
         Collection<Driver> nonShoppingCustomers = new ArrayList<>();
@@ -148,8 +148,8 @@ public class Application {
         //add customers to the shop floor, simulate time on the shop and floor and return finished drivers. All drivers that did not shop should add the lost amount to the lost money tally.
         if(customers.get(1).size() > 0) {
             shop.addToShopFloor(customers.get(1));
-             finishedAtShop = shop.getDriversFinished();
-             shop.removeDrivers(finishedAtShop);
+            finishedAtShop = shop.getDriversFinished();
+            shop.removeDrivers(finishedAtShop);
             //add the drivers who have left the shop floor to the queues for the tills and do transactions
         }
 
@@ -200,8 +200,8 @@ public class Application {
     public void setChanceOfTruck(Collection<Customer> customers){
         for(Customer customer : customers){
             if(customer instanceof Truck){
-                Vehicle vehicle = (Vehicle) customer;
-                if(vehicle.getTimeInQueue() < vehicle.getMaxQueueTime()){
+                Truck truck = (Truck) customer;
+                if(truck.getTimeInQueue() < truck.getMaxQueueTime()){
                     chanceOfTruck += ((chanceOfTruck / 100) * 5);
                 } {
                     chanceOfTruck -= ((chanceOfTruck / 100) * 20) ;
@@ -219,14 +219,14 @@ public class Application {
      */
     public static Integer convertTimeIntoSeconds(String time) throws InvalidInputException{
 
-        String[] identifiers = {"h","m", "s"};
+        String[] identifiers = {"h","m", "s", "d"};
 
         Boolean isIdentifier = false;
         int i = 0;
         String identifier = "";
         String[] timeSplit = null;
         //split the time
-        while(!isIdentifier || i == identifiers.length){
+        while(!isIdentifier || i < identifiers.length){
             identifier = identifiers[i];
             timeSplit = time.split("((?<=" +  identifier + ")|(?=" + identifier + "))");
             if(timeSplit.length > 1){
@@ -249,6 +249,11 @@ public class Application {
                 number *= 60;
             } else if(identifier.equals("h")){
                 number *= (60 * 60);
+            } else if(identifier.equals("d")){
+                Double numberInDays = Double.parseDouble(number + "");
+                Double numberInHours = numberInDays * 24;
+                numberInHours *= (60 * 60);
+                number = Integer.parseInt(Math.round(numberInHours) + "");
             }
         } catch (Exception e){
             throw new InvalidInputException(time);
