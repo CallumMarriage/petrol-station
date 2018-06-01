@@ -3,6 +3,8 @@ package com.team2.model.customer;
 import com.team2.petrolStation.model.customer.vehicle.SmallCar;
 import org.junit.Test;
 
+import java.util.Random;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -17,7 +19,9 @@ public class VehicleTest {
     @Test
     public void testActVehicle(){
 
-        SmallCar smallCar = new SmallCar();
+        Random random = new Random(1);
+
+        SmallCar smallCar = new SmallCar(random);
 
         assertFalse(smallCar.act(1));
 
@@ -27,7 +31,9 @@ public class VehicleTest {
     @Test
     public void testSmallCarFuelTank(){
 
-        SmallCar smallCar = new SmallCar();
+        Random random = new Random(1);
+
+        SmallCar smallCar = new SmallCar(random);
 
         System.out.println(smallCar.getMaxFuel());
 

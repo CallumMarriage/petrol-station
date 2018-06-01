@@ -9,27 +9,15 @@ import com.team2.petrolStation.model.customer.Customer;
  */
 public interface Vehicle extends Customer {
 
-    Double getSize();
-
-    void setSize(Double size);
-
     Integer getTimeInQueue();
-
-    void setTimeInQueue(Integer time);
-
-    void setMaxFuel(Integer maxFuel);
 
     Integer getMaxFuel();
 
     Integer getShopTime();
 
-    void setShopTime(Integer shopTime);
-
     Integer getShopPurchase();
-
-    void setShopPurchase(Integer shopPurchase);
 
     int getMaxQueueTime();
 
-    void setMaxQueueTimes(int queueTime);
+    Double getChanceOfGoingToShop();
 }

@@ -5,76 +5,44 @@ package com.team2.petrolStation.model.customer.vehicle;
  *
  * @author callummarriage
  */
-public class AbstractVehicle implements Vehicle {
+public abstract class AbstractVehicle implements Vehicle {
 
     Integer maxFuel;
     Integer currentFuel;
-    Double size;
     Integer timeInQueue;
     Integer shopPurchase;
     Integer shopTime;
-    Integer maxQueueTime;
-
 
     public Integer getShopTime() {
         return shopTime;
-    }
-
-    public void setShopTime(Integer shopTime) {
-        this.shopTime = shopTime;
     }
 
     public Integer getShopPurchase() {
         return shopPurchase;
     }
 
-    public void setShopPurchase(Integer shopPurchase) {
-        this.shopPurchase = shopPurchase;
-    }
-
     @Override
-    public int getMaxQueueTime() {
-        return maxQueueTime;
-    }
+    public abstract Double getChanceOfGoingToShop();
 
-    @Override
-    public void setMaxQueueTimes(int queueTime) {
-        this.maxQueueTime = maxQueueTime;
-    }
-
+    /**
+     * Refuels this vehicle, if the vehicle has finished refueling it returns true if not it adds to the current fuel level and returns false
+     * @param value the amount that the fuel will increase by
+     * @return boolean
+     */
     @Override
     public Boolean act(Integer value) {
-        if((this.currentFuel + value ) >= this.maxFuel){
+        if((this.currentFuel + value ) >= (this.maxFuel + 10)){
             return true;
         } else{
+            this.timeInQueue += 10;
             this.currentFuel += value;
             return false;
         }
     }
 
     @Override
-    public Double getSize() {
-        return this.size;
-    }
-
-    @Override
-    public void setSize(Double size) {
-        this.size = size;
-    }
-
-    @Override
     public Integer getTimeInQueue() {
         return this.timeInQueue;
-    }
-
-    @Override
-    public void setTimeInQueue(Integer time) {
-        this.timeInQueue = time;
-    }
-
-    @Override
-    public void setMaxFuel(Integer maxFuel) {
-        this.maxFuel = maxFuel;
     }
 
     @Override

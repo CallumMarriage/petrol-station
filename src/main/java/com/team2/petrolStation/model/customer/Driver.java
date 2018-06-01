@@ -1,7 +1,6 @@
 package com.team2.petrolStation.model.customer;
 
-import com.team2.petrolStation.model.customer.vehicle.Motorbike;
-import com.team2.petrolStation.model.customer.vehicle.Vehicle;
+import static com.team2.petrolStation.model.constants.VehicleConstants.SIZE_OF_DRIVER;
 
 /**
  * The driver is the model of a customer who enters the shop and purchases the fuel that they have just put in their vehicle.
@@ -11,45 +10,43 @@ import com.team2.petrolStation.model.customer.vehicle.Vehicle;
  */
 public class Driver implements Customer {
 
-    private Integer currentSpend;
+    private Double currentSpend;
     private Integer timeInShop;
     private Integer currentTimeInShop;
     private Integer maximumSpend;
+    private Integer pumpNumber;
 
-    public Driver(Integer currentSpend ){
+    public Driver(Double currentSpend, Integer pumpNumber ){
         this.currentSpend = currentSpend;
         this.timeInShop = 0;
         this.maximumSpend = 0;
         this.currentTimeInShop = 0;
+        this.pumpNumber = pumpNumber;
     }
 
+    @Override
+    public Double getSize() {
+        return SIZE_OF_DRIVER;
+    }
+
+    /**
+     * Checks if driver has finished in shop.
+     *
+     * @param value the amount of time adding to the time spent in the shop.
+     * @return boolean
+     */
     @Override
     public Boolean act(Integer value) {
         if((currentTimeInShop + value) >= timeInShop){
             return true;
         } else {
-            this.currentTimeInShop += value;
+            currentTimeInShop += value;
             return false;
         }
-    }
-
-    public Integer getTimeInShop() {
-        return timeInShop;
     }
 
     public void setTimeInShop(Integer timeInShop) {
         this.timeInShop = timeInShop;
-    }
-
-    public boolean decideToGoToShop(Vehicle vehicle){
-        if( vehicle instanceof Motorbike ){
-            return false;
-        }
-        if(vehicle.getTimeInQueue() < vehicle.getMaxQueueTime()){
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public void setCurrentSpend(Integer spendInShop){
@@ -68,5 +65,7 @@ public class Driver implements Customer {
         this.maximumSpend = maximumSpend;
     }
 
-
+    public Integer getPumpNumber() {
+        return pumpNumber;
+    }
 }
