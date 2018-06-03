@@ -28,8 +28,7 @@ public class DriverTest {
         assertTrue(driver.act(1));
 
         driver.setTimeInShop(car.getShopTime());
-        driver.setCurrentSpend(car.getShopPurchase());
-        driver.setMaximumSpend(car.getShopPurchase());
+        driver.addToCurrentSpend(car.getShopPurchase());
 
         assertFalse(driver.act(4));
 

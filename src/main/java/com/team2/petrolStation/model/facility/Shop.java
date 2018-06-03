@@ -7,10 +7,7 @@ import com.team2.petrolStation.model.customer.vehicle.Vehicle;
 import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 import com.team2.petrolStation.model.serviceMachine.Till;
 
-import java.text.DecimalFormat;
 import java.util.*;
-
-import static com.team2.petrolStation.model.constants.PetrolStationConstants.PRICE_OF_FUEL;
 
 /**
  * The shop contains a map of all of the drivers that are browsing the shop, it also manages the movement of drivers in and out of the shop floor.
@@ -38,7 +35,7 @@ public class Shop extends Facility {
      * @param random random used to generate the decisions
      * @return a list containing a list of drivers not going to the shop and another with those that are,
      */
-    public List<List<Driver>> decideToGoToShop(Map <Integer, Customer> customers, Random random){
+    public List<List<Driver>> decideToGoToShop(Map <Integer, Customer> customers, Random random, Double priceOfFuel){
 
         List<Driver> customersNotGoingToShop = new ArrayList<>();
         List<Driver> customersGoingToShop = new ArrayList<>();
@@ -48,7 +45,7 @@ public class Shop extends Facility {
             //get the vehicle from that pump
             Vehicle vehicle = (Vehicle) customers.get(pump);
             //make a driver based on the fuel level and pump from the vehicle
-            Driver driver = new Driver((Math.round((vehicle.getMaxFuel() * PRICE_OF_FUEL)) * 100d /100d) , pump);
+            Driver driver = new Driver((Math.round((vehicle.getMaxFuel() * priceOfFuel)) * 100d /100d) , pump);
 
             if( vehicle instanceof Motorbike){
                 //motorbikes do not go to the shop
@@ -58,7 +55,7 @@ public class Shop extends Facility {
                 if (vehicle.getTimeInQueue() < vehicle.getMaxQueueTime() && random.nextDouble() < vehicle.getChanceOfGoingToShop()) {
 
                     // add the amount that the customer is going to spend in the shop to the shop and add to the total.
-                    driver.setMaximumSpend(vehicle.getMaxFuel() + vehicle.getShopPurchase());
+                    driver.addToCurrentSpend(vehicle.getShopPurchase());
 
                     //add the time the driver will be spending in the shop.
                     driver.setTimeInShop(vehicle.getShopTime());

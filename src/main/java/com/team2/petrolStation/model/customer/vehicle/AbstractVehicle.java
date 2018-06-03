@@ -31,7 +31,7 @@ public abstract class AbstractVehicle implements Vehicle {
      */
     @Override
     public Boolean act(Integer value) {
-        if((this.currentFuel + value ) >= (this.maxFuel + 10)){
+        if((this.currentFuel + value ) >= (this.maxFuel + 1)){
             return true;
         } else{
             this.timeInQueue += 10;

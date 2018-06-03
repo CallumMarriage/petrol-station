@@ -9,7 +9,6 @@ import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 
 import java.util.*;
 
-import static com.team2.petrolStation.model.constants.PetrolStationConstants.PRICE_OF_FUEL;
 import static com.team2.petrolStation.model.constants.ServiceMachineConstants.MAX_QUEUE_SIZE;
 
 /**
@@ -45,7 +44,7 @@ public class Facility {
      * @param customers a list of drivers or vehicles to be added to service machines
      * @return the amount of lost vehicles.
      */
-    public double addCustomerToMachine(Collection<Customer> customers ) throws ServiceMachineAssigningException {
+    public double addCustomerToMachine(Collection<Customer> customers,Double priceOfFuel ) throws ServiceMachineAssigningException {
 
         double lostVehicles = 0.0;
         for (Customer customer : customers) {
@@ -53,7 +52,7 @@ public class Facility {
             if(bestMachine < 0){
                 if(customer instanceof Vehicle) {
                     Vehicle vehicle = (Vehicle) customer;
-                    lostVehicles += (vehicle.getMaxFuel() * PRICE_OF_FUEL) * 100d /100d;
+                    lostVehicles += (vehicle.getMaxFuel() * priceOfFuel) * 100d /100d;
                     System.out.println("A customer had to leave");
                 } else {
                     throw new ServiceMachineAssigningException();

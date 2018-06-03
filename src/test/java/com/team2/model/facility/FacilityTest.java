@@ -23,6 +23,7 @@ public class FacilityTest {
 
     @Test
     public void testFindBestAvailableServiceMachine(){
+        Double priceOfFuel = 1.2;
         Random random = new Random(3);
         Vehicle truck = new Truck(random);
         Vehicle car = new SmallCar(random);
@@ -39,7 +40,7 @@ public class FacilityTest {
         assertEquals(0, facility.getServiceMachines()[1].getCustomersInQueue().size());
 
         try {
-            facility.addCustomerToMachine(vehicles);
+            facility.addCustomerToMachine(vehicles, priceOfFuel);
         } catch (ServiceMachineAssigningException e) {
             e.printStackTrace();
         }
@@ -55,7 +56,7 @@ public class FacilityTest {
         vehicles.add(familySedan);
 
         try{
-            facility.addCustomerToMachine(vehicles);
+            facility.addCustomerToMachine(vehicles, priceOfFuel);
         } catch (ServiceMachineAssigningException e){
             e.printStackTrace();
         }

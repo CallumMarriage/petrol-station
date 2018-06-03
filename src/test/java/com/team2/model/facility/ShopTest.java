@@ -34,6 +34,7 @@ public class ShopTest {
 
     @Test
     public void testDecideToGoToShop(){
+        Double priceOfFuel = 1.2;
 
         Random random = new Random(1);
         Map<Integer, Customer> vehicles = new HashMap<>();
@@ -41,7 +42,7 @@ public class ShopTest {
         vehicles.put(0, motorbike);
         Shop shop = new Shop(1);
 
-        List<List<Driver>> allCustomers = shop.decideToGoToShop(vehicles, random);
+        List<List<Driver>> allCustomers = shop.decideToGoToShop(vehicles, random, priceOfFuel);
 
         assertTrue(0 == allCustomers.get(0).get(0).getPumpNumber());
 
@@ -58,14 +59,19 @@ public class ShopTest {
 
         vehicles.clear();
 
+        vehicles.put(5, truck);
         vehicles.put(1, smallCar);
         vehicles.put(2, smallCar2);
         vehicles.put(3, smallCar3);
         vehicles.put(4, smallCar4);
+        vehicles.put(6, smallCar3);
+        vehicles.put(7, smallCar3);
+        vehicles.put(8, smallCar3);
 
-        allCustomers = shop.decideToGoToShop(vehicles, random);
+        allCustomers = shop.decideToGoToShop(vehicles, random, priceOfFuel);
 
-        assertTrue(0 == allCustomers.get(0).get(0).getPumpNumber());
+        assertTrue(allCustomers.get(0).size() >= 7);
+        assertTrue(allCustomers.get(1).size() > 0);
 
     }
 

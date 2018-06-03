@@ -13,6 +13,7 @@ public class Motorbike extends AbstractVehicle {
         this.maxFuel = 5;
         this.currentFuel = 0;
         this.timeInQueue = 0;
+        this.shopPurchase = 0;
     }
 
     @Override

@@ -49,7 +49,7 @@ public class Driver implements Customer {
         this.timeInShop = timeInShop;
     }
 
-    public void setCurrentSpend(Integer spendInShop){
+    public void addToCurrentSpend(Integer spendInShop){
         this.currentSpend += spendInShop;
     }
 
@@ -59,10 +59,6 @@ public class Driver implements Customer {
 
     public Integer getMaximumSpend() {
         return maximumSpend;
-    }
-
-    public void setMaximumSpend(Integer maximumSpend) {
-        this.maximumSpend = maximumSpend;
     }
 
     public Integer getPumpNumber() {
