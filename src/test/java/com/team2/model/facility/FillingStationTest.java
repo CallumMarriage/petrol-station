@@ -30,10 +30,14 @@ public class FillingStationTest {
 
         FillingStation facility = new FillingStation(2);
 
-        assertEquals(0, facility.findBestMachine(truck));
-        facility.addCustomerToBestMachine(0, truck);
-        assertEquals(1, facility.findBestMachine(truck2));
-        facility.addCustomerToBestMachine(1, truck2);
-        assertEquals(-1, facility.findBestMachine(truck3));
+        try {
+            assertEquals(0, facility.findBestMachine(truck));
+            facility.addCustomerToBestMachine(0, truck);
+            assertEquals(1, facility.findBestMachine(truck2));
+            facility.addCustomerToBestMachine(1, truck2);
+            assertEquals(-1, facility.findBestMachine(truck3));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

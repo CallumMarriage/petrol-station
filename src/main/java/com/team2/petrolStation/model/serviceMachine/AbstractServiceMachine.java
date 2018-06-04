@@ -33,4 +33,9 @@ public abstract class AbstractServiceMachine implements ServiceMachine {
 
         return sizeOfVehiclesInQueue;
     }
+
+    @Override
+    public void removeCustomer(){
+        customerQueue.remove();
+    }
 }

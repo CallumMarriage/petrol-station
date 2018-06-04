@@ -41,7 +41,7 @@ public class FacilityTest {
 
         try {
             facility.addCustomerToMachine(vehicles, priceOfFuel);
-        } catch (ServiceMachineAssigningException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -57,7 +57,7 @@ public class FacilityTest {
 
         try{
             facility.addCustomerToMachine(vehicles, priceOfFuel);
-        } catch (ServiceMachineAssigningException e){
+        } catch (Exception e){
             e.printStackTrace();
         }
 

@@ -39,7 +39,7 @@ public class Application {
         //replace this with gui values
         Integer numOfTurns = 0;
         Integer numPumps = 6;
-        Integer numTills = 2;
+        Integer numTills = 1;
         Double priceOfFuel = 1.2;
         p = 0.01;
         q = 0.02;
@@ -102,6 +102,51 @@ public class Application {
         generateFile(results);
     }
 
+
+    public Map<Integer, Customer> runVehicles(FillingStation fillingStation, Collection<Customer> vehicles, Double priceOfFuel) throws ServiceMachineAssigningException, PumpNotFoundException {
+        Map<Integer, Customer> finishedAtPump = fillingStation.manageTransactions();
+
+        if(vehicles.size() >  0){
+            moneyLost += fillingStation.addCustomerToMachine(vehicles, priceOfFuel);
+        }
+
+        if(finishedAtPump.size() > 0) {
+            setChanceOfTruck(finishedAtPump.values());
+        }
+
+        return finishedAtPump;
+    }
+
+    public Map<Integer, Customer> runShoppers(Shop shop, Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws ServiceMachineAssigningException, PumpNotFoundException {
+
+        List<Customer> finishedAtShop = new ArrayList<>();
+
+        finishedAtShop = shop.getDriversFinished();
+        shop.removeDrivers(finishedAtShop);
+
+        if(finishedAtPump.size() > 0) {
+            List<List<Driver>> customers = shop.decideToGoToShop(finishedAtPump, random, priceOfFuel);
+            setLostMoney(customers.get(0), finishedAtPump);
+
+            Collection<Driver> nonShoppingCustomers = customers.get(0);
+
+            if(customers.get(1).size() > 0) {
+                shop.addToShopFloor(customers.get(1));
+            }
+
+            finishedAtShop.addAll(nonShoppingCustomers);
+
+        }
+
+
+        Map<Integer, Customer> finishedCustomers = shop.manageTransactions();
+
+        shop.addCustomerToMachine(finishedAtShop, priceOfFuel);
+
+        return finishedCustomers;
+
+    }
+
     /**
      * Simulates a single round
      *
@@ -115,44 +160,14 @@ public class Application {
         //create the vehicles for the round
         Collection<Customer> vehicles = generateVehicles(random);
 
-        //put all of the vehicles into the queues for the pumps and refuel the ones at the front of each queue
-        Map<Integer, Customer> finishedAtPump = fillingStation.manageTransactions();
+        Map<Integer, Customer> finishedVehicles = runVehicles(fillingStation, vehicles, priceOfFuel );
 
-        if(vehicles.size() >  0){
-            moneyLost += fillingStation.addCustomerToMachine(vehicles, priceOfFuel);
+        Map<Integer, Customer> finishedCustomers = runShoppers(shop, finishedVehicles, priceOfFuel, random);
+
+        for(Integer i : finishedCustomers.keySet()) {
+            shop.getServiceMachines()[i].removeCustomer();
         }
 
-        List<List<Driver>> customers = new ArrayList<List<Driver>>();
-
-        //alter the change of trucks arriving based on the time the trucks took to finish refuelling
-        if(finishedAtPump.values().size() == 0){
-            return;
-        }
-
-        setChanceOfTruck(finishedAtPump.values());
-
-        customers = shop.decideToGoToShop(finishedAtPump, random, priceOfFuel);
-
-        setLostMoney(customers.get(0), finishedAtPump);
-
-        Collection<Driver> nonShoppingCustomers = customers.get(0);
-
-        List<Customer> finishedAtShop = new ArrayList<>();
-        //add customers to the shop floor, simulate time on the shop and floor and return finished drivers. All drivers that did not shop should add the lost amount to the lost money tally.
-        if(customers.get(1).size() > 0) {
-            shop.addToShopFloor(customers.get(1));
-            finishedAtShop = shop.getDriversFinished();
-            shop.removeDrivers(finishedAtShop);
-            //add the drivers who have left the shop floor to the queues for the tills and do transactions
-        }
-
-        finishedAtShop.addAll(nonShoppingCustomers);
-
-        Map<Integer, Customer> finishedCustomers = shop.manageTransactions();
-
-        shop.addCustomerToMachine(finishedAtShop, priceOfFuel);
-
-        //add the money from all the finished customers to the overall amount.
         for (Customer customer : finishedCustomers.values()) {
             Driver driver = (Driver) customer;
             fillingStation.removeCustomerFromPump(driver.getPumpNumber());

@@ -17,4 +17,6 @@ public interface ServiceMachine {
     double getSizeOfCustomersInQueue();
 
     Customer act();
+
+    void removeCustomer();
 }
