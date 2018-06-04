@@ -5,4 +5,5 @@ package com.team2.petrolStation.model.constants;
  */
 public class PetrolStationConstants {
     public static final Integer SECONDS_PER_TICK = 10;
+    public static final String DESTINATION_FILE = "./result/result.txt";
 }

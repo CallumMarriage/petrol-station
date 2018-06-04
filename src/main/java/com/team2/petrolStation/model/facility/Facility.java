@@ -113,12 +113,16 @@ public class Facility {
         return this.customerServers;
     }
 
-    public void printLeftOverCustomers(){
+    /**
+     * Adds the amount of all of the drivers at all of the queues and returns them.
+     *
+     * @return the amount of customers in the facility.
+     */
+    public Integer printLeftOverCustomers(){
         Integer numCustomers = 0;
         for(ServiceMachine pump : getServiceMachines()){
             numCustomers += pump.getCustomersInQueue().size();
         }
-
-        System.out.println("Number of customers at Service Machine: " + numCustomers + ".");
+        return numCustomers;
     }
 }
