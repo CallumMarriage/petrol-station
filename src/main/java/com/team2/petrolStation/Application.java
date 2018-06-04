@@ -9,8 +9,12 @@ import com.team2.petrolStation.model.exceptions.ServiceMachineAssigningException
 import com.team2.petrolStation.model.facility.FillingStation;
 import com.team2.petrolStation.model.facility.Shop;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
+import static com.team2.petrolStation.model.constants.PetrolStationConstants.DESTINATION_FILE;
 import static com.team2.petrolStation.model.constants.PetrolStationConstants.SECONDS_PER_TICK;
 
 /**
@@ -86,19 +90,15 @@ public class Application {
             return;
         }
 
-        //finally print out the money lost and gained.
-        System.out.println("Money lost: " + moneyLost);
-        System.out.println("Money gained: " + moneyGained);
-        System.out.println("\n");
-
-        System.out.println("Filling Station Pumps:");
-        fillingStation.printLeftOverCustomers();
-        System.out.println("Shop Tills:");
-        shop.printLeftOverCustomers();
-
-
-        System.out.println("Shop floor:");
-        System.out.println("Number of customers on the Shop floor " + shop.getShopFloor().size() + ".");
+        List<String> result = new ArrayList<>();
+        result.add("Money lost: " + moneyLost);
+        result.add("Money gained: " + moneyGained);
+        result.add("\n");
+        result.add("Filling Station Pumps: " + fillingStation.printLeftOverCustomers());
+        result.add("Shop Tills: " + shop.printLeftOverCustomers());
+        result.add("Shop floor:");
+        result.add("Number of customers on the Shop floor " + shop.getShopFloor().size() + ".");
+        writeToFile(result);
     }
 
     /**
@@ -211,7 +211,12 @@ public class Application {
         return vehicles;
     }
 
-    public void setChanceOfTruck(Collection<Customer> customers){
+    /**
+     * Sets the chance of Truck based on the experience of the previous trucks.
+     *
+     * @param customers all of the customers so we can filter for truck drivers.
+     */
+    private void setChanceOfTruck(Collection<Customer> customers){
         for(Customer customer : customers){
             if(customer instanceof Truck){
                 Truck truck = (Truck) customer;
@@ -259,5 +264,25 @@ public class Application {
         }
 
         return number;
+    }
+
+    /**
+     * Creates file and writes to file. Prints the content of the file.
+     *
+     * @param messages The results from the simulation.
+     */
+    private void writeToFile(List<String> messages){
+
+        try {
+            FileWriter fileWriter = new FileWriter(DESTINATION_FILE);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            for (String message : messages) {
+                System.out.println(message);
+                bufferedWriter.write(message);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
