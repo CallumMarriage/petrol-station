@@ -9,8 +9,12 @@ import com.team2.petrolStation.model.exceptions.ServiceMachineAssigningException
 import com.team2.petrolStation.model.facility.FillingStation;
 import com.team2.petrolStation.model.facility.Shop;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
+import static com.team2.petrolStation.model.constants.PetrolStationConstants.RESULTS_DESTINATION_FILE;
 import static com.team2.petrolStation.model.constants.PetrolStationConstants.SECONDS_PER_TICK;
 
 /**
@@ -77,6 +81,8 @@ public class Application {
         FillingStation fillingStation = new FillingStation(numPumps);
         Random random = new Random(9);
 
+        List<String> results = new ArrayList<>();
+
         try {
             for (int i = 0; i < numOfTurns; i += SECONDS_PER_TICK) {
                 simulateRound(fillingStation, shop, random, priceOfFuel);
@@ -87,18 +93,13 @@ public class Application {
         }
 
         //finally print out the money lost and gained.
-        System.out.println("Money lost: " + moneyLost);
-        System.out.println("Money gained: " + moneyGained);
-        System.out.println("\n");
+        results.add("Money lost: " + moneyLost + "\n");
+        results.add("Money gained: " + moneyGained + "\n");
+        results.add("Filling Station Pumps: " + fillingStation.getLeftOverCustomers() + "\n");
+        results.add("Shop Tills: " + shop.getLeftOverCustomers() + "\n");
+        results.add("Shop floor: " + shop.getShopFloor().size());
 
-        System.out.println("Filling Station Pumps:");
-        fillingStation.printLeftOverCustomers();
-        System.out.println("Shop Tills:");
-        shop.printLeftOverCustomers();
-
-
-        System.out.println("Shop floor:");
-        System.out.println("Number of customers on the Shop floor " + shop.getShopFloor().size() + ".");
+        generateFile(results);
     }
 
     /**
@@ -211,7 +212,12 @@ public class Application {
         return vehicles;
     }
 
-    public void setChanceOfTruck(Collection<Customer> customers){
+    /**
+     * Sets the chance of a truck being generated based on current trucks experience.
+     *
+     * @param customers list of all the customers
+     */
+    private void setChanceOfTruck(Collection<Customer> customers){
         for(Customer customer : customers){
             if(customer instanceof Truck){
                 Truck truck = (Truck) customer;
@@ -259,5 +265,38 @@ public class Application {
         }
 
         return number;
+    }
+
+    /**
+     * Writes results to a file
+     * Prints result to screen as its writing.
+     *
+     * @param results list of all of the results.
+     */
+    private void generateFile(List<String> results){
+        BufferedWriter bufferedWriter = null;
+        FileWriter fileWriter = null;
+
+        try{
+            fileWriter = new FileWriter(RESULTS_DESTINATION_FILE);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            for(String message : results){
+                System.out.println(message);
+                bufferedWriter.write(message);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        } finally {
+            try{
+                if(bufferedWriter != null){
+                    bufferedWriter.close();
+                }
+                if(fileWriter != null){
+                    fileWriter.close();
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }

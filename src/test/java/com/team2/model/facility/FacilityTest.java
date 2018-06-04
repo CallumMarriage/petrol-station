@@ -64,6 +64,5 @@ public class FacilityTest {
         assertEquals(1, facility.getServiceMachines()[0].getCustomersInQueue().size());
         assertEquals(3, facility.getServiceMachines()[1].getCustomersInQueue().size());
 
-        facility.printLeftOverCustomers();
     }
 }

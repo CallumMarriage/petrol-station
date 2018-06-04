@@ -113,12 +113,12 @@ public class Facility {
         return this.customerServers;
     }
 
-    public void printLeftOverCustomers(){
+    public Integer getLeftOverCustomers(){
         Integer numCustomers = 0;
         for(ServiceMachine pump : getServiceMachines()){
             numCustomers += pump.getCustomersInQueue().size();
         }
 
-        System.out.println("Number of customers at Service Machine: " + numCustomers + ".");
+        return numCustomers;
     }
 }
