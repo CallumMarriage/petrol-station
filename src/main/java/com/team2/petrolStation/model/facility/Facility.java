@@ -45,29 +45,22 @@ public class Facility {
      * @param customers a list of drivers or vehicles to be added to service machines
      * @return the amount of lost vehicles.
      */
-    public double addCustomerToMachine(Collection<Customer> customers,Double priceOfFuel ) throws ServiceMachineAssigningException, PumpNotFoundException{
+    public Collection<Customer> addCustomerToMachine(Collection<Customer> customers,Double priceOfFuel ) throws ServiceMachineAssigningException, PumpNotFoundException{
 
         //keep track of the vehicles lost
-        double lostVehicles = 0.0;
+        Collection<Customer> lostCustomers = new ArrayList<>();
+
         for (Customer customer : customers) {
             //get the best machine for the customer
             int bestMachine = findBestMachine(customer);
             if (bestMachine < 0) {
-                if (customer instanceof Vehicle) {
-                    //if a vehicle can not find a pump calculate the lost fuel
-                    Vehicle vehicle = (Vehicle) customer;
-                    lostVehicles += Math.round((vehicle.getMaxFuel() * priceOfFuel)) * 100d /100d;
-                    System.out.println("A customer had to leave");
-                } else {
-                    //if a driver has failed then throw an exception as drivers should always find a till.
-                    throw new ServiceMachineAssigningException();
-                }
+                lostCustomers.add(customer);
             } else {
                 //finally add the customer to the machine found.
                 addCustomerToBestMachine(bestMachine, customer);
             }
         }
-        return lostVehicles;
+        return lostCustomers;
     }
 
     /**
@@ -85,25 +78,15 @@ public class Facility {
             if (customerServers[i] != null) {
                 //get the size of the vehicles at the current pump so that we can compare to other pumps
                 double pumpQueueSize = customerServers[i].getSizeOfCustomersInQueue();
-                boolean isValid = false;
-                //if it is a driver we dont need to check if it fits in the queue.
-                if(customer instanceof Driver) {
-                    isValid = true;
-                } else {
-                    //check if any vehicle fits in the queue at the pump
-                    Vehicle vehicle = (Vehicle) customer;
-                    if((pumpQueueSize + vehicle.getSize()) <= MAX_QUEUE_SIZE){
-                        isValid = true;
-                    }
-                }
+
                 //check if its valid (i.e if its a driver it should auto pass if its a vehicle it needs to be small enough).
                 //Check if the previous is -1, if it is then set the smallest to the current as the previous' queue was full
-                if (isValid && ( i == 0 || previous == -1.0 || pumpQueueSize < previous)) {
+                if (customerServers[i].checkIfCustomerFits(customer) && ( i == 0 || previous == -1.0 || pumpQueueSize < previous)) {
                     //if the pump has a smaller queue set the current pump to be the shortest and save the pump number
                     previous = pumpQueueSize;
                     positionOfPumpWithShortestTime = i;
                     //if the pump's size is zero it is impossible to find a smaller pump.
-                    if (pumpQueueSize == 0.0) {
+                    if (previous == 0.0) {
                         break;
                     }
                 }

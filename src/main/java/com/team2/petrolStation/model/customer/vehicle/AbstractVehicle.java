@@ -1,5 +1,7 @@
 package com.team2.petrolStation.model.customer.vehicle;
 
+import java.util.Random;
+
 /**
  * Allows for any vehicle to refuel, manage their fuel size and their size.
  *
@@ -58,5 +60,10 @@ public abstract class AbstractVehicle implements Vehicle {
     @Override
     public Integer getMaxFuel() {
         return this.maxFuel;
+    }
+
+    @Override
+    public Boolean decide(Random random) {
+        return (getTimeInQueue() < getMaxQueueTime() && random.nextDouble() < getChanceOfGoingToShop());
     }
 }

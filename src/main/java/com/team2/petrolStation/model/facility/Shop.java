@@ -4,6 +4,8 @@ import com.team2.petrolStation.model.customer.Customer;
 import com.team2.petrolStation.model.customer.Driver;
 import com.team2.petrolStation.model.customer.vehicle.Motorbike;
 import com.team2.petrolStation.model.customer.vehicle.Vehicle;
+import com.team2.petrolStation.model.exceptions.PumpNotFoundException;
+import com.team2.petrolStation.model.exceptions.ServiceMachineAssigningException;
 import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 import com.team2.petrolStation.model.serviceMachine.Till;
 
@@ -44,30 +46,24 @@ public class Shop extends Facility {
 
             //get the vehicle from that pump
             Vehicle vehicle = (Vehicle) customers.get(pump);
+
             //make a driver based on the fuel level and pump from the vehicle
             Driver driver = new Driver((Math.round((vehicle.getMaxFuel() * priceOfFuel)) * 100d /100d) , pump);
 
-            if( vehicle instanceof Motorbike){
-                //motorbikes do not go to the shop
-                customersNotGoingToShop.add(driver);
+            if(vehicle.decide(random)){
+                customersGoingToShop.add(driver);
+                // add the amount that the customer is going to spend in the shop to the shop and add to the total.
+                driver.addToCurrentSpend(vehicle.getShopPurchase());
+
+                //add the time the driver will be spending in the shop.
+                driver.setTimeInShop(vehicle.getShopTime());
+
+                //add the customers that are going to the shop to the list.s
+                customersGoingToShop.add(driver);
+
             } else {
-                // Vehicles that have been in the queue for too long do not go, vehicles have a chance associated with them of going to the shop
-                if (vehicle.getTimeInQueue() < vehicle.getMaxQueueTime() && random.nextDouble() < vehicle.getChanceOfGoingToShop()) {
+                customersNotGoingToShop.add(driver);
 
-                    // add the amount that the customer is going to spend in the shop to the shop and add to the total.
-                    driver.addToCurrentSpend(vehicle.getShopPurchase());
-
-                    //add the time the driver will be spending in the shop.
-                    driver.setTimeInShop(vehicle.getShopTime());
-
-                    //add the customers that are going to the shop to the list.s
-                    customersGoingToShop.add(driver);
-
-                } else {
-
-                    //add thsoe that dont meet the previous criteria to the list of drivers not going to the shop.
-                    customersNotGoingToShop.add(driver);
-                }
             }
         }
 

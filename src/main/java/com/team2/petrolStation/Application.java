@@ -38,14 +38,14 @@ public class Application {
 
         //replace this with gui values
         Integer numOfTurns = 0;
-        Integer numPumps = 6;
+        Integer numPumps = 1;
         Integer numTills = 1;
         Double priceOfFuel = 1.2;
         p = 0.01;
         q = 0.02;
 
         String time = "5";
-        String identifiers = "d";
+        String identifiers = "h";
 
         try {
             numOfTurns = convertTimeIntoSeconds(time, identifiers);
@@ -79,9 +79,7 @@ public class Application {
         //build shop, filling station and the random that will be used throughout the application
         Shop shop = new Shop(numTills);
         FillingStation fillingStation = new FillingStation(numPumps);
-        Random random = new Random(9);
-
-        List<String> results = new ArrayList<>();
+        Random random = new Random(8);
 
         try {
             for (int i = 0; i < numOfTurns; i += SECONDS_PER_TICK) {
@@ -92,36 +90,50 @@ public class Application {
             return;
         }
 
+        generateFile( getResults(shop, fillingStation));
+    }
+
+    private List<String> getResults(Shop shop, FillingStation fillingStation){
+        List<String> results = new ArrayList<>();
+        //just to make the results look cleaner make sure the right ending word is used
+        String vehicle = checkIfPlural(fillingStation.getLeftOverCustomers(), "vehicle");
+        String driver = checkIfPlural(shop.getShopFloor().size(), "driver");
+        String tillDrivers = checkIfPlural(shop.getLeftOverCustomers(), "driver");
+
         //finally print out the money lost and gained.
+        results.add("Results\n");
         results.add("Money lost: " + moneyLost + "\n");
         results.add("Money gained: " + moneyGained + "\n");
-        results.add("Filling Station Pumps: " + fillingStation.getLeftOverCustomers() + "\n");
-        results.add("Shop Tills: " + shop.getLeftOverCustomers() + "\n");
-        results.add("Shop floor: " + shop.getShopFloor().size());
+        results.add("Filling Station - Pumps: " + fillingStation.getLeftOverCustomers() + " " + vehicle + "\n");
+        results.add("Shop - Tills: " + shop.getLeftOverCustomers() + " " + driver +"\n");
+        results.add("Shop - floor: " + shop.getShopFloor().size() + " " + tillDrivers);
 
-        generateFile(results);
+        return results;
+    }
+
+    private String checkIfPlural(Integer num, String word){
+        if(num > 1 || num == 0 ){
+            word = word + "s";
+        }
+
+        return word;
     }
 
 
-    public Map<Integer, Customer> runVehicles(FillingStation fillingStation, Collection<Customer> vehicles, Double priceOfFuel) throws ServiceMachineAssigningException, PumpNotFoundException {
-        Map<Integer, Customer> finishedAtPump = fillingStation.manageTransactions();
+    /**
+     * Simulates the adding of drivers to the shop and the shop to the tills
+     *
+     * @param shop the shop that we are adding to
+     * @param finishedAtPump the vehicles that have finished at the pump
+     * @param priceOfFuel the price of fuel to calculate how much the driver will spend
+     * @param random the random used to generate all of the values
+     * @return returns a map of customers to the till they were at
+     * @throws ServiceMachineAssigningException thrown when a driver can not be added to a till
+     * @throws PumpNotFoundException returned when the correct pump can not be found.
+     */
+    public Shop runShoppers(Shop shop, Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws ServiceMachineAssigningException, PumpNotFoundException {
 
-        if(vehicles.size() >  0){
-            moneyLost += fillingStation.addCustomerToMachine(vehicles, priceOfFuel);
-        }
-
-        if(finishedAtPump.size() > 0) {
-            setChanceOfTruck(finishedAtPump.values());
-        }
-
-        return finishedAtPump;
-    }
-
-    public Map<Integer, Customer> runShoppers(Shop shop, Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws ServiceMachineAssigningException, PumpNotFoundException {
-
-        List<Customer> finishedAtShop = new ArrayList<>();
-
-        finishedAtShop = shop.getDriversFinished();
+        List<Customer> finishedAtShop = shop.getDriversFinished();
         shop.removeDrivers(finishedAtShop);
 
         if(finishedAtPump.size() > 0) {
@@ -135,16 +147,11 @@ public class Application {
             }
 
             finishedAtShop.addAll(nonShoppingCustomers);
-
         }
-
-
-        Map<Integer, Customer> finishedCustomers = shop.manageTransactions();
 
         shop.addCustomerToMachine(finishedAtShop, priceOfFuel);
 
-        return finishedCustomers;
-
+        return shop;
     }
 
     /**
@@ -157,22 +164,48 @@ public class Application {
      */
     private void simulateRound(FillingStation fillingStation, Shop shop, Random random, Double priceOfFuel) throws ServiceMachineAssigningException, PumpNotFoundException {
 
+        //Get the finished vehicles in the system
+        Map<Integer, Customer> finishedAtPump = fillingStation.manageTransactions();
+
+        //if there are finished vehicles set the chance of trucks spawning
+        if(finishedAtPump.size() > 0) {
+            setChanceOfTruck(finishedAtPump.values());
+        }
+
         //create the vehicles for the round
         Collection<Customer> vehicles = generateVehicles(random);
 
-        Map<Integer, Customer> finishedVehicles = runVehicles(fillingStation, vehicles, priceOfFuel );
+        //if vehicles have been generated, add them to the queues
+        if(vehicles.size() >  0){
+            Collection<Customer> lostCustomers = fillingStation.addCustomerToMachine(vehicles, priceOfFuel);
+            moneyLost += calculateLost(lostCustomers, priceOfFuel);
+        }
 
-        Map<Integer, Customer> finishedCustomers = runShoppers(shop, finishedVehicles, priceOfFuel, random);
+        //get the finished shoppers in the system
+        Map<Integer, Customer> finishedCustomers = shop.manageTransactions();
 
+        //add the new shoppers to the correct locations
+        shop = runShoppers(shop, finishedAtPump, priceOfFuel, random);
+
+        //remove the finished shoppers from their tills
         for(Integer i : finishedCustomers.keySet()) {
             shop.getServiceMachines()[i].removeCustomer();
         }
 
+        //remove the finished vehicles and shoppers from their pumps
         for (Customer customer : finishedCustomers.values()) {
             Driver driver = (Driver) customer;
             fillingStation.removeCustomerFromPump(driver.getPumpNumber());
             moneyGained += driver.getCurrentSpend();
         }
+    }
+
+    private Double calculateLost(Collection<Customer> lostCustomers, Double priceOfFuel){
+        Double moneyLost = 0.0;
+        for(Customer customer : lostCustomers){
+            moneyLost += Math.round((customer.getSize() * priceOfFuel)*100/100);
+        }
+        return moneyLost;
     }
 
     /**
@@ -247,6 +280,7 @@ public class Application {
 
     /**
      * Converts the time into seconds based on its identifier and returns the new value.
+     * I chose this design because it is clear what is calculating what, and is easy to add new time formats
      *
      * @param time the amount of time the simulation will execute for.
      * @return time in seconds
@@ -257,21 +291,22 @@ public class Application {
         Integer number;
         try {
             Double doubleNumber = Double.parseDouble(time);
-
-            if (identifier.equals("d")) {
-                doubleNumber *= 24;
-            }
-
-            if (identifier.equals("d") || identifier.equals("h")) {
-                doubleNumber *= 60;
-            }
-
-            if (identifier.equals("d") || identifier.equals("h") || identifier.equals("m")) {
-                doubleNumber *= 60;
-            }
-
+            //Do a check on the identifier each time, if its a day you will need to do all of the calculations,
+            //This is clearer as you can see what each calculation is doing to the number even though the added if statements add additional run time.
             if(identifier.equals("t")){
                 doubleNumber *= 10;
+            } else {
+                if (identifier.equals("d")) {
+                    doubleNumber *= 24;
+                }
+
+                if (identifier.equals("d") || identifier.equals("h")) {
+                    doubleNumber *= 60;
+                }
+
+                if (identifier.equals("d") || identifier.equals("h") || identifier.equals("m")) {
+                    doubleNumber *= 60;
+                }
             }
 
             number = Integer.parseInt(Math.round(doubleNumber) + "");
@@ -293,16 +328,22 @@ public class Application {
         FileWriter fileWriter = null;
 
         try{
+            //create the file writer using the location store as a constant
             fileWriter = new FileWriter(RESULTS_DESTINATION_FILE);
+            //create a buffered write with the file writer as an argument
             bufferedWriter = new BufferedWriter(fileWriter);
+            //loop through the results list
             for(String message : results){
+                //print out the line of the results
                 System.out.println(message);
+                //add the line to the file
                 bufferedWriter.write(message);
             }
         }catch (IOException e){
             e.printStackTrace();
         } finally {
             try{
+                //close the writers
                 if(bufferedWriter != null){
                     bufferedWriter.close();
                 }

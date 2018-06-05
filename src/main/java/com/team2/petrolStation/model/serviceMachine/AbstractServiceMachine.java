@@ -38,4 +38,6 @@ public abstract class AbstractServiceMachine implements ServiceMachine {
     public void removeCustomer(){
         customerQueue.remove();
     }
+
+
 }

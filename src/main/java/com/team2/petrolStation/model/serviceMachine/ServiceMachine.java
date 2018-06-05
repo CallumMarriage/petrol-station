@@ -19,4 +19,6 @@ public interface ServiceMachine {
     Customer act();
 
     void removeCustomer();
+
+    Boolean checkIfCustomerFits(Customer customer);
 }
