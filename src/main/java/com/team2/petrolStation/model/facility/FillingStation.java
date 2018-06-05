@@ -28,7 +28,7 @@ public class FillingStation extends Facility {
         try{
             customerServers[pumpNumber].getCustomersInQueue().remove();
         } catch (NoSuchElementException e){
-            return;
+            
         }
     }
 }

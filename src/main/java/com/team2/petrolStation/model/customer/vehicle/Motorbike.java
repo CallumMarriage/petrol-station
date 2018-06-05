@@ -1,5 +1,7 @@
 package com.team2.petrolStation.model.customer.vehicle;
 
+import java.util.Random;
+
 import static com.team2.petrolStation.model.constants.VehicleConstants.SIZE_OF_MOTORBIKE;
 
 /**
@@ -29,5 +31,10 @@ public class Motorbike extends AbstractVehicle {
     @Override
     public Double getSize() {
         return SIZE_OF_MOTORBIKE;
+    }
+
+    @Override
+    public Boolean decide(Random random){
+        return false;
     }
 }

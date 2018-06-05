@@ -41,7 +41,7 @@ public class FacilityTest {
 
         try {
             facility.addCustomerToMachine(vehicles, priceOfFuel);
-        } catch (ServiceMachineAssigningException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -57,13 +57,12 @@ public class FacilityTest {
 
         try{
             facility.addCustomerToMachine(vehicles, priceOfFuel);
-        } catch (ServiceMachineAssigningException e){
+        } catch (Exception e){
             e.printStackTrace();
         }
 
         assertEquals(1, facility.getServiceMachines()[0].getCustomersInQueue().size());
         assertEquals(3, facility.getServiceMachines()[1].getCustomersInQueue().size());
 
-        facility.printLeftOverCustomers();
     }
 }

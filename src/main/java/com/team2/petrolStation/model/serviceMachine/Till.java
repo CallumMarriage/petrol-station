@@ -24,7 +24,6 @@ public class Till extends AbstractServiceMachine {
         if(getCustomersInQueue().size() > 0) {
             Driver customer = (Driver) getCustomersInQueue().peek();
 
-            this.customerQueue.remove();
             System.out.println("Customer left succesfully spending: " + customer.getCurrentSpend());
             return customer;
 
@@ -33,7 +32,13 @@ public class Till extends AbstractServiceMachine {
     }
 
     @Override
+    public Boolean checkIfCustomerFits(Customer customer) {
+        return true;
+    }
+
+    @Override
     public void addCustomer(Customer customer) {
         customerQueue.add(customer);
     }
+
 }

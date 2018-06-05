@@ -1,6 +1,7 @@
 package com.team2.petrolStation.model.serviceMachine;
 
 import com.team2.petrolStation.model.customer.Customer;
+import com.team2.petrolStation.model.customer.vehicle.Vehicle;
 
 import static com.team2.petrolStation.model.constants.ServiceMachineConstants.MAX_QUEUE_SIZE;
 
@@ -17,7 +18,6 @@ public class Pump extends AbstractServiceMachine {
 
     @Override
     public void addCustomer(Customer vehicle) {
-
         if((getSizeOfCustomersInQueue() + vehicle.getSize()) <= MAX_QUEUE_SIZE){
             customerQueue.add(vehicle);
         }
@@ -37,5 +37,11 @@ public class Pump extends AbstractServiceMachine {
             }
         }
         return null;
+    }
+
+    @Override
+    public Boolean checkIfCustomerFits(Customer customer) {
+        Vehicle vehicle = (Vehicle) customer;
+        return ((getSizeOfCustomersInQueue() + vehicle.getSize()) <= MAX_QUEUE_SIZE);
     }
 }

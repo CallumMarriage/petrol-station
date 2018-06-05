@@ -1,5 +1,7 @@
 package com.team2.petrolStation.model.customer.vehicle;
 
+import java.util.Random;
+
 /**
  * Allows for any vehicle to refuel, manage their fuel size and their size.
  *
@@ -12,7 +14,11 @@ public abstract class AbstractVehicle implements Vehicle {
     Integer timeInQueue;
     Integer shopPurchase;
     Integer shopTime;
+    private Boolean hasRefueled;
 
+    AbstractVehicle(){
+        hasRefueled = false;
+    }
     public Integer getShopTime() {
         return shopTime;
     }
@@ -31,8 +37,14 @@ public abstract class AbstractVehicle implements Vehicle {
      */
     @Override
     public Boolean act(Integer value) {
-        if((this.currentFuel + value ) >= (this.maxFuel + 1)){
-            return true;
+        if((this.currentFuel + value ) >= (this.maxFuel)){
+            this.currentFuel = maxFuel;
+            if(hasRefueled){
+                return false;
+            } else {
+                hasRefueled = true;
+                return true;
+            }
         } else{
             this.timeInQueue += 10;
             this.currentFuel += value;
@@ -48,5 +60,10 @@ public abstract class AbstractVehicle implements Vehicle {
     @Override
     public Integer getMaxFuel() {
         return this.maxFuel;
+    }
+
+    @Override
+    public Boolean decide(Random random) {
+        return (getTimeInQueue() < getMaxQueueTime() && random.nextDouble() < getChanceOfGoingToShop());
     }
 }

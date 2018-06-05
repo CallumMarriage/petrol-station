@@ -1,7 +1,7 @@
 package com.team2.petrolStation.model.constants;
 
 /**
- * Constants for
+ * Constants for vehicles
  *
  * @author callummarriage
  */
