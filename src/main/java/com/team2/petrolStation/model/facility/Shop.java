@@ -2,10 +2,7 @@ package com.team2.petrolStation.model.facility;
 
 import com.team2.petrolStation.model.customer.Customer;
 import com.team2.petrolStation.model.customer.Driver;
-import com.team2.petrolStation.model.customer.vehicle.Motorbike;
 import com.team2.petrolStation.model.customer.vehicle.Vehicle;
-import com.team2.petrolStation.model.exceptions.PumpNotFoundException;
-import com.team2.petrolStation.model.exceptions.ServiceMachineAssigningException;
 import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 import com.team2.petrolStation.model.serviceMachine.Till;
 

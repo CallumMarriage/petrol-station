@@ -44,8 +44,8 @@ public class Application {
         p = 0.01;
         q = 0.02;
 
-        String time = "5";
-        String identifiers = "h";
+        String time = "1";
+        String identifiers = "y";
 
         try {
             numOfTurns = convertTimeIntoSeconds(time, identifiers);
@@ -118,7 +118,6 @@ public class Application {
 
         return word;
     }
-
 
     /**
      * Simulates the adding of drivers to the shop and the shop to the tills
@@ -200,6 +199,13 @@ public class Application {
         }
     }
 
+    /**
+     * Calculates the lost money from vehicles not finding a pump
+     *
+     * @param lostCustomers customers
+     * @param priceOfFuel price of fuel
+     * @return amount of money lost
+     */
     private Double calculateLost(Collection<Customer> lostCustomers, Double priceOfFuel){
         Double moneyLost = 0.0;
         for(Customer customer : lostCustomers){
@@ -296,15 +302,23 @@ public class Application {
             if(identifier.equals("t")){
                 doubleNumber *= 10;
             } else {
+                if(identifier.equals("y")){
+                    doubleNumber *= 365.25;
+                    identifier = "d";
+                }
+                if(identifier.equals("w")){
+                    doubleNumber *= 7;
+                    identifier = "d";
+                }
                 if (identifier.equals("d")) {
                     doubleNumber *= 24;
+                    identifier = "h";
                 }
-
-                if (identifier.equals("d") || identifier.equals("h")) {
+                if (identifier.equals("h")) {
                     doubleNumber *= 60;
+                    identifier = "m";
                 }
-
-                if (identifier.equals("d") || identifier.equals("h") || identifier.equals("m")) {
+                if (identifier.equals("m")) {
                     doubleNumber *= 60;
                 }
             }
