@@ -238,22 +238,22 @@ public class Application {
 
         List<Customer> vehicles = new ArrayList<>();
 
-        if(random.nextDouble() < p){
+        if(random.nextDouble() > p && random.nextDouble() <= (p * p)){
             vehicles.add(new Motorbike());
             System.out.println("A motorbike has arrived");
         }
 
-        if (random.nextDouble() < p ){
+        if (random.nextDouble() <= p ){
             vehicles.add(new SmallCar(random));
             System.out.println("A small car has arrived");
         }
 
-        if (random.nextDouble() < chanceOfTruck){
+        if (random.nextDouble() > (2*(p * p)) && random.nextDouble() <= (2*(p * p)+chanceOfTruck)){
             vehicles.add(new Truck(random));
             System.out.println("A truck has arrived");
         }
 
-        if(random.nextDouble() < q){
+        if(random.nextDouble() > (p * p) && random.nextDouble() <= (2*(p * p))){
             vehicles.add(new FamilySedan(random));
             System.out.println("A family sedan has arrived");
         }
