@@ -22,7 +22,7 @@ import static com.team2.petrolStation.model.constants.PetrolStationConstants.SEC
  * It also keeps track of the amount of money gained and lost during the simulation.
  * Generates the front end of which allows the user to input values that affect the running of the simulation and displays the results.
  *
- * @author callummarriage
+ * @author callummarriage canershefik
  */
 public class Application {
 
@@ -243,23 +243,24 @@ public class Application {
     private List<Customer> generateVehicles(Random random){
 
         List<Customer> vehicles = new ArrayList<>();
+        Double randomNum = random.nextDouble();
 
-        if(random.nextDouble() < p){
+        if(randomNum > p && randomNum <= (p * p)){
             vehicles.add(new Motorbike());
             System.out.println("A motorbike has arrived");
         }
 
-        if (random.nextDouble() < p ){
+        if (randomNum <= p ){
             vehicles.add(new SmallCar(random));
             System.out.println("A small car has arrived");
         }
 
-        if (random.nextDouble() < chanceOfTruck){
+        if (randomNum > (2*(p * p)) && randomNum <= (2*(p * p)+chanceOfTruck)){
             vehicles.add(new Truck(random));
             System.out.println("A truck has arrived");
         }
 
-        if(random.nextDouble() < q){
+        if(randomNum > (p * p) && randomNum <= (2*(p * p))){
             vehicles.add(new FamilySedan(random));
             System.out.println("A family sedan has arrived");
         }
