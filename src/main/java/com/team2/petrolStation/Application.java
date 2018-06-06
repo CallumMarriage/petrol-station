@@ -22,7 +22,7 @@ import static com.team2.petrolStation.model.constants.PetrolStationConstants.SEC
  * It also keeps track of the amount of money gained and lost during the simulation.
  * Generates the front end of which allows the user to input values that affect the running of the simulation and displays the results.
  *
- * @author callummarriage
+ * @author callummarriage canershefik
  */
 public class Application {
 
