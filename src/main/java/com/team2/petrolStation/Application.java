@@ -237,23 +237,24 @@ public class Application {
     private List<Customer> generateVehicles(Random random){
 
         List<Customer> vehicles = new ArrayList<>();
+        Double randomNum = random.nextDouble();
 
-        if(random.nextDouble() > p && random.nextDouble() <= (p * p)){
+        if(randomNum > p && randomNum <= (p * p)){
             vehicles.add(new Motorbike());
             System.out.println("A motorbike has arrived");
         }
 
-        if (random.nextDouble() <= p ){
+        if (randomNum <= p ){
             vehicles.add(new SmallCar(random));
             System.out.println("A small car has arrived");
         }
 
-        if (random.nextDouble() > (2*(p * p)) && random.nextDouble() <= (2*(p * p)+chanceOfTruck)){
+        if (randomNum > (2*(p * p)) && randomNum <= (2*(p * p)+chanceOfTruck)){
             vehicles.add(new Truck(random));
             System.out.println("A truck has arrived");
         }
 
-        if(random.nextDouble() > (p * p) && random.nextDouble() <= (2*(p * p))){
+        if(randomNum > (p * p) && randomNum <= (2*(p * p))){
             vehicles.add(new FamilySedan(random));
             System.out.println("A family sedan has arrived");
         }
