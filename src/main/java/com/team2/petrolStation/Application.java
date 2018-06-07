@@ -320,6 +320,8 @@ public class Application {
                     case ("h"): doubleNumber *= 3600;
                     break;
                     case ("m"): doubleNumber *= 60;
+                    break;
+                    case ("t"): doubleNumber *=10;
                     default: break;
                 }
             }
