@@ -311,13 +311,13 @@ public class Application {
                 doubleNumber *= 10;
             } else {
                 switch (identifier){
-                    case ("y"): doubleNumber = ((((doubleNumber * 365.25) *  7)* 24)* 60)* 60;
+                    case ("y"): doubleNumber *= 31536000;
                     break;
-                    case ("w"): doubleNumber = (((doubleNumber * 7) * 24) * 60) * 60;
+                    case ("w"): doubleNumber *= 604800;
                     break;
-                    case ("d"): doubleNumber = ((doubleNumber * 24) * 60) * 60;
+                    case ("d"): doubleNumber *= 86400;
                     break;
-                    case ("h"): doubleNumber = (doubleNumber * 60) * 60;
+                    case ("h"): doubleNumber *= 3600;
                     break;
                     case ("m"): doubleNumber *= 60;
                     default: break;
