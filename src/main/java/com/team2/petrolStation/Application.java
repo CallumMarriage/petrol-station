@@ -45,7 +45,7 @@ public class Application {
         q = 0.02;
 
         String time = "1";
-        String identifiers = "y";
+        String identifiers = "d";
 
         try {
             numOfTurns = convertTimeIntoSeconds(time, identifiers);
@@ -93,6 +93,13 @@ public class Application {
         generateFile( getResults(shop, fillingStation));
     }
 
+    /**
+     * Get Results based on performance
+     *
+     * @param shop shop
+     * @param fillingStation filling station
+     * @return return all of the contents
+     */
     private List<String> getResults(Shop shop, FillingStation fillingStation){
         List<String> results = new ArrayList<>();
         //just to make the results look cleaner make sure the right ending word is used
@@ -303,24 +310,17 @@ public class Application {
             if(identifier.equals("t")){
                 doubleNumber *= 10;
             } else {
-                if(identifier.equals("y")){
-                    doubleNumber *= 365.25;
-                    identifier = "d";
-                }
-                if(identifier.equals("w")){
-                    doubleNumber *= 7;
-                    identifier = "d";
-                }
-                if (identifier.equals("d")) {
-                    doubleNumber *= 24;
-                    identifier = "h";
-                }
-                if (identifier.equals("h")) {
-                    doubleNumber *= 60;
-                    identifier = "m";
-                }
-                if (identifier.equals("m")) {
-                    doubleNumber *= 60;
+                switch (identifier){
+                    case ("y"): doubleNumber = ((((doubleNumber * 365.25) *  7)* 24)* 60)* 60;
+                    break;
+                    case ("w"): doubleNumber = (((doubleNumber * 7) * 24) * 60) * 60;
+                    break;
+                    case ("d"): doubleNumber = ((doubleNumber * 24) * 60) * 60;
+                    break;
+                    case ("h"): doubleNumber = (doubleNumber * 60) * 60;
+                    break;
+                    case ("m"): doubleNumber *= 60;
+                    default: break;
                 }
             }
 
