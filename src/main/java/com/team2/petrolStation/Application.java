@@ -289,12 +289,16 @@ public class Application implements Simulator{
                     //week
                     case ("w"): doubleNumber *= 604800;
                     break;
+                    //day
                     case ("d"): doubleNumber *= 86400;
                     break;
+                    //hour
                     case ("h"): doubleNumber *= 3600;
                     break;
+                    //minute
                     case ("m"): doubleNumber *= 60;
                     break;
+                    //tick
                     case ("t"): doubleNumber *=10;
                     default: break;
                 }
