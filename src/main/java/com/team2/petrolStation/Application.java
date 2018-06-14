@@ -8,15 +8,12 @@ import com.team2.petrolStation.model.exceptions.PumpNotFoundException;
 import com.team2.petrolStation.model.exceptions.ServiceMachineAssigningException;
 import com.team2.petrolStation.model.facility.FillingStation;
 import com.team2.petrolStation.model.facility.Shop;
-import com.team2.petrolStation.model.views.TextView;
+import com.team2.petrolStation.model.views.Simulator;
+import com.team2.petrolStation.model.views.Text;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static com.team2.petrolStation.model.constants.PetrolStationConstants.RESULTS_DESTINATION_FILE;
 import static com.team2.petrolStation.model.constants.PetrolStationConstants.SECONDS_PER_TICK;
 
 /**
@@ -26,7 +23,7 @@ import static com.team2.petrolStation.model.constants.PetrolStationConstants.SEC
  *
  * @author callummarriage canershefik
  */
-public class Application {
+public class Application implements Simulator{
 
     private Double chanceOfTruck;
     private Double moneyGained;
@@ -92,7 +89,7 @@ public class Application {
             return;
         }
 
-        TextView textView = new TextView();
+        Text textView = new Text();
 
         textView.printFinalResults(shop, fillingStation, moneyLost, moneyGained);
     }

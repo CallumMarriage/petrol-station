@@ -12,9 +12,15 @@ import java.util.List;
 import static com.team2.petrolStation.model.constants.PetrolStationConstants.RESULTS_DESTINATION_FILE;
 
 /**
- * Created by callummarriage on 13/06/2018.
+ * @author callummarriage
  */
-public class TextView implements SimulatorView {
+public class Text {
+
+    public Text(Simulator simulator){
+
+    }
+
+
 
     public void printFinalResults(Shop shop, FillingStation fillingStation, Double moneyLost, Double moneyGained){
         List<String> results = getResults(shop, fillingStation, moneyLost, moneyGained);
