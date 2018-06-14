@@ -221,7 +221,7 @@ public class Application implements Simulator{
         Double randomNum = random.nextDouble();
 
         try {
-            if (randomNum > p && randomNum <= (p * p)) {
+            if (randomNum > p && randomNum <= (2 * p)) {
                 vehicles.add(new Motorbike());
                 System.out.println("A motorbike has arrived");
                 TimeUnit.MILLISECONDS.sleep(100);            }
@@ -231,12 +231,12 @@ public class Application implements Simulator{
                 System.out.println("A small car has arrived");
                 TimeUnit.MILLISECONDS.sleep(100);            }
 
-            if (randomNum > (2 * (p * p)) && randomNum <= (2 * (p * p) + chanceOfTruck)) {
+            if (randomNum > ((2 * p) + q)) && randomNum <= ((2 * p) + q) + chanceOfTruck) {
                 vehicles.add(new Truck(random));
                 System.out.println("A truck has arrived");
                 TimeUnit.MILLISECONDS.sleep(100);            }
 
-            if (randomNum > (p * p) && randomNum <= (2 * (p * p))) {
+            if (randomNum > (2 * p) && randomNum <= ((2 * p) + q)) {
                 vehicles.add(new FamilySedan(random));
                 System.out.println("A family sedan has arrived");
                 TimeUnit.MILLISECONDS.sleep(100);            }
