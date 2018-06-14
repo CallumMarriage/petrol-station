@@ -89,7 +89,7 @@ public class Application implements Simulator{
             return;
         }
 
-        Text textView = new Text();
+        Text textView = new Text(this);
 
         textView.printFinalResults(shop, fillingStation, moneyLost, moneyGained);
     }
@@ -231,7 +231,7 @@ public class Application implements Simulator{
                 System.out.println("A small car has arrived");
                 TimeUnit.MILLISECONDS.sleep(100);            }
 
-            if (randomNum > ((2 * p) + q)) && randomNum <= ((2 * p) + q) + chanceOfTruck) {
+            if (randomNum > ((2 * p) + q) && randomNum <= ((2 * p) + q) + chanceOfTruck) {
                 vehicles.add(new Truck(random));
                 System.out.println("A truck has arrived");
                 TimeUnit.MILLISECONDS.sleep(100);            }

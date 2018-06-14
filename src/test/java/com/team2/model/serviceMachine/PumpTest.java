@@ -21,8 +21,9 @@ public class PumpTest {
 
         assertEquals(0, pump.getCustomersInQueue().size());
 
+
         for(int i = 0; i < 2; i++){
-            pump.addCustomer();
+            //pump.addCustomer();
         }
 
         assertEquals(5, pump.getCustomersInQueue().size());
