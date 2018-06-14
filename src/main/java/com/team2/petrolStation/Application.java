@@ -8,11 +8,13 @@ import com.team2.petrolStation.model.exceptions.PumpNotFoundException;
 import com.team2.petrolStation.model.exceptions.ServiceMachineAssigningException;
 import com.team2.petrolStation.model.facility.FillingStation;
 import com.team2.petrolStation.model.facility.Shop;
+import com.team2.petrolStation.model.views.TextView;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static com.team2.petrolStation.model.constants.PetrolStationConstants.RESULTS_DESTINATION_FILE;
 import static com.team2.petrolStation.model.constants.PetrolStationConstants.SECONDS_PER_TICK;
@@ -37,7 +39,7 @@ public class Application {
         Application application = new Application(chanceOfTrucks);
 
         //replace this with gui values
-        Integer numOfTurns = 0;
+        Integer numOfTurns;
         Integer numPumps = 1;
         Integer numTills = 1;
         Double priceOfFuel = 1.2;
@@ -90,40 +92,9 @@ public class Application {
             return;
         }
 
-        generateFile( getResults(shop, fillingStation));
-    }
+        TextView textView = new TextView();
 
-    /**
-     * Get Results based on performance
-     *
-     * @param shop shop
-     * @param fillingStation filling station
-     * @return return all of the contents
-     */
-    private List<String> getResults(Shop shop, FillingStation fillingStation){
-        List<String> results = new ArrayList<>();
-        //just to make the results look cleaner make sure the right ending word is used
-        String vehicle = checkIfPlural(fillingStation.getLeftOverCustomers(), "vehicle");
-        String driver = checkIfPlural(shop.getShopFloor().size(), "driver");
-        String tillDrivers = checkIfPlural(shop.getLeftOverCustomers(), "driver");
-
-        //finally print out the money lost and gained.
-        results.add("Results\n");
-        results.add("Money lost: " + moneyLost + "\n");
-        results.add("Money gained: " + moneyGained + "\n");
-        results.add("Filling Station - Pumps: " + fillingStation.getLeftOverCustomers() + " " + vehicle + "\n");
-        results.add("Shop - Tills: " + shop.getLeftOverCustomers() + " " + driver +"\n");
-        results.add("Shop - floor: " + shop.getShopFloor().size() + " " + tillDrivers);
-
-        return results;
-    }
-
-    private String checkIfPlural(Integer num, String word){
-        if(num > 1 || num == 0 ){
-            word = word + "s";
-        }
-
-        return word;
+        textView.printFinalResults(shop, fillingStation, moneyLost, moneyGained);
     }
 
     /**
@@ -252,24 +223,28 @@ public class Application {
         List<Customer> vehicles = new ArrayList<>();
         Double randomNum = random.nextDouble();
 
-        if(randomNum > p && randomNum <= (p * p)){
-            vehicles.add(new Motorbike());
-            System.out.println("A motorbike has arrived");
-        }
+        try {
+            if (randomNum > p && randomNum <= (p * p)) {
+                vehicles.add(new Motorbike());
+                System.out.println("A motorbike has arrived");
+                TimeUnit.MILLISECONDS.sleep(100);            }
 
-        if (randomNum <= p ){
-            vehicles.add(new SmallCar(random));
-            System.out.println("A small car has arrived");
-        }
+            if (randomNum <= p) {
+                vehicles.add(new SmallCar(random));
+                System.out.println("A small car has arrived");
+                TimeUnit.MILLISECONDS.sleep(100);            }
 
-        if (randomNum > (2*(p * p)) && randomNum <= (2*(p * p)+chanceOfTruck)){
-            vehicles.add(new Truck(random));
-            System.out.println("A truck has arrived");
-        }
+            if (randomNum > (2 * (p * p)) && randomNum <= (2 * (p * p) + chanceOfTruck)) {
+                vehicles.add(new Truck(random));
+                System.out.println("A truck has arrived");
+                TimeUnit.MILLISECONDS.sleep(100);            }
 
-        if(randomNum > (p * p) && randomNum <= (2*(p * p))){
-            vehicles.add(new FamilySedan(random));
-            System.out.println("A family sedan has arrived");
+            if (randomNum > (p * p) && randomNum <= (2 * (p * p))) {
+                vehicles.add(new FamilySedan(random));
+                System.out.println("A family sedan has arrived");
+                TimeUnit.MILLISECONDS.sleep(100);            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return vehicles;
     }
@@ -311,8 +286,10 @@ public class Application {
                 doubleNumber *= 10;
             } else {
                 switch (identifier){
+                    //year
                     case ("y"): doubleNumber *= 31536000;
                     break;
+                    //week
                     case ("w"): doubleNumber *= 604800;
                     break;
                     case ("d"): doubleNumber *= 86400;
@@ -332,44 +309,5 @@ public class Application {
         }
 
         return number;
-    }
-
-    /**
-     * Writes results to a file
-     * Prints result to screen as its writing.
-     *
-     * @param results list of all of the results.
-     */
-    private void generateFile(List<String> results){
-        BufferedWriter bufferedWriter = null;
-        FileWriter fileWriter = null;
-
-        try{
-            //create the file writer using the location store as a constant
-            fileWriter = new FileWriter(RESULTS_DESTINATION_FILE);
-            //create a buffered write with the file writer as an argument
-            bufferedWriter = new BufferedWriter(fileWriter);
-            //loop through the results list
-            for(String message : results){
-                //print out the line of the results
-                System.out.println(message);
-                //add the line to the file
-                bufferedWriter.write(message);
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-        } finally {
-            try{
-                //close the writers
-                if(bufferedWriter != null){
-                    bufferedWriter.close();
-                }
-                if(fileWriter != null){
-                    fileWriter.close();
-                }
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
     }
 }
