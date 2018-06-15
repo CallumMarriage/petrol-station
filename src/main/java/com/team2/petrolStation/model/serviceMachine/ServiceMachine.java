@@ -10,6 +10,7 @@ import java.util.Queue;
  * @author callummarriage
  */
 public interface ServiceMachine {
+
     void addCustomer(Customer vehicle);
 
     Queue<Customer> getCustomersInQueue();

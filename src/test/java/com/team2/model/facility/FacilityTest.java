@@ -40,7 +40,7 @@ public class FacilityTest {
         assertEquals(0, facility.getServiceMachines()[1].getCustomersInQueue().size());
 
         try {
-            facility.addCustomerToMachine(vehicles, priceOfFuel);
+            facility.addCustomerToMachine(vehicles);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,7 +56,7 @@ public class FacilityTest {
         vehicles.add(familySedan);
 
         try{
-            facility.addCustomerToMachine(vehicles, priceOfFuel);
+            facility.addCustomerToMachine(vehicles);
         } catch (Exception e){
             e.printStackTrace();
         }

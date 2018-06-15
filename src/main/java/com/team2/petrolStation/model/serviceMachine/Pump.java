@@ -16,13 +16,6 @@ public class Pump extends AbstractServiceMachine {
         super();
     }
 
-    @Override
-    public void addCustomer(Customer vehicle) {
-        if((getSizeOfCustomersInQueue() + vehicle.getSize()) <= MAX_QUEUE_SIZE){
-            customerQueue.add(vehicle);
-        }
-    }
-
     /**
      * Refuels customer for one round and returns the customer if it has finished.
      *

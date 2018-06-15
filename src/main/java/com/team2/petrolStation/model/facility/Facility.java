@@ -1,16 +1,11 @@
 package com.team2.petrolStation.model.facility;
 
 import com.team2.petrolStation.model.customer.Customer;
-import com.team2.petrolStation.model.customer.Driver;
-import com.team2.petrolStation.model.customer.vehicle.Vehicle;
 import com.team2.petrolStation.model.exceptions.PumpNotFoundException;
 import com.team2.petrolStation.model.exceptions.ServiceMachineAssigningException;
-import com.team2.petrolStation.model.serviceMachine.Pump;
 import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 
 import java.util.*;
-
-import static com.team2.petrolStation.model.constants.ServiceMachineConstants.MAX_QUEUE_SIZE;
 
 /**
  * Implements the process of assinging a customer to the best available service machine.
@@ -19,6 +14,7 @@ import static com.team2.petrolStation.model.constants.ServiceMachineConstants.MA
  */
 public class Facility {
 
+    //service machines.
     ServiceMachine[] customerServers;
 
     /**
@@ -45,7 +41,7 @@ public class Facility {
      * @param customers a list of drivers or vehicles to be added to service machines
      * @return the amount of lost vehicles.
      */
-    public Collection<Customer> addCustomerToMachine(Collection<Customer> customers,Double priceOfFuel ) throws ServiceMachineAssigningException, PumpNotFoundException{
+    public Collection<Customer> addCustomerToMachine(Collection<Customer> customers ) throws ServiceMachineAssigningException, PumpNotFoundException{
 
         //keep track of the vehicles lost
         Collection<Customer> lostCustomers = new ArrayList<>();
@@ -70,6 +66,7 @@ public class Facility {
      * @return the position of the best service machine.
      */
      public int findBestMachine(Customer customer) throws PumpNotFoundException{
+         //set to minus one to differentiate between the zeroth element and no elements
         double previous = -1.0;
         int positionOfPumpWithShortestTime = 0;
 
@@ -103,10 +100,20 @@ public class Facility {
         }
     }
 
+    /**
+     * Adds customer to the machine imputed
+     *
+     * @param positionOfPumpWithShortestTime best machine
+     * @param customer customer being added
+     */
     public void addCustomerToBestMachine(int positionOfPumpWithShortestTime, Customer customer){
         customerServers[positionOfPumpWithShortestTime].addCustomer(customer);
     }
 
+    /**
+     * get Service machines
+     * @return Service machines
+     */
     public ServiceMachine[] getServiceMachines(){
         return this.customerServers;
     }
