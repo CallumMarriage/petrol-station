@@ -65,7 +65,7 @@ public class Shop extends Facility {
         }
 
         // add both lists into a list of lists so that they both can be returned.
-        List<List<Driver>> allCustomers = new ArrayList<List<Driver>>();
+        List<List<Driver>> allCustomers = new ArrayList<>();
         allCustomers.add(customersNotGoingToShop);
         allCustomers.add(customersGoingToShop);
 
@@ -86,7 +86,7 @@ public class Shop extends Facility {
      * @return a list of customers who have finished shopping.
      */
     public List<Customer> getDriversFinished(){
-        List<Customer> finishedDrivers = new ArrayList<Customer>();
+        List<Customer> finishedDrivers = new ArrayList<>();
         for(Driver driver :  shopFloor){
             if(driver.act(10)){
                 finishedDrivers.add(driver);

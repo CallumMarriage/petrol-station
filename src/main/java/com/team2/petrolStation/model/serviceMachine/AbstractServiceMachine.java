@@ -12,7 +12,7 @@ import java.util.Queue;
  */
 public abstract class AbstractServiceMachine implements ServiceMachine {
 
-    Queue<Customer> customerQueue;
+    private Queue<Customer> customerQueue;
 
     AbstractServiceMachine(){
         customerQueue = new LinkedList<>();
@@ -39,5 +39,13 @@ public abstract class AbstractServiceMachine implements ServiceMachine {
         customerQueue.remove();
     }
 
+    /**
+     * Add customer to queue but check if it fits
+     * @param vehicle adds customer to queue
+     */
+    @Override
+    public void addCustomer(Customer vehicle) {
+        customerQueue.add(vehicle);
+    }
 
 }

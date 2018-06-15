@@ -2,6 +2,7 @@ package com.team2.model.serviceMachine;
 
 import com.team2.petrolStation.model.customer.Customer;
 import com.team2.petrolStation.model.customer.Driver;
+import com.team2.petrolStation.model.customer.vehicle.Motorbike;
 import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 import com.team2.petrolStation.model.serviceMachine.Pump;
 import org.junit.Ignore;
@@ -16,7 +17,6 @@ import static org.junit.Assert.assertTrue;
 public class PumpTest {
 
 
-    @Ignore
     @Test
     public void testAddCustomer(){
         Pump pump = new Pump();
@@ -25,11 +25,14 @@ public class PumpTest {
 
 
         for(int i = 0; i < 2; i++){
-            //pump.addCustomer();
+            pump.addCustomer(new Motorbike());
         }
 
-        assertEquals(5, pump.getCustomersInQueue().size());
+        assertEquals(2, pump.getCustomersInQueue().size());
 
+        pump.addCustomer(new Motorbike());
+
+        assertEquals(3, pump.getCustomersInQueue().size());
 
     }
 }

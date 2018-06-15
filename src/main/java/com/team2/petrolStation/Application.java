@@ -13,9 +13,7 @@ import com.team2.petrolStation.model.views.ApplicationView;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static com.team2.petrolStation.model.constants.PetrolStationConstants.SECONDS_PER_TICK;
-import static com.team2.petrolStation.model.constants.PetrolStationConstants.SLEEP_TIME;
-import static com.team2.petrolStation.model.constants.PetrolStationConstants.START;
+import static com.team2.petrolStation.model.constants.PetrolStationConstants.*;
 
 /**
  * Application class allows for the running of simulations that generate vehicles and then refuels them and sends them to a shop to shop and or purchase their fuel.
@@ -41,7 +39,7 @@ public class Application implements Simulator{
         new Application(chanceOfTrucks);
     }
 
-    public Application(Double chanceOfTrucks){
+    private Application(Double chanceOfTrucks){
         moneyLostFromShop = 0.0;
         moneyLostFillingStation = 0.0;
         moneyGained = 0.0;
@@ -164,7 +162,7 @@ public class Application implements Simulator{
         }
 
         //add the drivers who are finished with the shop floor to tills.
-        shop.addCustomerToMachine(finishedAtShop, priceOfFuel);
+        shop.addCustomerToMachine(finishedAtShop);
     }
 
     /**
@@ -179,7 +177,7 @@ public class Application implements Simulator{
 
         //if vehicles have been generated, add them to the queues
         if(vehicles.size() >  0){
-            Collection<Customer> lostCustomers = fillingStation.addCustomerToMachine(vehicles, priceOfFuel);
+            Collection<Customer> lostCustomers = fillingStation.addCustomerToMachine(vehicles);
             moneyLostFillingStation += calculateLostPerVehicle(lostCustomers, priceOfFuel);
         }
     }
@@ -268,27 +266,27 @@ public class Application implements Simulator{
         try {
             if (randomNum > p && randomNum <= (2 * p)) {
                 vehicles.add(new Motorbike());
-                applicationView.updateScreen("A motorbike has arrived");
+                applicationView.updateScreen(MOTORBIKE_ARRIVED);
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
             }
 
             if (randomNum <= p) {
                 vehicles.add(new SmallCar(random));
-                applicationView.updateScreen("A small car has arrived");
+                applicationView.updateScreen(SMALL_CAR_ARRIVED);
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
             }
 
             if(truckIsActive) {
                 if (randomNum > ((2 * p) + q) && randomNum <= ((2 * p) + q) + chanceOfTruck) {
                     vehicles.add(new Truck(random));
-                    applicationView.updateScreen("A truck has arrived");
+                    applicationView.updateScreen(TRUCK_ARRIVED);
                     TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 }
             }
 
             if (randomNum > (2 * p) && randomNum <= ((2 * p) + q)) {
                 vehicles.add(new FamilySedan(random));
-                applicationView.updateScreen("A family sedan has arrived");
+                applicationView.updateScreen(FAMILY_SEDAN);
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
             }
         }catch (Exception e){

@@ -1,15 +1,11 @@
 package com.team2.petrolStation.model.views;
 
 import com.team2.petrolStation.model.exceptions.InvalidInputException;
-import com.team2.petrolStation.model.facility.FillingStation;
-import com.team2.petrolStation.model.facility.Shop;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.team2.petrolStation.model.constants.PetrolStationConstants.RESULTS_DESTINATION_FILE;
 import static com.team2.petrolStation.model.constants.PetrolStationConstants.SECONDS_PER_TICK;
@@ -24,6 +20,10 @@ public class ApplicationView {
         this.simulator = simulator;
     }
 
+    /**
+     * Start method intakes the values and kicks of the simulation using the values
+     *
+     */
     public void start(){
         //replace this with gui values
         Integer numOfTurns;
@@ -56,13 +56,8 @@ public class ApplicationView {
     }
 
     public void printFinalResults(String results){
-        printResultsToScreen(results);
+        updateScreen(results);
         generateFile(results);
-    }
-
-    private void printResultsToScreen(String results){
-            System.out.println(results);
-
     }
 
 

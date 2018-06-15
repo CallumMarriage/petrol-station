@@ -35,10 +35,4 @@ public class Till extends AbstractServiceMachine {
     public Boolean checkIfCustomerFits(Customer customer) {
         return true;
     }
-
-    @Override
-    public void addCustomer(Customer customer) {
-        customerQueue.add(customer);
-    }
-
 }

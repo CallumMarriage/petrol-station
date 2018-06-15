@@ -19,6 +19,7 @@ public abstract class AbstractVehicle implements Vehicle {
     AbstractVehicle(){
         hasRefueled = false;
     }
+
     public Integer getShopTime() {
         return shopTime;
     }
@@ -37,7 +38,7 @@ public abstract class AbstractVehicle implements Vehicle {
      */
     @Override
     public Boolean act(Integer value) {
-        if((this.currentFuel + value ) >= (this.maxFuel)){
+        if((this.currentFuel + value ) >= this.maxFuel){
             this.currentFuel = maxFuel;
             if(hasRefueled){
                 return false;
