@@ -4,6 +4,7 @@ import com.team2.petrolStation.model.customer.Customer;
 import com.team2.petrolStation.model.customer.Driver;
 import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 import com.team2.petrolStation.model.serviceMachine.Pump;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -15,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 public class PumpTest {
 
 
+    @Ignore
     @Test
     public void testAddCustomer(){
         Pump pump = new Pump();

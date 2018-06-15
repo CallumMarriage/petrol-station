@@ -7,6 +7,7 @@ import com.team2.petrolStation.model.facility.Shop;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +33,9 @@ public class ApplicationView {
         Double p = 0.01;
         Double q = 0.02;
 
+        Boolean truckIsActive = true;
         String time = "1";
-        String identifiers = "d";
+        String identifiers = "h";
 
         try {
             numOfTurns = convertTimeIntoSeconds(time, identifiers);
@@ -46,35 +48,16 @@ public class ApplicationView {
         updateScreen("Welcome to the simulation\nThe duration will be " + numOfTurns + " seconds or " + (numOfTurns / SECONDS_PER_TICK) + " ticks \n");
 
         //run the simulation using the inputed values
-        simulator.simulate(numOfTurns, numPumps, numTills, priceOfFuel, p, q);
+        simulator.simulate(numOfTurns, numPumps, numTills, priceOfFuel, p, q, truckIsActive);
     }
 
     public void updateScreen(String results){
         System.out.println(results);
     }
 
-    public void printFinalResults(Shop shop, FillingStation fillingStation, Double moneyLost, Double moneyGained){
-        String results = getResults(shop, fillingStation, moneyLost, moneyGained);
+    public void printFinalResults(String results){
         printResultsToScreen(results);
         generateFile(results);
-    }
-
-    /**
-     * Get Results based on performance
-     *
-     * @param shop shop
-     * @param fillingStation filling station
-     * @return return all of the contents
-     */
-    private String getResults(Shop shop, FillingStation fillingStation, Double moneyLost, Double moneyGained){
-
-        //just to make the results look cleaner make sure the right ending word is used
-        String vehicle = checkIfPlural(fillingStation.getLeftOverCustomers(), "vehicle");
-        String driver = checkIfPlural(shop.getShopFloor().size(), "driver");
-        String tillDrivers = checkIfPlural(shop.getLeftOverCustomers(), "driver");
-
-        //finally print out the money lost and gained.
-        return "Results\nMoney lost: " + moneyLost + "\nMoney gained: " + moneyGained + "\nFilling Station - Pumps: " + fillingStation.getLeftOverCustomers() + " " + vehicle + "\nShop - Tills: "+ shop.getLeftOverCustomers() + " " + driver +"\nShop - floor: " + shop.getShopFloor().size() + " " + tillDrivers;
     }
 
     private void printResultsToScreen(String results){
@@ -82,13 +65,6 @@ public class ApplicationView {
 
     }
 
-    private String checkIfPlural(Integer num, String word){
-        if(num > 1 || num == 0 ){
-            word += "s";
-        }
-
-        return word;
-    }
 
     /**
      * Converts the time into seconds based on its identifier and returns the new value.
@@ -149,8 +125,9 @@ public class ApplicationView {
         FileWriter fileWriter = null;
 
         try{
+            LocalDateTime currentDate = LocalDateTime.now();
             //create the file writer using the location store as a constant
-            fileWriter = new FileWriter(RESULTS_DESTINATION_FILE);
+            fileWriter = new FileWriter(RESULTS_DESTINATION_FILE+"-"+currentDate+".txt");
             //create a buffered write with the file writer as an argument
             bufferedWriter = new BufferedWriter(fileWriter);
             //loop through the results list
