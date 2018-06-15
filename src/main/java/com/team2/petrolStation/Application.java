@@ -3,13 +3,12 @@ package com.team2.petrolStation;
 import com.team2.petrolStation.model.customer.Customer;
 import com.team2.petrolStation.model.customer.Driver;
 import com.team2.petrolStation.model.customer.vehicle.*;
-import com.team2.petrolStation.model.exceptions.InvalidInputException;
 import com.team2.petrolStation.model.exceptions.PumpNotFoundException;
 import com.team2.petrolStation.model.exceptions.ServiceMachineAssigningException;
 import com.team2.petrolStation.model.facility.FillingStation;
 import com.team2.petrolStation.model.facility.Shop;
 import com.team2.petrolStation.model.views.Simulator;
-import com.team2.petrolStation.model.views.Text;
+import com.team2.petrolStation.model.views.ApplicationView;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -28,22 +27,23 @@ public class Application implements Simulator{
     private Double chanceOfTruck;
     private Double moneyGained;
     private Double moneyLost;
-    private static Double p;
-    private static Double q;
+    private Double p;
+    private Double q;
+    private ApplicationView applicationView;
 
     public static void main(String[] args){
         Double chanceOfTrucks = 0.02;
-        Application application = new Application(chanceOfTrucks);
-
-        Text text = new Text(application);
-        text.start();
+        new Application(chanceOfTrucks);
     }
 
     public Application(Double chanceOfTrucks){
         moneyLost = 0.0;
         moneyGained = 0.0;
         this.chanceOfTruck = chanceOfTrucks;
+        applicationView = new ApplicationView(this);
+        applicationView.start();
     }
+
 
     /**
      * Simulates the petrol station and calls simulateRound for as long as chosen.
@@ -54,8 +54,8 @@ public class Application implements Simulator{
      */
     public void simulate(Integer numOfTurns, Integer numPumps, Integer numTills, Double priceOfFuel, Double p, Double q){
 
-        Application.p = p;
-        Application.q = q;
+        this.p = p;
+        this.q = q;
 
         //build shop, filling station and the random that will be used throughout the application
         Shop shop = new Shop(numTills);
@@ -71,9 +71,7 @@ public class Application implements Simulator{
             return;
         }
 
-        Text textView = new Text(this);
-
-        textView.printFinalResults(shop, fillingStation, moneyLost, moneyGained);
+        applicationView.printFinalResults(shop, fillingStation, moneyLost, moneyGained);
     }
 
     /**
@@ -87,7 +85,7 @@ public class Application implements Simulator{
      * @throws ServiceMachineAssigningException thrown when a driver can not be added to a till
      * @throws PumpNotFoundException returned when the correct pump can not be found.
      */
-    public Shop runShoppers(Shop shop, Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws ServiceMachineAssigningException, PumpNotFoundException {
+    private Shop runShoppers(Shop shop, Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws ServiceMachineAssigningException, PumpNotFoundException {
 
         List<Customer> finishedAtShop = shop.getDriversFinished();
         shop.removeDrivers(finishedAtShop);
@@ -96,13 +94,9 @@ public class Application implements Simulator{
             List<List<Driver>> customers = shop.decideToGoToShop(finishedAtPump, random, priceOfFuel);
             setLostMoney(customers.get(0), finishedAtPump);
 
-            Collection<Driver> nonShoppingCustomers = customers.get(0);
+            shop.addToShopFloor(customers.get(1));
 
-            if(customers.get(1).size() > 0) {
-                shop.addToShopFloor(customers.get(1));
-            }
-
-            finishedAtShop.addAll(nonShoppingCustomers);
+            finishedAtShop.addAll(customers.get(0));
         }
 
         shop.addCustomerToMachine(finishedAtShop, priceOfFuel);
@@ -205,23 +199,23 @@ public class Application implements Simulator{
         try {
             if (randomNum > p && randomNum <= (2 * p)) {
                 vehicles.add(new Motorbike());
-                System.out.println("A motorbike has arrived");
-                TimeUnit.MILLISECONDS.sleep(100);            }
+                applicationView.updateScreen("A motorbike has arrived");
+                TimeUnit.MILLISECONDS.sleep(60);            }
 
             if (randomNum <= p) {
                 vehicles.add(new SmallCar(random));
-                System.out.println("A small car has arrived");
-                TimeUnit.MILLISECONDS.sleep(100);            }
+                applicationView.updateScreen("A small car has arrived");
+                TimeUnit.MILLISECONDS.sleep(60);            }
 
             if (randomNum > ((2 * p) + q) && randomNum <= ((2 * p) + q) + chanceOfTruck) {
                 vehicles.add(new Truck(random));
-                System.out.println("A truck has arrived");
-                TimeUnit.MILLISECONDS.sleep(100);            }
+                applicationView.updateScreen("A truck has arrived");
+                TimeUnit.MILLISECONDS.sleep(60);            }
 
             if (randomNum > (2 * p) && randomNum <= ((2 * p) + q)) {
                 vehicles.add(new FamilySedan(random));
-                System.out.println("A family sedan has arrived");
-                TimeUnit.MILLISECONDS.sleep(100);            }
+                applicationView.updateScreen("A family sedan has arrived");
+                TimeUnit.MILLISECONDS.sleep(60);            }
         }catch (Exception e){
             e.printStackTrace();
         }

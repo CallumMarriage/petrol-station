@@ -16,13 +16,12 @@ import static com.team2.petrolStation.model.constants.PetrolStationConstants.SEC
 /**
  * @author callummarriage
  */
-public class Text {
+public class ApplicationView {
 
     private Simulator simulator;
-    public Text(Simulator simulator){
+    public ApplicationView(Simulator simulator){
         this.simulator = simulator;
     }
-
 
     public void start(){
         //replace this with gui values
@@ -44,18 +43,22 @@ public class Text {
             return;
         }
 
-        System.out.println("Welcome to the simulation\nThe duration will be " + numOfTurns + " seconds or " + (numOfTurns / SECONDS_PER_TICK) + " ticks \n");
+        updateScreen("Welcome to the simulation\nThe duration will be " + numOfTurns + " seconds or " + (numOfTurns / SECONDS_PER_TICK) + " ticks \n");
 
         //run the simulation using the inputed values
         simulator.simulate(numOfTurns, numPumps, numTills, priceOfFuel, p, q);
     }
 
+    public void updateScreen(String results){
+        System.out.println(results);
+    }
 
     public void printFinalResults(Shop shop, FillingStation fillingStation, Double moneyLost, Double moneyGained){
-        List<String> results = getResults(shop, fillingStation, moneyLost, moneyGained);
+        String results = getResults(shop, fillingStation, moneyLost, moneyGained);
         printResultsToScreen(results);
         generateFile(results);
     }
+
     /**
      * Get Results based on performance
      *
@@ -63,28 +66,20 @@ public class Text {
      * @param fillingStation filling station
      * @return return all of the contents
      */
-    private List<String> getResults(Shop shop, FillingStation fillingStation, Double moneyLost, Double moneyGained){
-        List<String> results = new ArrayList<>();
+    private String getResults(Shop shop, FillingStation fillingStation, Double moneyLost, Double moneyGained){
+
         //just to make the results look cleaner make sure the right ending word is used
         String vehicle = checkIfPlural(fillingStation.getLeftOverCustomers(), "vehicle");
         String driver = checkIfPlural(shop.getShopFloor().size(), "driver");
         String tillDrivers = checkIfPlural(shop.getLeftOverCustomers(), "driver");
 
         //finally print out the money lost and gained.
-        results.add("Results\n");
-        results.add("Money lost: " + moneyLost + "\n");
-        results.add("Money gained: " + moneyGained + "\n");
-        results.add("Filling Station - Pumps: " + fillingStation.getLeftOverCustomers() + " " + vehicle + "\n");
-        results.add("Shop - Tills: " + shop.getLeftOverCustomers() + " " + driver +"\n");
-        results.add("Shop - floor: " + shop.getShopFloor().size() + " " + tillDrivers);
-
-        return results;
+        return "Results\nMoney lost: " + moneyLost + "\nMoney gained: " + moneyGained + "\nFilling Station - Pumps: " + fillingStation.getLeftOverCustomers() + " " + vehicle + "\nShop - Tills: "+ shop.getLeftOverCustomers() + " " + driver +"\nShop - floor: " + shop.getShopFloor().size() + " " + tillDrivers;
     }
 
-    private void printResultsToScreen(List<String> results){
-        for(String line : results){
-            System.out.println(line);
-        }
+    private void printResultsToScreen(String results){
+            System.out.println(results);
+
     }
 
     private String checkIfPlural(Integer num, String word){
@@ -149,7 +144,7 @@ public class Text {
      *
      * @param results list of all of the results.
      */
-    private void generateFile(List<String> results){
+    private void generateFile(String results){
         BufferedWriter bufferedWriter = null;
         FileWriter fileWriter = null;
 
@@ -159,10 +154,9 @@ public class Text {
             //create a buffered write with the file writer as an argument
             bufferedWriter = new BufferedWriter(fileWriter);
             //loop through the results list
-            for(String message : results){
                 //add the line to the file
-                bufferedWriter.write(message);
-            }
+                bufferedWriter.write(results);
+
         }catch (IOException e){
             e.printStackTrace();
         } finally {
