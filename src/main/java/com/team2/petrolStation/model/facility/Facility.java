@@ -40,8 +40,9 @@ public class Facility {
      *
      * @param customers a list of drivers or vehicles to be added to service machines
      * @return the amount of lost vehicles.
+     * @throws PumpNotFoundException pump not found
      */
-    public Collection<Customer> addCustomerToMachine(Collection<Customer> customers ) throws ServiceMachineAssigningException, PumpNotFoundException{
+    public Collection<Customer> addCustomerToMachine(Collection<Customer> customers ) throws PumpNotFoundException {
 
         //keep track of the vehicles lost
         Collection<Customer> lostCustomers = new ArrayList<>();

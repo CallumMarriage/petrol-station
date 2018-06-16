@@ -7,7 +7,12 @@ package com.team2.petrolStation.model.exception;
  */
 public class ServiceMachineAssigningException extends Exception {
 
-    public ServiceMachineAssigningException(){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public ServiceMachineAssigningException(){
         super("There was a problem handling a Driver.");
     }
 }

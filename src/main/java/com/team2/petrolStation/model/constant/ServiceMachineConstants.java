@@ -5,7 +5,11 @@ package com.team2.petrolStation.model.constant;
  *
  * @author callummarriage
  */
-public class ServiceMachineConstants {
+public abstract class ServiceMachineConstants {
 
+	private ServiceMachineConstants() {
+	    throw new IllegalStateException("Utility class");
+	}
+	  
     public static final Double MAX_QUEUE_SIZE = 3.5;
 }

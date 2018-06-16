@@ -6,6 +6,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.team2.petrolStation.model.constant.PetrolStationConstants.RESULTS_DESTINATION_FILE;
 import static com.team2.petrolStation.model.constant.PetrolStationConstants.SECONDS_PER_TICK;
@@ -15,7 +17,9 @@ import static com.team2.petrolStation.model.constant.PetrolStationConstants.SECO
  */
 public class ApplicationView {
 
+    private static final Logger LOGGER = Logger.getLogger(ApplicationView.class.getName());
     private Simulator simulator;
+
     public ApplicationView(Simulator simulator){
         this.simulator = simulator;
     }
@@ -52,7 +56,7 @@ public class ApplicationView {
     }
 
     public void updateScreen(String results){
-        System.out.println(results);
+        LOGGER.log(Level.INFO, results);
     }
 
     public void printFinalResults(String results){
@@ -141,7 +145,7 @@ public class ApplicationView {
                     fileWriter.close();
                 }
             }catch (IOException e){
-                e.printStackTrace();
+                LOGGER.log(Level.SEVERE, e.getMessage());
             }
         }
     }

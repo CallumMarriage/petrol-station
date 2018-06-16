@@ -7,7 +7,12 @@ package com.team2.petrolStation.model.exception;
  */
 public class InvalidInputException extends Exception{
 
-    public InvalidInputException(String time){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public InvalidInputException(String time){
         super(time + " is not a valid input for the time field.");
     }
 }

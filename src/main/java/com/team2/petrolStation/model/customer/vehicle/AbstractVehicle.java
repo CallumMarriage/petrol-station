@@ -28,9 +28,6 @@ public abstract class AbstractVehicle implements Vehicle {
         return shopPurchase;
     }
 
-    @Override
-    public abstract Double getChanceOfGoingToShop();
-
     /**
      * Refuels this vehicle, if the vehicle has finished refueling it returns true if not it adds to the current fuel level and returns false
      * @param value the amount that the fuel will increase by

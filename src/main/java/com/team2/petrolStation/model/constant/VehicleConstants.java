@@ -6,6 +6,11 @@ package com.team2.petrolStation.model.constant;
  * @author callummarriage
  */
 public class VehicleConstants {
+	
+	private VehicleConstants() {
+	    throw new IllegalStateException("Utility class");
+	}	
+	
     //chances of the vehicles going to shop
     public static final Double CHANCE_OF_SMALL_CAR_GOING_TO_SHOP = 0.3;
     public static final Double CHANCE_OF_FAMILY_SEDAN_GOING_TO_SHOP = 0.4;
@@ -23,8 +28,4 @@ public class VehicleConstants {
     public static final Integer MAX_QUEUE_TIME_TRUCK = 48;
     public static final Integer MAX_QUEUE_TIME_FAMILY_SEDAN = 60;
     public static final Integer MAX_QUEUE_TIME_SMALL_CAR = 30;
-
-    /*public static final Integer MAX_QUEUE_TIME_TRUCK = 48;
-    public static final Integer MAX_QUEUE_TIME_FAMILY_SEDAN = 600;
-    public static final Integer MAX_QUEUE_TIME_SMALL_CAR = 300;*/
 }
