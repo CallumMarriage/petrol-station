@@ -1,6 +1,6 @@
 package com.team2.petrolStation.model.customer;
 
-import static com.team2.petrolStation.model.constants.VehicleConstants.SIZE_OF_DRIVER;
+import static com.team2.petrolStation.model.constant.VehicleConstants.SIZE_OF_DRIVER;
 
 /**
  * The driver is the model of a customer who enters the shop and purchases the fuel that they have just put in their vehicle.

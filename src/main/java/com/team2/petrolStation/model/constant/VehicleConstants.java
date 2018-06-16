@@ -1,4 +1,4 @@
-package com.team2.petrolStation.model.constants;
+package com.team2.petrolStation.model.constant;
 
 /**
  * Constants for vehicles

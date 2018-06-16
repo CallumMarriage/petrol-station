@@ -1,4 +1,4 @@
-package com.team2.petrolStation.model.exceptions;
+package com.team2.petrolStation.model.exception;
 
 /**
  * When a driver can not be assigned to a till

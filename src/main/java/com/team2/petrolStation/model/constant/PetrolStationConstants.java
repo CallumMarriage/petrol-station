@@ -1,7 +1,7 @@
-package com.team2.petrolStation.model.constants;
+package com.team2.petrolStation.model.constant;
 
 /**
- * General constants for Application class
+ * General constant for Application class
  *
  * @author callummarriage
  */

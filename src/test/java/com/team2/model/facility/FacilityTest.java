@@ -2,7 +2,6 @@ package com.team2.model.facility;
 
 import com.team2.petrolStation.model.customer.Customer;
 import com.team2.petrolStation.model.customer.vehicle.*;
-import com.team2.petrolStation.model.exceptions.ServiceMachineAssigningException;
 import com.team2.petrolStation.model.facility.FillingStation;
 import org.junit.Test;
 

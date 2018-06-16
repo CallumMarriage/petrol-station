@@ -1,4 +1,4 @@
-package com.team2.petrolStation.model.views;
+package com.team2.petrolStation.model.view;
 
 /**
  * @author callummarriage

@@ -1,4 +1,4 @@
-package com.team2.petrolStation.model.exceptions;
+package com.team2.petrolStation.model.exception;
 
 /**
  * Called when a invalid from the gui has been detected

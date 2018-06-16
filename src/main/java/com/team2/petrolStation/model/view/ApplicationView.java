@@ -1,14 +1,14 @@
-package com.team2.petrolStation.model.views;
+package com.team2.petrolStation.model.view;
 
-import com.team2.petrolStation.model.exceptions.InvalidInputException;
+import com.team2.petrolStation.model.exception.InvalidInputException;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import static com.team2.petrolStation.model.constants.PetrolStationConstants.RESULTS_DESTINATION_FILE;
-import static com.team2.petrolStation.model.constants.PetrolStationConstants.SECONDS_PER_TICK;
+import static com.team2.petrolStation.model.constant.PetrolStationConstants.RESULTS_DESTINATION_FILE;
+import static com.team2.petrolStation.model.constant.PetrolStationConstants.SECONDS_PER_TICK;
 
 /**
  * @author callummarriage

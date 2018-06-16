@@ -3,17 +3,17 @@ package com.team2.petrolStation;
 import com.team2.petrolStation.model.customer.Customer;
 import com.team2.petrolStation.model.customer.Driver;
 import com.team2.petrolStation.model.customer.vehicle.*;
-import com.team2.petrolStation.model.exceptions.PumpNotFoundException;
-import com.team2.petrolStation.model.exceptions.ServiceMachineAssigningException;
+import com.team2.petrolStation.model.exception.PumpNotFoundException;
+import com.team2.petrolStation.model.exception.ServiceMachineAssigningException;
 import com.team2.petrolStation.model.facility.FillingStation;
 import com.team2.petrolStation.model.facility.Shop;
-import com.team2.petrolStation.model.views.Simulator;
-import com.team2.petrolStation.model.views.ApplicationView;
+import com.team2.petrolStation.model.view.Simulator;
+import com.team2.petrolStation.model.view.ApplicationView;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static com.team2.petrolStation.model.constants.PetrolStationConstants.*;
+import static com.team2.petrolStation.model.constant.PetrolStationConstants.*;
 
 /**
  * Application class allows for the running of simulations that generate vehicles and then refuels them and sends them to a shop to shop and or purchase their fuel.

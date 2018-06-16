@@ -2,9 +2,9 @@ package com.team2.petrolStation.model.customer.vehicle;
 
 import java.util.Random;
 
-import static com.team2.petrolStation.model.constants.VehicleConstants.CHANCE_OF_TRUCK_GOING_TO_SHOP;
-import static com.team2.petrolStation.model.constants.VehicleConstants.MAX_QUEUE_TIME_TRUCK;
-import static com.team2.petrolStation.model.constants.VehicleConstants.SIZE_OF_TRUCK;
+import static com.team2.petrolStation.model.constant.VehicleConstants.CHANCE_OF_TRUCK_GOING_TO_SHOP;
+import static com.team2.petrolStation.model.constant.VehicleConstants.MAX_QUEUE_TIME_TRUCK;
+import static com.team2.petrolStation.model.constant.VehicleConstants.SIZE_OF_TRUCK;
 
 /**
  * Models the values assigned to a Truck object.

@@ -3,7 +3,7 @@ package com.team2.petrolStation.model.serviceMachine;
 import com.team2.petrolStation.model.customer.Customer;
 import com.team2.petrolStation.model.customer.vehicle.Vehicle;
 
-import static com.team2.petrolStation.model.constants.ServiceMachineConstants.MAX_QUEUE_SIZE;
+import static com.team2.petrolStation.model.constant.ServiceMachineConstants.MAX_QUEUE_SIZE;
 
 /**
  * Allows for a maximum number of vehicles in its queue.

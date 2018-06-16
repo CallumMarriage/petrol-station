@@ -1,6 +1,6 @@
 package com.team2.petrolStation.model.facility;
 
-import com.team2.petrolStation.model.exceptions.PumpNotFoundException;
+import com.team2.petrolStation.model.exception.PumpNotFoundException;
 import com.team2.petrolStation.model.serviceMachine.Pump;
 import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 
