@@ -1,4 +1,4 @@
-package com.team2.petrolStation.model.exceptions;
+package com.team2.petrolStation.model.exception;
 
 /**
  * When a pump associated with a driver can not be found
@@ -7,7 +7,12 @@ package com.team2.petrolStation.model.exceptions;
  */
 public class PumpNotFoundException extends Exception {
 
-    public PumpNotFoundException(Integer pumpNumber){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public PumpNotFoundException(Integer pumpNumber){
         super("Pump not found: " + pumpNumber + ".");
     }
 }

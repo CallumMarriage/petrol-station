@@ -3,17 +3,19 @@ package com.team2.petrolStation;
 import com.team2.petrolStation.model.customer.Customer;
 import com.team2.petrolStation.model.customer.Driver;
 import com.team2.petrolStation.model.customer.vehicle.*;
-import com.team2.petrolStation.model.exceptions.PumpNotFoundException;
-import com.team2.petrolStation.model.exceptions.ServiceMachineAssigningException;
+import com.team2.petrolStation.model.exception.PumpNotFoundException;
 import com.team2.petrolStation.model.facility.FillingStation;
 import com.team2.petrolStation.model.facility.Shop;
-import com.team2.petrolStation.model.views.Simulator;
-import com.team2.petrolStation.model.views.ApplicationView;
+import com.team2.petrolStation.model.view.Simulator;
+import com.team2.petrolStation.model.view.ApplicationView;
 
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import static com.team2.petrolStation.model.constants.PetrolStationConstants.*;
+import static com.team2.petrolStation.model.constant.PetrolStationConstants.*;
 
 /**
  * Application class allows for the running of simulations that generate vehicles and then refuels them and sends them to a shop to shop and or purchase their fuel.
@@ -23,6 +25,8 @@ import static com.team2.petrolStation.model.constants.PetrolStationConstants.*;
  * @author callummarriage canershefik
  */
 public class Application implements Simulator{
+
+    private static final Logger LOGGER = Logger.getLogger(Application.class.getName());
 
     private Double chanceOfTruck;
     private Double moneyGained;
@@ -71,7 +75,7 @@ public class Application implements Simulator{
                 simulateRound( random, priceOfFuel, truckIsActive);
             }
         } catch (Exception e){
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, e.getMessage());
             return;
         }
 
@@ -106,9 +110,9 @@ public class Application implements Simulator{
      * Simulates a single round
      *
      * @param random the random that will be used to generate the vehicles
-     * @throws ServiceMachineAssigningException error trying to add customer to a service machine
+     * @throws PumpNotFoundException error trying to add customer to a service machine
      */
-    private void simulateRound( Random random, Double priceOfFuel, Boolean truckIsActive) throws ServiceMachineAssigningException, PumpNotFoundException {
+    private void simulateRound( Random random, Double priceOfFuel, Boolean truckIsActive) throws PumpNotFoundException {
 
         Map<Integer, Customer> finishedAtPump = runFillingStation();
 
@@ -136,13 +140,16 @@ public class Application implements Simulator{
      * @param finishedAtPump the vehicles that have finished at the pump
      * @param priceOfFuel the price of fuel to calculate how much the driver will spend
      * @param random the random used to generate all of the values
-     * @throws ServiceMachineAssigningException thrown when a driver can not be added to a till
      * @throws PumpNotFoundException returned when the correct pump can not be found.
      */
-    private void assignShoppers( Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws ServiceMachineAssigningException, PumpNotFoundException {
+    private void assignShoppers( Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws PumpNotFoundException {
 
         //get drivers who have finished loitering in the shop
         List<Customer> finishedAtShop = shop.getDriversFinished();
+        for(Customer customer : finishedAtShop) {
+        		applicationView.updateScreen("A customer left spending " + ((Driver) customer).getCurrentSpend());
+        }
+        
         //remove the drivers who are finished from the shopfloor
         shop.removeDrivers(finishedAtShop);
 
@@ -170,13 +177,12 @@ public class Application implements Simulator{
      *
      * @param priceOfFuel price of fuel
      * @param vehicles all the new vehicles
-     * @throws ServiceMachineAssigningException assign vehicles
      * @throws PumpNotFoundException could not find a valid service machine, this is only thrown if for drivers
      */
-    private void assignVehicles( Collection<Customer> vehicles, Double priceOfFuel) throws ServiceMachineAssigningException, PumpNotFoundException {
+    private void assignVehicles( Collection<Customer> vehicles, Double priceOfFuel) throws PumpNotFoundException {
 
         //if vehicles have been generated, add them to the queues
-        if(vehicles.size() >  0){
+        if(!vehicles.isEmpty()){
             Collection<Customer> lostCustomers = fillingStation.addCustomerToMachine(vehicles);
             moneyLostFillingStation += calculateLostPerVehicle(lostCustomers, priceOfFuel);
         }
@@ -206,10 +212,9 @@ public class Application implements Simulator{
      * @param priceOfFuel price of fuel
      * @param random random
      * @return drivers who are finished and the pump where their vehicle is
-     * @throws ServiceMachineAssigningException Could not add a customer to the servicemachine that the algorithm suggested
      * @throws PumpNotFoundException could not find a valid service machine, this is only thrown if for drivers
      */
-    private Map<Integer, Customer> runShop(Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws ServiceMachineAssigningException, PumpNotFoundException {
+    private Map<Integer, Customer> runShop(Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws PumpNotFoundException {
         //get the finished shoppers in the system
         Map<Integer, Customer> finishedCustomers = shop.manageTransactions();
 
@@ -244,9 +249,9 @@ public class Application implements Simulator{
         //add the values lost to the overall lost
 
         for (Driver customer : customers) {
-            for (int pump : finishedAtPump.keySet()) {
-                if (customer.getPumpNumber() == pump) {
-                    moneyLostFromShop += ((Vehicle) finishedAtPump.get(pump)).getShopPurchase();
+            for (Entry<Integer, Customer> pump : finishedAtPump.entrySet()) {
+                if (customer.getPumpNumber().equals(pump.getKey())) {
+                    moneyLostFromShop += ((Vehicle) pump.getValue()).getShopPurchase();
                 }
             }
         }
@@ -276,12 +281,12 @@ public class Application implements Simulator{
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
             }
 
-            if(truckIsActive) {
-                if (randomNum > ((2 * p) + q) && randomNum <= ((2 * p) + q) + chanceOfTruck) {
-                    vehicles.add(new Truck(random));
-                    applicationView.updateScreen(TRUCK_ARRIVED);
-                    TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
-                }
+            
+            if (truckIsActive && randomNum > ((2 * p) + q) && randomNum <= ((2 * p) + q) + chanceOfTruck) {
+            		vehicles.add(new Truck(random));
+                applicationView.updateScreen(TRUCK_ARRIVED);
+                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+              
             }
 
             if (randomNum > (2 * p) && randomNum <= ((2 * p) + q)) {
@@ -306,7 +311,7 @@ public class Application implements Simulator{
                 Truck truck = (Truck) customer;
                 if(truck.getTimeInQueue() < truck.getMaxQueueTime()){
                     chanceOfTruck += ((chanceOfTruck / 100) * 5);
-                } {
+                } else {
                     chanceOfTruck -= ((chanceOfTruck / 100) * 20) ;
                 }
             }

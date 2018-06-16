@@ -1,6 +1,6 @@
 package com.team2.petrolStation.model.facility;
 
-import com.team2.petrolStation.model.exceptions.PumpNotFoundException;
+import com.team2.petrolStation.model.exception.PumpNotFoundException;
 import com.team2.petrolStation.model.serviceMachine.Pump;
 import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 
@@ -23,7 +23,7 @@ public class FillingStation extends Facility {
     /**
      * Remove vehicle from pump based on the pump number, this gets called when a customer has left teh shop
      * @param pumpNumber number of the pump.
-     * @throws PumpNotFoundException the pump specified couldnt be found
+     * @throws PumpNotFoundException the pump specified could not be found
      */
     public void removeCustomerFromPump(Integer pumpNumber) throws PumpNotFoundException{
         if(customerServers[pumpNumber] == null){

@@ -34,4 +34,4 @@ target/
 #Gradle
 .gralde
 build
-!/src/main/java/com/team2/petrolStation/model/exceptions/InvalidInputException.java
+!/com/team2/petrolStation/model/exception/InvalidInputException.java

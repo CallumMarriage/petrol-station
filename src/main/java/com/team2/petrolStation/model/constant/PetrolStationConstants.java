@@ -1,12 +1,16 @@
-package com.team2.petrolStation.model.constants;
+package com.team2.petrolStation.model.constant;
 
 /**
- * General constants for Application class
+ * General constant for Application class
  *
  * @author callummarriage
  */
 public class PetrolStationConstants {
 
+	private PetrolStationConstants() {
+	    throw new IllegalStateException("Utility class");
+	}
+	
     public static final Integer SECONDS_PER_TICK = 10;
     public static final String RESULTS_DESTINATION_FILE = "target/results";
     public static final Integer SLEEP_TIME = 60;

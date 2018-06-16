@@ -1,4 +1,4 @@
-package com.team2.petrolStation.model.exceptions;
+package com.team2.petrolStation.model.exception;
 
 /**
  * When a driver can not be assigned to a till
@@ -7,7 +7,12 @@ package com.team2.petrolStation.model.exceptions;
  */
 public class ServiceMachineAssigningException extends Exception {
 
-    public ServiceMachineAssigningException(){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public ServiceMachineAssigningException(){
         super("There was a problem handling a Driver.");
     }
 }

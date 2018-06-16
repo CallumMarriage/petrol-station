@@ -2,7 +2,7 @@ package com.team2.petrolStation.model.customer.vehicle;
 
 import java.util.Random;
 
-import static com.team2.petrolStation.model.constants.VehicleConstants.SIZE_OF_MOTORBIKE;
+import static com.team2.petrolStation.model.constant.VehicleConstants.SIZE_OF_MOTORBIKE;
 
 /**
  * Models the values assigned to a Motorbike object

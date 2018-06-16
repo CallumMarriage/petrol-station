@@ -7,6 +7,7 @@ import com.team2.petrolStation.model.serviceMachine.ServiceMachine;
 import com.team2.petrolStation.model.serviceMachine.Till;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * The shop contains a map of all of the drivers that are browsing the shop, it also manages the movement of drivers in and out of the shop floor.
@@ -39,13 +40,13 @@ public class Shop extends Facility {
         List<Driver> customersNotGoingToShop = new ArrayList<>();
         List<Driver> customersGoingToShop = new ArrayList<>();
 
-        for(Integer pump : customers.keySet()){
+        for(Entry<Integer, Customer> pump : customers.entrySet()){
 
             //get the vehicle from that pump
-            Vehicle vehicle = (Vehicle) customers.get(pump);
+            Vehicle vehicle = (Vehicle) pump.getValue();
 
             //make a driver based on the fuel level and pump from the vehicle
-            Driver driver = new Driver((Math.round((vehicle.getMaxFuel() * priceOfFuel)) * 100d /100d) , pump);
+            Driver driver = new Driver((Math.round((vehicle.getMaxFuel() * priceOfFuel)) * 100d /100d) , pump.getKey());
 
             if(vehicle.decide(random)){
                 customersGoingToShop.add(driver);
