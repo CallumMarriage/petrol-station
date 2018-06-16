@@ -20,7 +20,7 @@ public class Till extends AbstractServiceMachine {
      */
     @Override
     public Customer act() {
-        if(getCustomersInQueue().isEmpty()) {
+        if(!getCustomersInQueue().isEmpty()) {
             return getCustomersInQueue().peek();
         }
         return null;

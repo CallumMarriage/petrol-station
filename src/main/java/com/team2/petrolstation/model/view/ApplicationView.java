@@ -56,14 +56,10 @@ public class ApplicationView {
     }
 
     public void updateScreen(String results){
-        LOGGER.log(Level.INFO, results);
+        System.out.println(results);
+        simulator.updateOutputFile(results + "\n");
+        //LOGGER.log(Level.INFO, results);
     }
-
-    public void printFinalResults(String results){
-        updateScreen(results);
-        generateFile(results);
-    }
-
 
     /**
      * Converts the time into seconds based on its identifier and returns the new value.
@@ -111,42 +107,5 @@ public class ApplicationView {
         }
 
         return number;
-    }
-
-    /**
-     * Writes results to a file
-     * Prints result to screen as its writing.
-     *
-     * @param results list of all of the results.
-     */
-    private void generateFile(String results){
-        BufferedWriter bufferedWriter = null;
-        FileWriter fileWriter = null;
-
-        try{
-            LocalDateTime currentDate = LocalDateTime.now();
-            //create the file writer using the location store as a constant
-            fileWriter = new FileWriter(RESULTS_DESTINATION_FILE+"-"+currentDate+".txt");
-            //create a buffered write with the file writer as an argument
-            bufferedWriter = new BufferedWriter(fileWriter);
-            //loop through the results list
-                //add the line to the file
-                bufferedWriter.write(results);
-
-        }catch (IOException e){
-            e.printStackTrace();
-        } finally {
-            try{
-                //close the writers
-                if(bufferedWriter != null){
-                    bufferedWriter.close();
-                }
-                if(fileWriter != null){
-                    fileWriter.close();
-                }
-            }catch (IOException e){
-                LOGGER.log(Level.SEVERE, e.getMessage());
-            }
-        }
     }
 }

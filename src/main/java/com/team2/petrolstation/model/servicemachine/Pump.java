@@ -23,7 +23,7 @@ public class Pump extends AbstractServiceMachine {
      */
     @Override
     public Customer act() {
-        if(getCustomersInQueue().isEmpty()) {
+        if(!getCustomersInQueue().isEmpty()) {
             Customer customer = getCustomersInQueue().peek();
             if (customer.act(1)) {
                 return customer;

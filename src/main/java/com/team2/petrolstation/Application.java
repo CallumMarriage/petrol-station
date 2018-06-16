@@ -9,6 +9,8 @@ import com.team2.petrolstation.model.facility.Shop;
 import com.team2.petrolstation.model.view.Simulator;
 import com.team2.petrolstation.model.view.ApplicationView;
 
+import java.io.*;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +40,19 @@ public class Application implements Simulator{
     private FillingStation fillingStation;
     private Shop shop;
 
+    private static File outputFile;
+
     public static void main(String[] args){
+        try {
+            outputFile = new File(OUTPUT_FILE +LocalDateTime.now()+ ".txt");
+
+            PrintWriter writer = new PrintWriter(outputFile);
+            writer.print("");
+            writer.close();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         Double chanceOfTrucks = 0.02;
         new Application(chanceOfTrucks);
     }
@@ -79,7 +93,10 @@ public class Application implements Simulator{
             return;
         }
 
-        applicationView.printFinalResults(getResults());
+        String results = getResults();
+        applicationView.updateScreen(results);
+        generateResultsFile(results);
+
     }
 
     /**
@@ -122,8 +139,9 @@ public class Application implements Simulator{
         Map<Integer, Customer> finishedCustomers = runShop( finishedAtPump, priceOfFuel, random);
 
         //remove the finished shoppers from their tills
-        for(Integer i : finishedCustomers.keySet()) {
-            shop.getServiceMachines()[i].removeCustomer();
+        for(Entry<Integer, Customer> customerEntry : finishedCustomers.entrySet()) {
+            applicationView.updateScreen("A customer has left spending $" + ((Driver) customerEntry.getValue()).getCurrentSpend() );
+            shop.getServiceMachines()[customerEntry.getKey()].removeCustomer();
         }
 
         //remove the finished vehicles and shoppers from their pumps
@@ -146,10 +164,7 @@ public class Application implements Simulator{
 
         //get drivers who have finished loitering in the shop
         List<Customer> finishedAtShop = shop.getDriversFinished();
-        for(Customer customer : finishedAtShop) {
-        		applicationView.updateScreen("A customer left spending " + ((Driver) customer).getCurrentSpend());
-        }
-        
+
         //remove the drivers who are finished from the shopfloor
         shop.removeDrivers(finishedAtShop);
 
@@ -315,6 +330,58 @@ public class Application implements Simulator{
                     chanceOfTruck -= ((chanceOfTruck / 100) * 20) ;
                 }
             }
+        }
+    }
+
+    /**
+     * Writes results to a file
+     * Prints result to screen as its writing.
+     *
+     * @param results list of all of the results.
+     */
+    private void generateResultsFile(String results){
+        BufferedWriter bufferedWriter = null;
+        FileWriter fileWriter = null;
+
+        try{
+            LocalDateTime currentDate = LocalDateTime.now();
+            //create the file writer using the location store as a constant
+            fileWriter = new FileWriter(RESULTS_DESTINATION_FILE+"-"+currentDate+".txt");
+            //create a buffered write with the file writer as an argument
+            bufferedWriter = new BufferedWriter(fileWriter);
+            //loop through the results list
+            //add the line to the file
+            bufferedWriter.write(results);
+
+        }catch (IOException e){
+            e.printStackTrace();
+        } finally {
+            try{
+                //close the writers
+                if(bufferedWriter != null){
+                    bufferedWriter.close();
+                }
+                if(fileWriter != null){
+                    fileWriter.close();
+                }
+            }catch (IOException e){
+                LOGGER.log(Level.SEVERE, e.getMessage());
+            }
+        }
+    }
+
+    public void updateOutputFile(String output){
+        BufferedWriter bufferedWriter;
+        try{
+
+            FileWriter fw = new FileWriter(outputFile.getAbsoluteFile(), true);
+            bufferedWriter= new BufferedWriter(fw);
+
+            bufferedWriter.write(output);
+            bufferedWriter.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

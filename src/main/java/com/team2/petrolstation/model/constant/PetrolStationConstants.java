@@ -19,6 +19,5 @@ public class PetrolStationConstants {
     public static final String SMALL_CAR_ARRIVED = "A small car has arrived";
     public static final String TRUCK_ARRIVED = "A truck has arrived";
     public static final String FAMILY_SEDAN = "A family sedan has arrived";
-
-
+    public static final String OUTPUT_FILE = "target/output-";
 }
