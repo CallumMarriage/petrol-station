@@ -1,16 +1,11 @@
-package com.team2.petrolStation;
+package com.team2.petrolstation;
 
-import javafx.application.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 
 /**
