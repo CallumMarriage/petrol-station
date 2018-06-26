@@ -23,8 +23,8 @@ public class Facility {
      */
     public Map<Integer, Customer> manageTransactions() {
         Map<Integer, Customer> finishedCustomers = new HashMap<>();
-        for(int i = 0; i < customerServers.length; i++) {
-            Customer customer = customerServers[i].act();
+        for(int i = 0; i < this.customerServers.length; i++) {
+            Customer customer = this.customerServers[i].act();
             if(customer != null){
                 finishedCustomers.put(i, customer);
             }
@@ -70,15 +70,15 @@ public class Facility {
         double previous = -1.0;
         int positionOfPumpWithShortestTime = 0;
 
-        for (int i = 0; i < customerServers.length; i++) {
+        for (int i = 0; i < this.customerServers.length; i++) {
             //if the custom server has not been set up correctly throw an exception as every time this method is called it will be invalid
-            if (customerServers[i] != null) {
+            if (this.customerServers[i] != null) {
                 //get the size of the vehicles at the current pump so that we can compare to other pumps
-                double pumpQueueSize = customerServers[i].getSizeOfCustomersInQueue();
+                double pumpQueueSize = this.customerServers[i].getSizeOfCustomersInQueue();
 
                 //check if its valid (i.e if its a driver it should auto pass if its a vehicle it needs to be small enough).
                 //Check if the previous is -1, if it is then set the smallest to the current as the previous' queue was full
-                if (customerServers[i].checkIfCustomerFits(customer) && ( i == 0 || previous == -1.0 || pumpQueueSize < previous)) {
+                if (this.customerServers[i].checkIfCustomerFits(customer) && ( i == 0 || previous == -1.0 || pumpQueueSize < previous)) {
                     //if the pump has a smaller queue set the current pump to be the shortest and save the pump number
                     previous = pumpQueueSize;
                     positionOfPumpWithShortestTime = i;
@@ -107,7 +107,7 @@ public class Facility {
      * @param customer customer being added
      */
     public void addCustomerToBestMachine(int positionOfPumpWithShortestTime, Customer customer){
-        customerServers[positionOfPumpWithShortestTime].addCustomer(customer);
+        this.customerServers[positionOfPumpWithShortestTime].addCustomer(customer);
     }
 
     /**

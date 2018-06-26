@@ -1,8 +1,9 @@
 package com.team2.petrolstation.model.servicemachine;
 
-import com.team2.petrolstation.model.customer.vehicle.Motorbike;
+import com.team2.petrolstation.model.customer.Vehicle;
 import org.junit.Test;
 
+import static com.team2.petrolstation.model.constant.VehicleConstants.SIZE_OF_MOTORBIKE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -20,12 +21,12 @@ public class PumpTest {
 
 
         for(int i = 0; i < 2; i++){
-            pump.addCustomer(new Motorbike());
+            pump.addCustomer(new Vehicle(0, 0, 5, 0.0, SIZE_OF_MOTORBIKE, 0));
         }
 
         assertEquals(2, pump.getCustomersInQueue().size());
 
-        pump.addCustomer(new Motorbike());
+        pump.addCustomer(new Vehicle(0, 0, 5, 0.0, SIZE_OF_MOTORBIKE, 0));
 
         assertEquals(3, pump.getCustomersInQueue().size());
 

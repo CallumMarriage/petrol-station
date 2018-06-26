@@ -2,9 +2,6 @@ package com.team2.petrolstation.model.facility;
 
 import com.team2.petrolstation.model.customer.Customer;
 import com.team2.petrolstation.model.customer.Driver;
-import com.team2.petrolstation.model.customer.vehicle.Motorbike;
-import com.team2.petrolstation.model.customer.vehicle.SmallCar;
-import com.team2.petrolstation.model.customer.vehicle.Truck;
 import org.junit.Test;
 
 import java.util.*;
@@ -30,6 +27,7 @@ public class ShopTest {
 
     }
 
+    /*
     @Test
     public void testDecideToGoToShop(){
         Double priceOfFuel = 1.2;
@@ -71,7 +69,7 @@ public class ShopTest {
         assertTrue(allCustomers.get(0).size() >= 7);
         assertTrue(allCustomers.get(1).size() > 0);
 
-    }
+    }*/
 
     @Test
     public void testAddCustomerToTill(){

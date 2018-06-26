@@ -7,5 +7,5 @@ public interface Simulator {
 
     void simulate(Integer turns, Integer pumps, Integer tills,Double price, Double p, Double q, Boolean truckIsActive);
 
-    void updateOutputFile(String output);
+    String getResults();
 }

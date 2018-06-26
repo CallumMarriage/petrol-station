@@ -2,15 +2,13 @@ package com.team2.petrolstation;
 
 import com.team2.petrolstation.model.customer.Customer;
 import com.team2.petrolstation.model.customer.Driver;
-import com.team2.petrolstation.model.customer.vehicle.*;
+import com.team2.petrolstation.model.customer.Vehicle;
 import com.team2.petrolstation.model.exception.PumpNotFoundException;
 import com.team2.petrolstation.model.facility.FillingStation;
 import com.team2.petrolstation.model.facility.Shop;
 import com.team2.petrolstation.model.view.Simulator;
 import com.team2.petrolstation.model.view.ApplicationView;
 
-import java.io.*;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
@@ -18,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.team2.petrolstation.model.constant.PetrolStationConstants.*;
+import static com.team2.petrolstation.model.constant.VehicleConstants.*;
 
 /**
  * Application class allows for the running of simulations that generate vehicles and then refuels them and sends them to a shop to shop and or purchase their fuel.
@@ -40,30 +39,19 @@ public class Application implements Simulator{
     private FillingStation fillingStation;
     private Shop shop;
 
-    private static File outputFile;
-
     public static void main(String[] args){
-        try {
-            outputFile = new File(OUTPUT_FILE +LocalDateTime.now()+ ".txt");
 
-            PrintWriter writer = new PrintWriter(outputFile);
-            writer.print("");
-            writer.close();
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
         Double chanceOfTrucks = 0.02;
         new Application(chanceOfTrucks);
     }
 
     private Application(Double chanceOfTrucks){
-        moneyLostFromShop = 0.0;
-        moneyLostFillingStation = 0.0;
-        moneyGained = 0.0;
+        this.moneyLostFromShop = 0.0;
+        this.moneyLostFillingStation = 0.0;
+        this.moneyGained = 0.0;
         this.chanceOfTruck = chanceOfTrucks;
-        applicationView = new ApplicationView(this);
-        applicationView.start();
+        this.applicationView = new ApplicationView(this);
+        this.applicationView.start();
     }
 
 
@@ -82,21 +70,15 @@ public class Application implements Simulator{
         //build shop, filling station and the random that will be used throughout the application
         this.shop = new Shop(numTills);
         this.fillingStation = new FillingStation(numPumps);
-        Random random = new Random(8);
+        Random random = new Random(10);
 
         try {
-            for (int i = 0; i < numOfTurns; i += SECONDS_PER_TICK) {
+            for (int i = 0; i < numOfTurns; i++) {
                 simulateRound( random, priceOfFuel, truckIsActive);
             }
         } catch (Exception e){
             LOGGER.log(Level.SEVERE, e.getMessage());
-            return;
         }
-
-        String results = getResults();
-        applicationView.updateScreen(results);
-        generateResultsFile(results);
-
     }
 
     /**
@@ -104,15 +86,15 @@ public class Application implements Simulator{
      *
      * @return return all of the contents
      */
-    private String getResults(){
+    public String getResults(){
 
         //just to make the results look cleaner make sure the right ending word is used
-        String vehicle = checkIfPlural(fillingStation.getLeftOverCustomers(), "vehicle");
-        String driver = checkIfPlural(shop.getShopFloor().size(), "driver");
-        String tillDrivers = checkIfPlural(shop.getLeftOverCustomers(), "driver");
+        String vehicle = checkIfPlural(this.fillingStation.getLeftOverCustomers(), "vehicle");
+        String driver = checkIfPlural(this.shop.getShopFloor().size(), "driver");
+        String tillDrivers = checkIfPlural(this.shop.getLeftOverCustomers(), "driver");
 
         //finally print out the money lost and gained.
-        return START + "\n* Finances *\nMoney lost from Filling Station: $" + moneyLostFillingStation +"\nMoney lost from Shop: $" + moneyLostFromShop + "\nMoney gained: $" + moneyGained + "\n\n* Left over customers *\nFilling Station - Pumps: " + fillingStation.getLeftOverCustomers() + " " + vehicle + "\nShop - Tills: "+ shop.getLeftOverCustomers() + " " + driver +"\nShop - floor: " + shop.getShopFloor().size() + " " + tillDrivers;
+        return START + "\n* Finances *\nMoney lost from Filling Station: $" + this.moneyLostFillingStation +"\nMoney lost from Shop: $" + this.moneyLostFromShop + "\nMoney gained: $" + this.moneyGained + "\n\n* Left over customers *\nFilling Station - Pumps: " + this.fillingStation.getLeftOverCustomers() + " " + vehicle + "\nShop - Tills: "+ this.shop.getLeftOverCustomers() + " " + driver +"\nShop - floor: " + this.shop.getShopFloor().size() + " " + tillDrivers;
     }
 
     private String checkIfPlural(Integer num, String word){
@@ -129,26 +111,27 @@ public class Application implements Simulator{
      * @param random the random that will be used to generate the vehicles
      * @throws PumpNotFoundException error trying to add customer to a service machine
      */
-    private void simulateRound( Random random, Double priceOfFuel, Boolean truckIsActive) throws PumpNotFoundException {
-
-        Map<Integer, Customer> finishedAtPump = runFillingStation();
+    private void simulateRound( Random random, Double priceOfFuel, Boolean truckIsActive) throws Exception {
 
         //create the vehicles for the round and assign them to a pump
         assignVehicles(generateVehicles(random, truckIsActive), priceOfFuel);
+        removeCustomers(runShop( runFillingStation(), priceOfFuel, random));
+    }
 
-        Map<Integer, Customer> finishedCustomers = runShop( finishedAtPump, priceOfFuel, random);
-
-        //remove the finished shoppers from their tills
-        for(Entry<Integer, Customer> customerEntry : finishedCustomers.entrySet()) {
-            applicationView.updateScreen("A customer has left spending $" + ((Driver) customerEntry.getValue()).getCurrentSpend() );
-            shop.getServiceMachines()[customerEntry.getKey()].removeCustomer();
-        }
-
+    /**
+     * Removes customers from tills and their vehicles pumps once they have finished.
+     *
+     * @param finishedCustomers customers finished at the shop with their vehicles.
+     * @throws PumpNotFoundException pump associated with a customer was not found
+     */
+    private void removeCustomers(Map<Integer, Customer> finishedCustomers) throws PumpNotFoundException {
         //remove the finished vehicles and shoppers from their pumps
-        for (Customer customer : finishedCustomers.values()) {
-            Driver driver = (Driver) customer;
-            fillingStation.removeCustomerFromPump(driver.getPumpNumber());
-            moneyGained += driver.getCurrentSpend();
+        for (Entry<Integer, Customer> customerEntry : finishedCustomers.entrySet()) {
+            Driver driver = (Driver) customerEntry.getValue();
+            this.fillingStation.removeCustomerFromPump(driver.getPumpNumber());
+            this.moneyGained += driver.getCurrentSpend();
+            this.applicationView.updateScreen("A customer has left spending $" + driver.getCurrentSpend());
+            this.shop.getServiceMachines()[customerEntry.getKey()].removeCustomer();
         }
     }
 
@@ -160,32 +143,52 @@ public class Application implements Simulator{
      * @param random the random used to generate all of the values
      * @throws PumpNotFoundException returned when the correct pump can not be found.
      */
-    private void assignShoppers( Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws PumpNotFoundException {
-
+    private void assignShoppers( Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws Exception {
         //get drivers who have finished loitering in the shop
-        List<Customer> finishedAtShop = shop.getDriversFinished();
-
+        List<Customer> finishedAtShop = this.shop.getDriversFinished();
         //remove the drivers who are finished from the shopfloor
-        shop.removeDrivers(finishedAtShop);
-
+        this.shop.removeDrivers(finishedAtShop);
         if(finishedAtPump.size() > 0) {
-            //drivers decide if they want to go on the shop floor
-            List<List<Driver>> customers = shop.decideToGoToShop(finishedAtPump, random, priceOfFuel);
 
-            //add all of the money lost from all the drivers who dont want to loiter
-            setLostMoneyFromShop(customers.get(0), finishedAtPump);
+            //drivers decide if they want to go on the shop floor
+            List<Driver> notGoingToShop = new ArrayList<>();
+            List<Driver> goingToShop = new ArrayList<>();
+
+            for(Entry<Integer, Customer> customerAndPump : finishedAtPump.entrySet()){
+
+                if(customerAndPump.getValue() instanceof Vehicle) {
+                    Vehicle vehicle = (Vehicle) customerAndPump.getValue();
+                    Driver driver = new Driver((Math.round((vehicle.getMaxFuel() * priceOfFuel)) * 100d / 100d), customerAndPump.getKey());
+
+                    if (vehicle.decide(random)) {
+                        // add the amount that the customer is going to spend in the shop to the shop and add to the total.
+                        driver.addToCurrentSpend(vehicle.getShopPurchase());
+
+                        //add the time the driver will be spending in the shop.
+                        driver.setTimeInShop(vehicle.getShopTime());
+
+                        //add the customers that are going to the shop to the list.s
+                        goingToShop.add(driver);
+
+                    } else {
+                        this.moneyLostFromShop += vehicle.getShopPurchase();
+
+                        notGoingToShop.add(driver);
+                    }
+                } else {
+                    throw new Exception("Something went wrong!");
+                }
+            }
 
             //add all of the people who dont want to, to the list of finished drivers
-            finishedAtShop.addAll(customers.get(0));
-
+            finishedAtShop.addAll(notGoingToShop);
             //add the drivers who do want to go to the shop floor to it
-            shop.addToShopFloor(customers.get(1));
-
+            this.shop.addToShopFloor(goingToShop);
         }
-
         //add the drivers who are finished with the shop floor to tills.
-        shop.addCustomerToMachine(finishedAtShop);
+        this.shop.addCustomerToMachine(finishedAtShop);
     }
+
 
     /**
      * Generates vehicles and assigns the new vehicles to the best pump
@@ -198,8 +201,8 @@ public class Application implements Simulator{
 
         //if vehicles have been generated, add them to the queues
         if(!vehicles.isEmpty()){
-            Collection<Customer> lostCustomers = fillingStation.addCustomerToMachine(vehicles);
-            moneyLostFillingStation += calculateLostPerVehicle(lostCustomers, priceOfFuel);
+            Collection<Customer> lostCustomers = this.fillingStation.addCustomerToMachine(vehicles);
+            this.moneyLostFillingStation += calculateLossPerVehicle(lostCustomers, priceOfFuel);
         }
     }
 
@@ -210,7 +213,7 @@ public class Application implements Simulator{
      */
     private Map<Integer, Customer> runFillingStation() {
         //Get the finished vehicles in the system
-        Map<Integer, Customer> finishedAtPump = fillingStation.manageTransactions();
+        Map<Integer, Customer> finishedAtPump = this.fillingStation.manageTransactions();
 
         //if there are finished vehicles set the chance of trucks spawning
         if(finishedAtPump.size() > 0) {
@@ -229,13 +232,11 @@ public class Application implements Simulator{
      * @return drivers who are finished and the pump where their vehicle is
      * @throws PumpNotFoundException could not find a valid service machine, this is only thrown if for drivers
      */
-    private Map<Integer, Customer> runShop(Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws PumpNotFoundException {
+    private Map<Integer, Customer> runShop(Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws Exception {
         //get the finished shoppers in the system
         Map<Integer, Customer> finishedCustomers = shop.manageTransactions();
-
         //add the new shoppers to the correct locations
         assignShoppers(finishedAtPump, priceOfFuel, random);
-
         return finishedCustomers;
     }
 
@@ -246,36 +247,20 @@ public class Application implements Simulator{
      * @param priceOfFuel price of fuel
      * @return amount of money lost
      */
-    private Double calculateLostPerVehicle(Collection<Customer> lostCustomers, Double priceOfFuel){
+    private Double calculateLossPerVehicle(Collection<Customer> lostCustomers, Double priceOfFuel){
         Double moneyLost = 0.0;
         for(Customer customer : lostCustomers){
-            moneyLost += Math.round((customer.getSize() * priceOfFuel)*100/100);
+            applicationView.updateScreen("A Customer had to leave!");
+            moneyLost += Math.round((((Vehicle)customer ).getMaxFuel() * priceOfFuel)*100/100);
         }
         return moneyLost;
-    }
-
-    /**
-     * Get the lost money from customers not going to the shop
-     *
-     * @param customers all of the customers
-     * @param finishedAtPump all of the vehicles and their pumps
-     */
-    private void setLostMoneyFromShop(List<Driver> customers, Map<Integer, Customer> finishedAtPump) {
-        //add the values lost to the overall lost
-
-        for (Driver customer : customers) {
-            for (Entry<Integer, Customer> pump : finishedAtPump.entrySet()) {
-                if (customer.getPumpNumber().equals(pump.getKey())) {
-                    moneyLostFromShop += ((Vehicle) pump.getValue()).getShopPurchase();
-                }
-            }
-        }
     }
 
     /**
      * generates vehicles
      *
      * @param random random
+     * @param truckIsActive checks if truck is active, this can turned off at start
      * @return list of generated vehicles
      */
     private List<Customer> generateVehicles(Random random, Boolean truckIsActive){
@@ -285,28 +270,30 @@ public class Application implements Simulator{
 
         try {
             if (randomNum > p && randomNum <= (2 * p)) {
-                vehicles.add(new Motorbike());
-                applicationView.updateScreen(MOTORBIKE_ARRIVED);
+                vehicles.add(new Vehicle(0, 0, 5, 0.0, SIZE_OF_MOTORBIKE, 0));
+                this.applicationView.updateScreen(MOTORBIKE_ARRIVED);
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
             }
 
             if (randomNum <= p) {
-                vehicles.add(new SmallCar(random));
-                applicationView.updateScreen(SMALL_CAR_ARRIVED);
+                vehicles.add(new Vehicle(random.nextInt(24 - 12 + 1) + 12, random.nextInt(10 -5 + 1) + 5, random.nextInt(9 - 7  + 1) + 7, CHANCE_OF_SMALL_CAR_GOING_TO_SHOP, SIZE_OF_SMALL_CAR, MAX_QUEUE_TIME_SMALL_CAR));
+                this.applicationView.updateScreen(SMALL_CAR_ARRIVED);
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
             }
 
             
-            if (truckIsActive && randomNum > ((2 * p) + q) && randomNum <= ((2 * p) + q) + chanceOfTruck) {
-            		vehicles.add(new Truck(random));
-                applicationView.updateScreen(TRUCK_ARRIVED);
+            if (truckIsActive && randomNum > ((2 * p) + q) && randomNum <= (((2 * p) + q) + chanceOfTruck)) {
+                Vehicle vehicle = new Vehicle(random.nextInt(36 -24 +1  ) +24, random.nextInt(20 - 15 + 1) + 15, random.nextInt(40 - 30 + 1) + 30, CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
+                vehicle.setIsTruck();
+                vehicles.add(vehicle);
+                this.applicationView.updateScreen(TRUCK_ARRIVED);
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
               
             }
 
             if (randomNum > (2 * p) && randomNum <= ((2 * p) + q)) {
-                vehicles.add(new FamilySedan(random));
-                applicationView.updateScreen(FAMILY_SEDAN);
+                vehicles.add(new Vehicle(random.nextInt(30 - 12 + 1) + 12, random.nextInt(16 - 8 + 1) + 8, random.nextInt(18) + 12, CHANCE_OF_FAMILY_SEDAN_GOING_TO_SHOP, SIZE_OF_FAMILY_SEDAN, MAX_QUEUE_TIME_SMALL_CAR));
+                this.applicationView.updateScreen(FAMILY_SEDAN);
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
             }
         }catch (Exception e){
@@ -322,66 +309,15 @@ public class Application implements Simulator{
      */
     private void setChanceOfTruck(Collection<Customer> customers){
         for(Customer customer : customers){
-            if(customer instanceof Truck){
-                Truck truck = (Truck) customer;
-                if(truck.getTimeInQueue() < truck.getMaxQueueTime()){
-                    chanceOfTruck += ((chanceOfTruck / 100) * 5);
+            Vehicle vehicle = (Vehicle) customer;
+            if(vehicle.getIsTruck()){
+                if(vehicle.getTimeInQueue() < vehicle.getMaxQueueTime()){
+                    this.chanceOfTruck += ((this.chanceOfTruck / 100) * 5);
                 } else {
-                    chanceOfTruck -= ((chanceOfTruck / 100) * 20) ;
+                    this.chanceOfTruck -= ((this.chanceOfTruck / 100) * 20) ;
                 }
             }
         }
     }
 
-    /**
-     * Writes results to a file
-     * Prints result to screen as its writing.
-     *
-     * @param results list of all of the results.
-     */
-    private void generateResultsFile(String results){
-        BufferedWriter bufferedWriter = null;
-        FileWriter fileWriter = null;
-
-        try{
-            LocalDateTime currentDate = LocalDateTime.now();
-            //create the file writer using the location store as a constant
-            fileWriter = new FileWriter(RESULTS_DESTINATION_FILE+"-"+currentDate+".txt");
-            //create a buffered write with the file writer as an argument
-            bufferedWriter = new BufferedWriter(fileWriter);
-            //loop through the results list
-            //add the line to the file
-            bufferedWriter.write(results);
-
-        }catch (IOException e){
-            e.printStackTrace();
-        } finally {
-            try{
-                //close the writers
-                if(bufferedWriter != null){
-                    bufferedWriter.close();
-                }
-                if(fileWriter != null){
-                    fileWriter.close();
-                }
-            }catch (IOException e){
-                LOGGER.log(Level.SEVERE, e.getMessage());
-            }
-        }
-    }
-
-    public void updateOutputFile(String output){
-        BufferedWriter bufferedWriter;
-        try{
-
-            FileWriter fw = new FileWriter(outputFile.getAbsoluteFile(), true);
-            bufferedWriter= new BufferedWriter(fw);
-
-            bufferedWriter.write(output);
-            bufferedWriter.close();
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 }
