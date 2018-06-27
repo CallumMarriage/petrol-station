@@ -40,20 +40,17 @@ public class Application implements Simulator{
     private Shop shop;
 
     public static void main(String[] args){
-
-        Double chanceOfTrucks = 0.02;
-        new Application(chanceOfTrucks);
+        new Application();
     }
 
-    private Application(Double chanceOfTrucks){
+    public Application(){
         this.moneyLostFromShop = 0.0;
         this.moneyLostFillingStation = 0.0;
         this.moneyGained = 0.0;
-        this.chanceOfTruck = chanceOfTrucks;
+        this.chanceOfTruck = 0.2;
         this.applicationView = new ApplicationView(this);
         this.applicationView.start();
     }
-
 
     /**
      * Simulates the petrol station and calls simulateRound for as long as chosen.

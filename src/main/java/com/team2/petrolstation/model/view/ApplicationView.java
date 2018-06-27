@@ -91,7 +91,7 @@ public class ApplicationView {
      * @return time in seconds
      * @throws InvalidInputException time could not be converted.
      */
-    private static Integer convertTimeIntoTicks(String time, String identifier) throws InvalidInputException{
+    public static Integer convertTimeIntoTicks(String time, String identifier) throws InvalidInputException{
 
         Integer number;
         try {
