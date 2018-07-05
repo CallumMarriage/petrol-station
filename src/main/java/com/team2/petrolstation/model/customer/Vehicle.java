@@ -4,6 +4,10 @@ import java.util.Random;
 
 /**
  * Allows for any vehicle to refuel, manage their fuel size and their size.
+ * We chose this implementation as all of the vehicles behave in the same way, it is simpler to have a single class that has a number of fields than a class for each vehicle type
+ * The truck field is used so that we know that a specific instance is a Truck for use in the Application class.
+ * The hasRefueled flag is used to show that this vehicle does not need to be refueled again.
+ * We use the shop time field to dictate how long the driver in this vehicle can spend loitering in the shop we have this here as it is done based on which vehicle the customer has come from, if it is a motorbike, this is always set to 0.
  *
  * @author callummarriage
  */
@@ -20,6 +24,8 @@ public class Vehicle implements Customer{
     private Integer maxQueueTime;
     private Boolean isTruck;
 
+    //instead of having a long constructor param list, we could have used the set methods in order to set all these values,
+    // the reason we did not do this is to keep the method that creates the vehicles shorter.
     public Vehicle(Integer shopTime, Integer shopPurchase, Integer maxFuel, Double chanceOfGoingToShop, Double size, Integer maxQueueTime){
         this.shopTime = shopTime;
         this.shopPurchase = shopPurchase;
@@ -82,11 +88,17 @@ public class Vehicle implements Customer{
         return this.maxFuel;
     }
 
+    /**
+     * Decided to go into the shop based on the speed the vehicle refueled at
+     *
+     * @param random single random to keep consistency
+     * @return whether the driver from this vehicle should go into the shop
+     */
     public Boolean decide(Random random) {
         return (getTimeInQueue() < getMaxQueueTime() && random.nextDouble() < getChanceOfGoingToShop());
     }
 
-    public Double getChanceOfGoingToShop() {
+    private Double getChanceOfGoingToShop() {
         return this.chanceOfGoingToShop;
     }
 

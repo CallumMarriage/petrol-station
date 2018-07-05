@@ -1,13 +1,12 @@
 package com.team2.petrolstation.model.view;
 
+import com.team2.petrolstation.Application;
+import com.team2.petrolstation.model.FileWriterUtils;
 import com.team2.petrolstation.model.exception.InvalidInputException;
 
-import java.io.*;
-import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import static com.team2.petrolstation.model.FileWriterUtils.generateResultsFile;
 import static com.team2.petrolstation.model.constant.PetrolStationConstants.*;
 
 /**
@@ -15,22 +14,10 @@ import static com.team2.petrolstation.model.constant.PetrolStationConstants.*;
  */
 public class ApplicationView {
 
-    private static final Logger LOGGER = Logger.getLogger(ApplicationView.class.getName());
     private Simulator simulator;
-    private static File outputFile;
 
     public ApplicationView(Simulator simulator){
         this.simulator = simulator;
-        try {
-            outputFile = new File(OUTPUT_FILE +LocalDateTime.now()+ ".txt");
-
-            PrintWriter writer = new PrintWriter(outputFile);
-            writer.print("");
-            writer.close();
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -67,7 +54,9 @@ public class ApplicationView {
         }
 
         //run the simulation using the inputed values
-        this.simulator.simulate(numOfTurns, numPumps, numTills, priceOfFuel, p, q, truckIsActive);
+        this.simulator.setP(p);
+        this.simulator.setQ(q);
+        this.simulator.simulate(numOfTurns, numPumps, numTills, priceOfFuel, truckIsActive);
 
         String results = simulator.getResults();
         updateScreen(results);
@@ -77,7 +66,7 @@ public class ApplicationView {
     public void updateScreen(String results){
         System.out.println("> " + results);
 
-        updateOutputFile(results + "\n");
+        FileWriterUtils.updateOutputFile(results + "\n");
         //LOGGER.log(Level.INFO, results);
     }
 
@@ -91,7 +80,7 @@ public class ApplicationView {
      * @return time in seconds
      * @throws InvalidInputException time could not be converted.
      */
-    public static Integer convertTimeIntoTicks(String time, String identifier) throws InvalidInputException{
+    private static Integer convertTimeIntoTicks(String time, String identifier) throws InvalidInputException{
 
         Integer number;
         try {
@@ -129,63 +118,5 @@ public class ApplicationView {
         }
 
         return number;
-    }
-
-    /**
-     * Writes results to a file
-     * Prints result to screen as its writing.
-     * Should file generation be part of the Application or the Application View??
-     *
-     * @param results list of all of the results.
-     */
-    private void generateResultsFile(String results){
-        BufferedWriter bufferedWriter = null;
-        FileWriter fileWriter = null;
-
-        try{
-            LocalDateTime currentDate = LocalDateTime.now();
-            //create the file writer using the location store as a constant
-            fileWriter = new FileWriter(RESULTS_DESTINATION_FILE+"-"+currentDate+".txt");
-            //create a buffered write with the file writer as an argument
-            bufferedWriter = new BufferedWriter(fileWriter);
-            //loop through the results list
-            //add the line to the file
-            bufferedWriter.write(results);
-
-        }catch (IOException e){
-            e.printStackTrace();
-        } finally {
-            try{
-                //close the writers
-                if(bufferedWriter != null){
-                    bufferedWriter.close();
-                }
-                if(fileWriter != null){
-                    fileWriter.close();
-                }
-            }catch (IOException e){
-                LOGGER.log(Level.SEVERE, e.getMessage());
-            }
-        }
-    }
-
-    /**
-     * Adds to the output to the output file
-     *
-     * @param output the content to be added to file.
-     */
-    private void updateOutputFile(String output){
-        BufferedWriter bufferedWriter;
-        try{
-
-            FileWriter fw = new FileWriter(outputFile.getAbsoluteFile(), true);
-            bufferedWriter= new BufferedWriter(fw);
-
-            bufferedWriter.write(output);
-            bufferedWriter.close();
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 }

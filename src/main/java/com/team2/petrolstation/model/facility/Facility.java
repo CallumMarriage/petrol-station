@@ -7,7 +7,7 @@ import com.team2.petrolstation.model.servicemachine.ServiceMachine;
 import java.util.*;
 
 /**
- * Implements the process of assinging a customer to the best available service machine.
+ * Implements the process of assigning a customer to the best available service machine.
  *
  * @author callummarriage
  */
@@ -33,6 +33,8 @@ public class Facility {
     }
 
     /**
+     * This method provides an interface to the Application class to access the facility adding methods,
+     * this reduces coupling by allowing changes to be made to the facility without having to change the Application class.
      * Finds and adds each customer to the best free service machine.
      * If a vehicle does not find the best service machine it will leave the Petrol station and possible income will be added to lost money.
      * If a driver does not find the best service machine it will throw an exception.
@@ -65,7 +67,7 @@ public class Facility {
      * @param customer can be a driver or a vehicle
      * @return the position of the best service machine.
      */
-     public int findBestMachine(Customer customer) throws PumpNotFoundException{
+    int findBestMachine(Customer customer) throws PumpNotFoundException{
          //set to minus one to differentiate between the zeroth element and no elements
         double previous = -1.0;
         int positionOfPumpWithShortestTime = 0;
@@ -106,7 +108,7 @@ public class Facility {
      * @param positionOfPumpWithShortestTime best machine
      * @param customer customer being added
      */
-    public void addCustomerToBestMachine(int positionOfPumpWithShortestTime, Customer customer){
+    void addCustomerToBestMachine(int positionOfPumpWithShortestTime, Customer customer){
         this.customerServers[positionOfPumpWithShortestTime].addCustomer(customer);
     }
 
