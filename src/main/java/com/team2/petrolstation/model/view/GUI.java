@@ -1,19 +1,27 @@
 package com.team2.petrolstation.model.view;
 
+
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Created by callummarriage on 05/07/2018.
+ * Created by callummarriage on 10/07/2018.
  */
-public class GUI extends Application {
-
-    public static void main(String args[]){
-        launch(args);
-    }
-
+public class GUI extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
+        final FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/fxml/GUI.fxml"));
+        fxmlLoader.setController(new SimulatorController());
+        Parent root = fxmlLoader.load();
 
+        final Scene scene = new Scene(root, 800, 747);
+
+        primaryStage.setTitle("FUCK YOU");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }

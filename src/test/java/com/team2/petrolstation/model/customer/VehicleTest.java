@@ -41,15 +41,4 @@ public class VehicleTest {
 
         assertTrue(smallCar.getMaxFuel() >= 7 && smallCar.getMaxFuel() <= 9);
     }
-
-    @Test
-    public void testDecideToGoToShop(){
-
-        Random random = new Random();
-        Vehicle smallCar =new Vehicle(random.nextInt(24 - 12 + 1) + 12, random.nextInt(10 -5 + 1) + 5, random.nextInt(9 - 7  + 1) + 7, CHANCE_OF_SMALL_CAR_GOING_TO_SHOP, SIZE_OF_SMALL_CAR, MAX_QUEUE_TIME_SMALL_CAR);
-        smallCar.setTimeInQueue(12);
-        assertTrue(smallCar.decide(random));
-        smallCar.setTimeInQueue(100);
-        assertFalse(smallCar.decide(random));
-    }
 }
