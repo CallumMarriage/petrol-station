@@ -25,7 +25,7 @@ public class FacilityTest {
 
 
     @Test
-    public void testAddVehicleToPump(){
+    public void testAddVehicleToServiceMachine(){
         Random random = new Random(3);
         Vehicle truck = new Vehicle((random.nextInt(36 -24 +1  ) +24), (random.nextInt(20 - 15 + 1) + 15), (random.nextInt(40 - 30 + 1) + 30), CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
         Vehicle car = new Vehicle((random.nextInt(24 - 12 + 1) + 12), (random.nextInt(10 -5 + 1) + 5), (random.nextInt(9 - 7  + 1) + 7), CHANCE_OF_SMALL_CAR_GOING_TO_SHOP, SIZE_OF_SMALL_CAR, MAX_QUEUE_TIME_SMALL_CAR);

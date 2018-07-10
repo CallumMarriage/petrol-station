@@ -1,12 +1,11 @@
 package com.team2.petrolstation.model.view;
 
-import com.team2.petrolstation.Application;
-import com.team2.petrolstation.model.FileWriterUtils;
+import com.team2.petrolstation.util.FileWriterUtils;
 import com.team2.petrolstation.model.exception.InvalidInputException;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.team2.petrolstation.model.FileWriterUtils.generateResultsFile;
+import static com.team2.petrolstation.util.FileWriterUtils.generateResultsFile;
 import static com.team2.petrolstation.model.constant.PetrolStationConstants.*;
 
 /**

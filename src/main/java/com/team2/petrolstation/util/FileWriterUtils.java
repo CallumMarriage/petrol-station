@@ -1,4 +1,4 @@
-package com.team2.petrolstation.model;
+package com.team2.petrolstation.util;
 
 import com.team2.petrolstation.model.view.ApplicationView;
 

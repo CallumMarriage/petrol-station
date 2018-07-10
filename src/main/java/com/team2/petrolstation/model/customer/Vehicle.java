@@ -105,4 +105,9 @@ public class Vehicle implements Customer{
     public Double getSize() {
         return this.size;
     }
+
+    public void setTimeInQueue(Integer timeInQueue) {
+        this.timeInQueue = timeInQueue;
+    }
+
 }
