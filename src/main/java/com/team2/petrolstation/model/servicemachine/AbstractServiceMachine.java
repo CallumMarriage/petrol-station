@@ -15,19 +15,19 @@ public abstract class AbstractServiceMachine implements ServiceMachine {
     private Queue<Customer> customerQueue;
 
     AbstractServiceMachine(){
-        customerQueue = new LinkedList<>();
+        this.customerQueue = new LinkedList<>();
     }
 
     @Override
     public Queue<Customer> getCustomersInQueue(){
-        return customerQueue;
+        return this.customerQueue;
     }
 
     @Override
     public double getSizeOfCustomersInQueue(){
         double sizeOfVehiclesInQueue = 0;
 
-        for(Customer customer : customerQueue){
+        for(Customer customer : this.customerQueue){
             sizeOfVehiclesInQueue += customer.getSize();
         }
 
@@ -36,7 +36,7 @@ public abstract class AbstractServiceMachine implements ServiceMachine {
 
     @Override
     public void removeCustomer(){
-        customerQueue.remove();
+        this.customerQueue.remove();
     }
 
     /**
@@ -45,7 +45,7 @@ public abstract class AbstractServiceMachine implements ServiceMachine {
      */
     @Override
     public void addCustomer(Customer vehicle) {
-        customerQueue.add(vehicle);
+        this.customerQueue.add(vehicle);
     }
 
 }

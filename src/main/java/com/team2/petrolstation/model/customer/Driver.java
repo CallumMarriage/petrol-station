@@ -37,10 +37,10 @@ public class Driver implements Customer {
      */
     @Override
     public Boolean act(Integer value) {
-        if((currentTimeInShop + value) >= timeInShop){
+        if((this.currentTimeInShop + value) >= this.timeInShop){
             return true;
         } else {
-            currentTimeInShop += value;
+            this.currentTimeInShop += value;
             return false;
         }
     }
@@ -58,10 +58,10 @@ public class Driver implements Customer {
     }
 
     public Integer getMaximumSpend() {
-        return maximumSpend;
+        return this.maximumSpend;
     }
 
     public Integer getPumpNumber() {
-        return pumpNumber;
+        return this.pumpNumber;
     }
 }

@@ -7,7 +7,7 @@ import com.team2.petrolstation.model.servicemachine.ServiceMachine;
 import java.util.*;
 
 /**
- * Implements the process of assinging a customer to the best available service machine.
+ * Implements the process of assigning a customer to the best available service machine.
  *
  * @author callummarriage
  */
@@ -23,8 +23,8 @@ public class Facility {
      */
     public Map<Integer, Customer> manageTransactions() {
         Map<Integer, Customer> finishedCustomers = new HashMap<>();
-        for(int i = 0; i < customerServers.length; i++) {
-            Customer customer = customerServers[i].act();
+        for(int i = 0; i < this.customerServers.length; i++) {
+            Customer customer = this.customerServers[i].act();
             if(customer != null){
                 finishedCustomers.put(i, customer);
             }
@@ -33,6 +33,8 @@ public class Facility {
     }
 
     /**
+     * This method provides an interface to the Application class to access the facility adding methods,
+     * this reduces coupling by allowing changes to be made to the facility without having to change the Application class.
      * Finds and adds each customer to the best free service machine.
      * If a vehicle does not find the best service machine it will leave the Petrol station and possible income will be added to lost money.
      * If a driver does not find the best service machine it will throw an exception.
@@ -65,20 +67,20 @@ public class Facility {
      * @param customer can be a driver or a vehicle
      * @return the position of the best service machine.
      */
-     public int findBestMachine(Customer customer) throws PumpNotFoundException{
+    int findBestMachine(Customer customer) throws PumpNotFoundException{
          //set to minus one to differentiate between the zeroth element and no elements
         double previous = -1.0;
         int positionOfPumpWithShortestTime = 0;
 
-        for (int i = 0; i < customerServers.length; i++) {
+        for (int i = 0; i < this.customerServers.length; i++) {
             //if the custom server has not been set up correctly throw an exception as every time this method is called it will be invalid
-            if (customerServers[i] != null) {
+            if (this.customerServers[i] != null) {
                 //get the size of the vehicles at the current pump so that we can compare to other pumps
-                double pumpQueueSize = customerServers[i].getSizeOfCustomersInQueue();
+                double pumpQueueSize = this.customerServers[i].getSizeOfCustomersInQueue();
 
                 //check if its valid (i.e if its a driver it should auto pass if its a vehicle it needs to be small enough).
                 //Check if the previous is -1, if it is then set the smallest to the current as the previous' queue was full
-                if (customerServers[i].checkIfCustomerFits(customer) && ( i == 0 || previous == -1.0 || pumpQueueSize < previous)) {
+                if (this.customerServers[i].checkIfCustomerFits(customer) && ( i == 0 || previous == -1.0 || pumpQueueSize < previous)) {
                     //if the pump has a smaller queue set the current pump to be the shortest and save the pump number
                     previous = pumpQueueSize;
                     positionOfPumpWithShortestTime = i;
@@ -106,8 +108,8 @@ public class Facility {
      * @param positionOfPumpWithShortestTime best machine
      * @param customer customer being added
      */
-    public void addCustomerToBestMachine(int positionOfPumpWithShortestTime, Customer customer){
-        customerServers[positionOfPumpWithShortestTime].addCustomer(customer);
+    void addCustomerToBestMachine(int positionOfPumpWithShortestTime, Customer customer){
+        this.customerServers[positionOfPumpWithShortestTime].addCustomer(customer);
     }
 
     /**

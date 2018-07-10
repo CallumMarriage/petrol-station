@@ -1,7 +1,7 @@
 package com.team2.petrolstation.model.servicemachine;
 
 import com.team2.petrolstation.model.customer.Customer;
-import com.team2.petrolstation.model.customer.vehicle.Vehicle;
+import com.team2.petrolstation.model.customer.Vehicle;
 
 import static com.team2.petrolstation.model.constant.ServiceMachineConstants.MAX_QUEUE_SIZE;
 
@@ -23,7 +23,7 @@ public class Pump extends AbstractServiceMachine {
      */
     @Override
     public Customer act() {
-        if(!getCustomersInQueue().isEmpty()) {
+        if(getCustomersInQueue().size() > 0) {
             Customer customer = getCustomersInQueue().peek();
             if (customer.act(1)) {
                 return customer;

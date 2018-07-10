@@ -1,23 +1,18 @@
 package com.team2.petrolstation.model.view;
 
+import com.team2.petrolstation.util.FileWriterUtils;
 import com.team2.petrolstation.model.exception.InvalidInputException;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.TimeUnit;
 
-import static com.team2.petrolstation.model.constant.PetrolStationConstants.RESULTS_DESTINATION_FILE;
-import static com.team2.petrolstation.model.constant.PetrolStationConstants.SECONDS_PER_TICK;
+import static com.team2.petrolstation.util.FileWriterUtils.generateResultsFile;
+import static com.team2.petrolstation.model.constant.PetrolStationConstants.*;
 
 /**
  * @author callummarriage
  */
 public class ApplicationView {
 
-    private static final Logger LOGGER = Logger.getLogger(ApplicationView.class.getName());
     private Simulator simulator;
 
     public ApplicationView(Simulator simulator){
@@ -36,28 +31,41 @@ public class ApplicationView {
         Double priceOfFuel = 1.2;
         Double p = 0.01;
         Double q = 0.02;
-
         Boolean truckIsActive = true;
         String time = "1";
         String identifiers = "h";
 
         try {
-            numOfTurns = convertTimeIntoSeconds(time, identifiers);
+            numOfTurns = convertTimeIntoTicks(time, identifiers);
 
         } catch(InvalidInputException e){
             e.printStackTrace();
             return;
         }
-
-        updateScreen("Welcome to the simulation\nThe duration will be " + numOfTurns + " seconds or " + (numOfTurns / SECONDS_PER_TICK) + " ticks \n");
+        updateScreen("**Welcome to the simulation**\nHere are the simulation details.\nThe duration will be " + (numOfTurns * SECONDS_PER_TICK)+ " seconds or " + (numOfTurns) + " ticks.");
+        try {
+            updateScreen("Number of Pumps: " + numPumps + "\n" + "Number of tills: " + numTills + "\n");
+            TimeUnit.MILLISECONDS.sleep(1000);
+            System.out.println("The simulation will begin shortly.\n");
+            TimeUnit.MILLISECONDS.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         //run the simulation using the inputed values
-        simulator.simulate(numOfTurns, numPumps, numTills, priceOfFuel, p, q, truckIsActive);
+        this.simulator.setP(p);
+        this.simulator.setQ(q);
+        this.simulator.simulate(numOfTurns, numPumps, numTills, priceOfFuel, truckIsActive);
+
+        String results = simulator.getResults();
+        updateScreen(results);
+        generateResultsFile(results);
     }
 
     public void updateScreen(String results){
-        System.out.println(results);
-        simulator.updateOutputFile(results + "\n");
+        System.out.println("> " + results);
+
+        FileWriterUtils.updateOutputFile(results + "\n");
         //LOGGER.log(Level.INFO, results);
     }
 
@@ -65,11 +73,13 @@ public class ApplicationView {
      * Converts the time into seconds based on its identifier and returns the new value.
      * I chose this design because it is clear what is calculating what, and is easy to add new time formats
      *
+     * Should this be in application?
+     *
      * @param time the amount of time the simulation will execute for.
      * @return time in seconds
      * @throws InvalidInputException time could not be converted.
      */
-    private static Integer convertTimeIntoSeconds(String time, String identifier) throws InvalidInputException{
+    private static Integer convertTimeIntoTicks(String time, String identifier) throws InvalidInputException{
 
         Integer number;
         try {
@@ -95,10 +105,10 @@ public class ApplicationView {
                     //minute
                     case ("m"): doubleNumber *= 60;
                         break;
-                    //tick
-                    case ("t"): doubleNumber *=10;
-                    default: break;
+                    default: return null;
                 }
+
+                doubleNumber /= SECONDS_PER_TICK;
             }
 
             number = Integer.parseInt(Math.round(doubleNumber) + "");

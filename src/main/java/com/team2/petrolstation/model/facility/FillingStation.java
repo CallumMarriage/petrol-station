@@ -14,9 +14,9 @@ import com.team2.petrolstation.model.servicemachine.ServiceMachine;
 public class FillingStation extends Facility {
 
     public FillingStation(Integer numOfServiceMachines) {
-        customerServers = new ServiceMachine[numOfServiceMachines];
+        this.customerServers = new ServiceMachine[numOfServiceMachines];
         for(int i = 0; i < numOfServiceMachines; i++){
-            customerServers[i] = new Pump();
+            this.customerServers[i] = new Pump();
         }
     }
 
@@ -26,10 +26,10 @@ public class FillingStation extends Facility {
      * @throws PumpNotFoundException the pump specified could not be found
      */
     public void removeCustomerFromPump(Integer pumpNumber) throws PumpNotFoundException{
-        if(customerServers[pumpNumber] == null){
+        if(this.customerServers[pumpNumber] == null){
             throw new PumpNotFoundException(pumpNumber);
         }
-        customerServers[pumpNumber].getCustomersInQueue().remove();
+        this.customerServers[pumpNumber].getCustomersInQueue().remove();
 
     }
 }
