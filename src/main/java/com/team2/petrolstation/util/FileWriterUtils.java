@@ -5,7 +5,10 @@ import com.team2.petrolstation.model.view.ApplicationView;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,9 +41,13 @@ public class FileWriterUtils {
         java.io.FileWriter fileWriter = null;
 
         try{
-            LocalDateTime currentDate = LocalDateTime.now();
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+            LocalDateTime now = LocalDateTime.now();
+            String date= dtf.format(now);
+            System.out.println(date);
+
             //create the file writer using the location store as a constant
-            fileWriter = new java.io.FileWriter(RESULTS_DESTINATION_FILE+"-"+currentDate+".txt");
+            fileWriter = new java.io.FileWriter(RESULTS_DESTINATION_FILE+"-"+date+".txt");
             //create a buffered write with the file writer as an argument
             bufferedWriter = new BufferedWriter(fileWriter);
             //loop through the results list
