@@ -41,10 +41,9 @@ public class FileWriterUtils {
         java.io.FileWriter fileWriter = null;
 
         try{
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
-            LocalDateTime now = LocalDateTime.now();
-            String date= dtf.format(now);
-            System.out.println(date);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+            LocalDateTime currentDate = LocalDateTime.now();
+            String date= formatter.format(currentDate);
 
             //create the file writer using the location store as a constant
             fileWriter = new java.io.FileWriter(RESULTS_DESTINATION_FILE+"-"+date+".txt");
