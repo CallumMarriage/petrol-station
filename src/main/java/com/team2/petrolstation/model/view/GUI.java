@@ -20,7 +20,7 @@ public class GUI extends Application{
 
         final Scene scene = new Scene(root, 800, 747);
 
-        primaryStage.setTitle("FUCK YOU");
+        primaryStage.setTitle("The Petrol Station Simulation");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

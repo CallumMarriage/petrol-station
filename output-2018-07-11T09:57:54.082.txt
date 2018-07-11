@@ -1,0 +1,96 @@
+**Welcome to the simulation**
+Here are the simulation details.
+The duration will be 1000 seconds or 100 ticks.
+Number of Pumps: 2
+Number of tills: 2
+
+The simulation will begin shortly.
+
+A small car has arrived
+A small car has arrived
+A customer has left spending $7.0
+A motorbike has arrived
+A truck has arrived
+A customer has left spending $9.0
+A customer has left spending $5.0
+A small car has arrived
+A truck has arrived
+A customer has left spending $9.0
+A motorbike has arrived
+A truck has arrived
+A Customer had to leave!
+A truck has arrived
+A Customer had to leave!
+A motorbike has arrived
+A customer has left spending $36.0
+A motorbike has arrived
+A truck has arrived
+A customer has left spending $5.0
+A customer has left spending $5.0
+A customer has left spending $39.0
+A family sedan has arrived
+A motorbike has arrived
+A customer has left spending $5.0
+A small car has arrived
+
+--------------------------
+          Results
+--------------------------
+
+* Finances *
+Money lost from Filling Station: $72.0
+Money lost from Shop: $55.0
+Money gained: $120.0
+
+* Left over customers *
+Filling Station - Pumps: 4 vehicles
+Shop - Tills: 0 drivers
+Shop - floor: 0 drivers
+**Welcome to the simulation**
+Here are the simulation details.
+The duration will be 1000 seconds or 100 ticks.
+Number of Pumps: 2
+Number of tills: 2
+
+The simulation will begin shortly.
+
+A small car has arrived
+A small car has arrived
+A customer has left spending $7.0
+A motorbike has arrived
+A truck has arrived
+A customer has left spending $9.0
+A customer has left spending $5.0
+A small car has arrived
+A truck has arrived
+A customer has left spending $9.0
+A motorbike has arrived
+A truck has arrived
+A Customer had to leave!
+A truck has arrived
+A Customer had to leave!
+A motorbike has arrived
+A customer has left spending $36.0
+A motorbike has arrived
+A truck has arrived
+A customer has left spending $5.0
+A customer has left spending $5.0
+A customer has left spending $39.0
+A family sedan has arrived
+A motorbike has arrived
+A customer has left spending $5.0
+A small car has arrived
+
+--------------------------
+          Results
+--------------------------
+
+* Finances *
+Money lost from Filling Station: $72.0
+Money lost from Shop: $55.0
+Money gained: $120.0
+
+* Left over customers *
+Filling Station - Pumps: 4 vehicles
+Shop - Tills: 0 drivers
+Shop - floor: 0 drivers
