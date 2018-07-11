@@ -18,7 +18,7 @@ import static com.team2.petrolstation.model.constant.PetrolStationConstants.RESU
  */
 public class FileWriterUtils {
 
-    private static File outputFile =  new File(OUTPUT_FILE + DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss").format(LocalDateTime.now())+ ".txt");
+    private static File outputFile =  new File(OUTPUT_FILE + getFormattedDate() + ".txt");
     private static final Logger LOGGER = Logger.getLogger(FileWriterUtils.class.getName());
 
     private FileWriterUtils() {
@@ -38,7 +38,7 @@ public class FileWriterUtils {
 
         try{
             //create the file writer using the location store as a constant, get the current date and parse it into the format above because windows does not like : in file names
-            fileWriter = new java.io.FileWriter(RESULTS_DESTINATION_FILE+"-"+DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss").format(LocalDateTime.now())+".txt");
+            fileWriter = new java.io.FileWriter(RESULTS_DESTINATION_FILE+"-"+ getFormattedDate()+".txt");
             //create a buffered write with the file writer as an argument
             bufferedWriter = new BufferedWriter(fileWriter);
             //loop through the results list
@@ -79,4 +79,9 @@ public class FileWriterUtils {
             e.printStackTrace();
         }
     }
+
+    private static String getFormattedDate(){
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss").format(LocalDateTime.now());
+    }
+
 }

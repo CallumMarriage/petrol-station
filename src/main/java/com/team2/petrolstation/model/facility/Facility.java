@@ -17,7 +17,7 @@ public class Facility {
     ServiceMachine[] customerServers;
 
     /**
-     * Simulates a facility processing the customers at the front of the queues and adds those that have finished to a hashmap allong with the SM they have come from.
+     * Simulates a facility processing the customers at the front of the queues and adds those that have finished to a hashmap along with the SM they have come from.
      *
      * @return a map of customers to their service machines.
      */

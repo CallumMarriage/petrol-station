@@ -41,6 +41,7 @@ public class Application {
     private Shop shop;
 
     private SimulatorController simulatorController;
+   
     @FXML
     private TextArea textArea;
 
@@ -76,7 +77,6 @@ public class Application {
             for (int i = 0; i < numOfTurns; i++) {
                 String round = simulateRound( random, priceOfFuel, truckIsActive);
                 if(!round.equals("")){
-                    //System.out.println(round);
                    simulatorController.updateScreen(round, textArea);
                 }
             }
@@ -257,7 +257,6 @@ public class Application {
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //create a motorbike and add it to the list of generated vehicles
                 vehicles.add(new Vehicle(0, 0, 5, 0.0, SIZE_OF_MOTORBIKE, 0));
-                //this.applicationView.updateScreen(MOTORBIKE_ARRIVED);
                 simulatorController.updateScreen(MOTORBIKE_ARRIVED, textArea);
             }
 
@@ -265,7 +264,6 @@ public class Application {
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //create a small car and add it to the list of generated vehicles
                 vehicles.add(new Vehicle(random.nextInt(24 - 12 + 1) + 12, random.nextInt(10 -5 + 1) + 5, random.nextInt(9 - 7  + 1) + 7, CHANCE_OF_SMALL_CAR_GOING_TO_SHOP, SIZE_OF_SMALL_CAR, MAX_QUEUE_TIME_SMALL_CAR));
-                //this.applicationView.updateScreen(SMALL_CAR_ARRIVED);
                 simulatorController.updateScreen(SMALL_CAR_ARRIVED, textArea);
             }
 
@@ -276,7 +274,6 @@ public class Application {
                 //tell that its a truck
                 vehicle.setIsTruck();
                 vehicles.add(vehicle);
-                //this.applicationView.updateScreen(TRUCK_ARRIVED);
                 simulatorController.updateScreen(TRUCK_ARRIVED, textArea);
 
             }
@@ -285,13 +282,12 @@ public class Application {
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //create a family sedan and add it to the list of generated vehicles
                 vehicles.add(new Vehicle(random.nextInt(30 - 12 + 1) + 12, random.nextInt(16 - 8 + 1) + 8, random.nextInt(18) + 12, CHANCE_OF_FAMILY_SEDAN_GOING_TO_SHOP, SIZE_OF_FAMILY_SEDAN, MAX_QUEUE_TIME_FAMILY_SEDAN));
-                //this.applicationView.updateScreen(FAMILY_SEDAN);
                 simulatorController.updateScreen(FAMILY_SEDAN, textArea);
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
 
             }
         }catch (Exception e){
-            e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());          
         }
         return vehicles;
     }

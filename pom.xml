@@ -5,7 +5,7 @@
     <groupId>com.team2</groupId>
     <artifactId>petrolStation</artifactId>
     <name>petrolStation</name>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>DEVELOP-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <build>
@@ -18,7 +18,6 @@
                     <mainClass>com.team2.petrolstation.view.GUI</mainClass>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -40,6 +39,14 @@
     </build>
 
     <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/com.zenjava/javafx-maven-plugin -->
+        <dependency>
+            <groupId>com.zenjava</groupId>
+            <artifactId>javafx-maven-plugin</artifactId>
+            <version>8.1.2</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>

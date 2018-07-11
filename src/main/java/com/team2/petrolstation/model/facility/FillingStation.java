@@ -6,7 +6,7 @@ import com.team2.petrolstation.model.servicemachine.ServiceMachine;
 
 
 /**
- * The filling station manages the refueling of all of the vehicles at the front of all of the pump queues.
+ * The filling station manages the refuelling of all of the vehicles at the front of all of the pump queues.
  * The filling station should return a map of drivers that have finished with the pumps that their vehicles are at.
  *
  * @author callummarriage
