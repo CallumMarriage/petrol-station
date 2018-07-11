@@ -6,13 +6,14 @@ import com.team2.petrolstation.model.customer.Vehicle;
 import com.team2.petrolstation.model.exception.PumpNotFoundException;
 import com.team2.petrolstation.model.facility.FillingStation;
 import com.team2.petrolstation.model.facility.Shop;
-import com.team2.petrolstation.model.view.SimulatorController;
+import com.team2.petrolstation.view.SimulatorController;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.util.*;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -253,6 +254,7 @@ public class Application {
 
         try {
             if (randomNum > p && randomNum <= (2 * p)) {
+                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //create a motorbike and add it to the list of generated vehicles
                 vehicles.add(new Vehicle(0, 0, 5, 0.0, SIZE_OF_MOTORBIKE, 0));
                 //this.applicationView.updateScreen(MOTORBIKE_ARRIVED);
@@ -260,6 +262,7 @@ public class Application {
             }
 
             if (randomNum <= p) {
+                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //create a small car and add it to the list of generated vehicles
                 vehicles.add(new Vehicle(random.nextInt(24 - 12 + 1) + 12, random.nextInt(10 -5 + 1) + 5, random.nextInt(9 - 7  + 1) + 7, CHANCE_OF_SMALL_CAR_GOING_TO_SHOP, SIZE_OF_SMALL_CAR, MAX_QUEUE_TIME_SMALL_CAR));
                 //this.applicationView.updateScreen(SMALL_CAR_ARRIVED);
@@ -269,6 +272,7 @@ public class Application {
             if (truckIsActive && randomNum > ((2 * p) + q) && randomNum <= (((2 * p) + q) + chanceOfTruck)) {
                 //create a Truck and add it to the list of generated vehicles
                 Vehicle vehicle = new Vehicle(random.nextInt(36 -24 +1  ) +24, random.nextInt(20 - 15 + 1) + 15, random.nextInt(40 - 30 + 1) + 30, CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
+                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //tell that its a truck
                 vehicle.setIsTruck();
                 vehicles.add(vehicle);
@@ -278,10 +282,13 @@ public class Application {
             }
 
             if (randomNum > (2 * p) && randomNum <= ((2 * p) + q)) {
+                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //create a family sedan and add it to the list of generated vehicles
                 vehicles.add(new Vehicle(random.nextInt(30 - 12 + 1) + 12, random.nextInt(16 - 8 + 1) + 8, random.nextInt(18) + 12, CHANCE_OF_FAMILY_SEDAN_GOING_TO_SHOP, SIZE_OF_FAMILY_SEDAN, MAX_QUEUE_TIME_FAMILY_SEDAN));
                 //this.applicationView.updateScreen(FAMILY_SEDAN);
                 simulatorController.updateScreen(FAMILY_SEDAN, textArea);
+                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+
             }
         }catch (Exception e){
             e.printStackTrace();

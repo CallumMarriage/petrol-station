@@ -36,3 +36,6 @@ target/
 .gralde
 build
 !/com/team2/petrolStation/model/exception/InvalidInputException.java
+
+results*
+output*

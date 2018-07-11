@@ -1,9 +1,8 @@
-package com.team2.petrolstation.model.view;
+package com.team2.petrolstation.view;
 
 import com.team2.petrolstation.Application;
 import com.team2.petrolstation.model.exception.InvalidInputException;
 import com.team2.petrolstation.util.FileWriterUtils;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -118,15 +117,7 @@ public class SimulatorController {
 
     public void updateScreen(String results, TextArea activityFeed){
         activityFeed.setText(activityFeed.getText() + "\n" +"> " + results);
-        try {
-            TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
         FileWriterUtils.updateOutputFile(results + "\n");
-        //LOGGER.log(Level.INFO, results);
     }
 
     /**

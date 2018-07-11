@@ -1,4 +1,4 @@
-package com.team2.petrolstation.model.view;
+package com.team2.petrolstation.view;
 
 
 import javafx.application.Application;
