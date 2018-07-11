@@ -42,11 +42,8 @@ public class FileWriterUtils {
 
         try{
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
-            LocalDateTime currentDate = LocalDateTime.now();
-            String date= formatter.format(currentDate);
-
-            //create the file writer using the location store as a constant
-            fileWriter = new java.io.FileWriter(RESULTS_DESTINATION_FILE+"-"+date+".txt");
+            //create the file writer using the location store as a constant, get the current date and parse it into the format above because windows does not like : in file names
+            fileWriter = new java.io.FileWriter(RESULTS_DESTINATION_FILE+"-"+formatter.format(LocalDateTime.now())+".txt");
             //create a buffered write with the file writer as an argument
             bufferedWriter = new BufferedWriter(fileWriter);
             //loop through the results list
