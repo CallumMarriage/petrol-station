@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="747.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="747.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane layoutX="25.0" layoutY="325.0" prefHeight="200.0" prefWidth="200.0">
          <children>
@@ -64,7 +64,7 @@
             <Label layoutX="21.0" layoutY="70.0" text="Time:" />
          </children>
       </Pane>
-      <ColorPicker layoutX="43.0" layoutY="667.0" />
+      <ColorPicker fx:id="colorPicker" layoutX="43.0" layoutY="667.0" onAction="#onColourChange"/>
       <Pane layoutX="63.0" layoutY="197.0" prefHeight="152.0" prefWidth="325.0">
          <children>
             <Spinner layoutX="188.0" layoutY="93.0" prefHeight="31.0" prefWidth="99.0"/>

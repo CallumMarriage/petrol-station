@@ -4,7 +4,13 @@ import com.team2.petrolstation.Simulator;
 import com.team2.petrolstation.model.exception.InvalidInputException;
 import com.team2.petrolstation.util.FileWriterUtils;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 import java.util.concurrent.TimeUnit;
 
@@ -50,6 +56,12 @@ public class SimulatorController {
     private TextField moneyGained;
 
     @FXML
+    private ColorPicker colorPicker;
+
+    @FXML
+    private Pane pane;
+
+    @FXML
     public void submitButtonPressed() throws InvalidInputException {
 
 
@@ -91,9 +103,14 @@ public class SimulatorController {
             updateScreen(results, activityFeed);
             generateResultsFile(results);
         } catch (InvalidInputException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR, "You have inputted invalid values, please ensure that you have filled in each textbox and try again.", ButtonType.YES);
+            Alert alert = new Alert(Alert.AlertType.ERROR, "You have inputted invalid values, please ensure that you have filled in each textbox and try again.", ButtonType.CLOSE);
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    public void onColourChange(){
+        pane.setBackground(new Background(new BackgroundFill(Color.web(String.valueOf(colorPicker.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
     private Integer getIntegerValueFromField(TextField object) throws InvalidInputException {
