@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by canershefik on 07/06/2018.
+ * @author canershefik
  */
 public class PumpTest {
 

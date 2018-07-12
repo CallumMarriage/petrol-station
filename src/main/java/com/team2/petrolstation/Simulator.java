@@ -21,15 +21,15 @@ import static com.team2.petrolstation.model.constant.PetrolStationConstants.*;
 import static com.team2.petrolstation.model.constant.VehicleConstants.*;
 
 /**
- * Application class allows for the running of simulations that generate vehicles and then refuels them and sends them to a shop to shop and or purchase their fuel.
+ * Simulator class allows for the running of simulations that generate vehicles and then refuels them and sends them to a shop to shop and or purchase their fuel.
  * It also keeps track of the amount of money gained and lost during the simulation.
  * Generates the front end of which allows the user to input values that affect the running of the simulation and displays the results.
  *
  * @author callummarriage canershefik
  */
-public class Application {
+public class Simulator {
 
-    private static final Logger LOGGER = Logger.getLogger(Application.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Simulator.class.getName());
 
     private Double chanceOfTruck;
     private Double moneyGained;
@@ -45,12 +45,7 @@ public class Application {
     @FXML
     private TextArea textArea;
 
-
-    public static void main(String[] args){
-        new Application();
-    }
-
-    public Application(){
+    public Simulator(){
         this.moneyLostFromShop = 0.0;
         this.moneyLostFillingStation = 0.0;
         this.moneyGained = 0.0;

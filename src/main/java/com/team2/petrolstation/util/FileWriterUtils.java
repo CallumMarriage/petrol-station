@@ -28,7 +28,7 @@ public class FileWriterUtils {
     /**
      * Writes results to a file
      * Prints result to screen as its writing.
-     * Should file generation be part of the Application or the Application View??
+     * Should file generation be part of the Simulator or the Simulator View??
      *
      * @param results list of all of the results.
      */

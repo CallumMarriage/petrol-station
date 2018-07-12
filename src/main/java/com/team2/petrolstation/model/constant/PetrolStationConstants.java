@@ -1,7 +1,7 @@
 package com.team2.petrolstation.model.constant;
 
 /**
- * General constant for Application class
+ * General constant for Simulator class
  *
  * @author callummarriage
  */

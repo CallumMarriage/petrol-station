@@ -1,6 +1,6 @@
 package com.team2.petrolstation.view;
 
-import com.team2.petrolstation.Application;
+import com.team2.petrolstation.Simulator;
 import com.team2.petrolstation.model.exception.InvalidInputException;
 import com.team2.petrolstation.util.FileWriterUtils;
 import javafx.fxml.FXML;
@@ -11,11 +11,10 @@ import javafx.scene.control.TextField;
 import java.util.concurrent.TimeUnit;
 
 import static com.team2.petrolstation.model.constant.PetrolStationConstants.SECONDS_PER_TICK;
-import static com.team2.petrolstation.model.constant.PetrolStationConstants.SLEEP_TIME;
 import static com.team2.petrolstation.util.FileWriterUtils.generateResultsFile;
 
 /**
- * Created by callummarriage on 10/07/2018.
+ * @author callummarriage
  */
 public class SimulatorController {
 
@@ -64,7 +63,7 @@ public class SimulatorController {
         Double dQ = getDoubleValueFromField(q);
         Double dT = getDoubleValueFromField(t);
 
-        Application simulator = new Application();
+        Simulator simulator = new Simulator();
         try {
             numOfTurns = convertTimeIntoTicks(duration, "s");
 

@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 
 
 /**
- * Created by callummarriage on 25/05/2018.
+ * @author callummarriage
  */
 public class FillingStationTest {
 

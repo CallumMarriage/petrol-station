@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Created by callummarriage on 10/07/2018.
+ * @author callummarriage
  */
 public class GUI extends Application{
     @Override
