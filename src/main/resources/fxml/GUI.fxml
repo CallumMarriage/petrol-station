@@ -79,12 +79,12 @@
          <children>
             <Spinner fx:id="numTills" layoutX="188.0" layoutY="93.0" prefHeight="31.0" prefWidth="99.0">
                <valueFactory>
-                  <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="10"/>
+                  <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="10"/>
                </valueFactory>
             </Spinner>
             <Spinner fx:id="numPumps" layoutX="188.0" layoutY="49.0" prefHeight="31.0" prefWidth="99.0">
                <valueFactory>
-                  <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="10"/>
+                  <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="10"/>
                </valueFactory>
             </Spinner>
             <Label layoutX="23.0" layoutY="54.0" prefHeight="21.0" prefWidth="165.0" text="Number of Pumps:" />
