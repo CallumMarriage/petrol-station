@@ -65,7 +65,6 @@ public class SimulatorController {
     @FXML
     public void submitButtonPressed() throws InvalidInputException {
 
-
         try {
             activityFeed.setText("");
             moneyGained.setText("");
@@ -98,7 +97,8 @@ public class SimulatorController {
             //run the simulation using the inputed values
             simulator.setP(dP);
             simulator.setQ(dQ);
-            simulator.simulate(numOfTurns, intNumPumps, intNumTills, intPrice, true, activityFeed);
+            simulator.setChanceOfTruck(dT);
+            simulator.simulate(numOfTurns, intNumPumps, intNumTills, intPrice, activityFeed);
 
             String results = simulator.getResults();
 

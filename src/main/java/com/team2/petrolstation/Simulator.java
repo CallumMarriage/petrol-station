@@ -60,7 +60,7 @@ public class Simulator {
      * @param numPumps number of pumps
      * @param numTills number of tills
      */
-    public void simulate(Integer numOfTurns, Integer numPumps, Integer numTills, Double priceOfFuel, Boolean truckIsActive, TextArea textArea){
+    public void simulate(Integer numOfTurns, Integer numPumps, Integer numTills, Double priceOfFuel, TextArea textArea){
 
         this.textArea = textArea;
         //build shop, filling station and the random that will be used throughout the application
@@ -70,7 +70,7 @@ public class Simulator {
 
         try {
             for (int i = 0; i < numOfTurns; i++) {
-                String round = simulateRound( random, priceOfFuel, truckIsActive);
+                String round = simulateRound( random, priceOfFuel);
                 if(!round.equals("")){
                    simulatorController.updateScreen(round, textArea);
                 }
@@ -86,10 +86,10 @@ public class Simulator {
      * @param random the random that will be used to generate the vehicles
      * @throws PumpNotFoundException error trying to add customer to a service machine
      */
-    private String simulateRound( Random random, Double priceOfFuel, Boolean truckIsActive) throws Exception {
+    private String simulateRound( Random random, Double priceOfFuel) throws Exception {
 
         //create the vehicles for the round and assign them to a pump
-        String assigned = assignVehicles(generateVehicles(random, truckIsActive), priceOfFuel);
+        String assigned = assignVehicles(generateVehicles(random), priceOfFuel);
         String removed = removeCustomers(runShop( runFillingStation(), priceOfFuel, random));
 
         if(!assigned.equals("") && !removed.equals("")){
@@ -239,10 +239,9 @@ public class Simulator {
      * generates vehicles
      *
      * @param random random
-     * @param truckIsActive checks if truck is active, this can turned off at start
      * @return list of generated vehicles
      */
-    private List<Customer> generateVehicles(Random random, Boolean truckIsActive){
+    private List<Customer> generateVehicles(Random random){
 
         List<Customer> vehicles = new ArrayList<>();
         Double randomNum = random.nextDouble();
@@ -262,7 +261,7 @@ public class Simulator {
                 simulatorController.updateScreen(SMALL_CAR_ARRIVED, textArea);
             }
 
-            if (truckIsActive && randomNum > ((2 * p) + q) && randomNum <= (((2 * p) + q) + chanceOfTruck)) {
+            if (randomNum > ((2 * p) + q) && randomNum <= (((2 * p) + q) + chanceOfTruck)) {
                 //create a Truck and add it to the list of generated vehicles
                 Vehicle vehicle = new Vehicle(random.nextInt(36 -24 +1  ) +24, random.nextInt(20 - 15 + 1) + 15, random.nextInt(40 - 30 + 1) + 30, CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
@@ -347,5 +346,9 @@ public class Simulator {
 
     public void setQ(Double q){
         this.q = q;
+    }
+
+    public void setChanceOfTruck(Double t){
+        this.chanceOfTruck = t;
     }
 }
