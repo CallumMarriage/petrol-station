@@ -23,7 +23,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
                 <configuration>
-                    <mainClass>com.team2.petrolstation.Simulator</mainClass>
+                    <mainClass>com.team2.petrolstation.Application</mainClass>
                 </configuration>
             </plugin>
             <plugin>

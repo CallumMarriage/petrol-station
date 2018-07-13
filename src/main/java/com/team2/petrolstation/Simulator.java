@@ -6,10 +6,12 @@ import com.team2.petrolstation.model.customer.Vehicle;
 import com.team2.petrolstation.model.exception.PumpNotFoundException;
 import com.team2.petrolstation.model.facility.FillingStation;
 import com.team2.petrolstation.model.facility.Shop;
-import com.team2.petrolstation.model.view.Simulator;
-import com.team2.petrolstation.model.view.ApplicationView;
+import com.team2.petrolstation.view.SimulatorController;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
 
 import java.util.*;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -19,15 +21,15 @@ import static com.team2.petrolstation.model.constant.PetrolStationConstants.*;
 import static com.team2.petrolstation.model.constant.VehicleConstants.*;
 
 /**
- * Application class allows for the running of simulations that generate vehicles and then refuels them and sends them to a shop to shop and or purchase their fuel.
+ * Simulator class allows for the running of simulations that generate vehicles and then refuels them and sends them to a shop to shop and or purchase their fuel.
  * It also keeps track of the amount of money gained and lost during the simulation.
  * Generates the front end of which allows the user to input values that affect the running of the simulation and displays the results.
  *
  * @author callummarriage canershefik
  */
-public class Application implements Simulator{
+public class Simulator {
 
-    private static final Logger LOGGER = Logger.getLogger(Application.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Simulator.class.getName());
 
     private Double chanceOfTruck;
     private Double moneyGained;
@@ -35,21 +37,20 @@ public class Application implements Simulator{
     private Double moneyLostFromShop;
     private Double p;
     private Double q;
-    private ApplicationView applicationView;
     private FillingStation fillingStation;
     private Shop shop;
 
-    public static void main(String[] args){
-        new Application();
-    }
+    private SimulatorController simulatorController;
+   
+    @FXML
+    private TextArea textArea;
 
-    public Application(){
+    public Simulator(){
         this.moneyLostFromShop = 0.0;
         this.moneyLostFillingStation = 0.0;
         this.moneyGained = 0.0;
         this.chanceOfTruck = 0.02;
-        this.applicationView = new ApplicationView(this);
-        this.applicationView.start();
+        this.simulatorController = new SimulatorController();
     }
 
     /**
@@ -59,8 +60,9 @@ public class Application implements Simulator{
      * @param numPumps number of pumps
      * @param numTills number of tills
      */
-    public void simulate(Integer numOfTurns, Integer numPumps, Integer numTills, Double priceOfFuel, Boolean truckIsActive){
+    public void simulate(Integer numOfTurns, Integer numPumps, Integer numTills, Double priceOfFuel, Boolean truckIsActive, TextArea textArea){
 
+        this.textArea = textArea;
         //build shop, filling station and the random that will be used throughout the application
         this.shop = new Shop(numTills);
         this.fillingStation = new FillingStation(numPumps);
@@ -70,7 +72,7 @@ public class Application implements Simulator{
             for (int i = 0; i < numOfTurns; i++) {
                 String round = simulateRound( random, priceOfFuel, truckIsActive);
                 if(!round.equals("")){
-                    applicationView.updateScreen(round);
+                   simulatorController.updateScreen(round, textArea);
                 }
             }
         } catch (Exception e){
@@ -247,38 +249,40 @@ public class Application implements Simulator{
 
         try {
             if (randomNum > p && randomNum <= (2 * p)) {
+                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //create a motorbike and add it to the list of generated vehicles
                 vehicles.add(new Vehicle(0, 0, 5, 0.0, SIZE_OF_MOTORBIKE, 0));
-                this.applicationView.updateScreen(MOTORBIKE_ARRIVED);
-                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+                simulatorController.updateScreen(MOTORBIKE_ARRIVED, textArea);
             }
 
             if (randomNum <= p) {
+                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //create a small car and add it to the list of generated vehicles
                 vehicles.add(new Vehicle(random.nextInt(24 - 12 + 1) + 12, random.nextInt(10 -5 + 1) + 5, random.nextInt(9 - 7  + 1) + 7, CHANCE_OF_SMALL_CAR_GOING_TO_SHOP, SIZE_OF_SMALL_CAR, MAX_QUEUE_TIME_SMALL_CAR));
-                this.applicationView.updateScreen(SMALL_CAR_ARRIVED);
-                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+                simulatorController.updateScreen(SMALL_CAR_ARRIVED, textArea);
             }
 
             if (truckIsActive && randomNum > ((2 * p) + q) && randomNum <= (((2 * p) + q) + chanceOfTruck)) {
                 //create a Truck and add it to the list of generated vehicles
                 Vehicle vehicle = new Vehicle(random.nextInt(36 -24 +1  ) +24, random.nextInt(20 - 15 + 1) + 15, random.nextInt(40 - 30 + 1) + 30, CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
+                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //tell that its a truck
                 vehicle.setIsTruck();
                 vehicles.add(vehicle);
-                this.applicationView.updateScreen(TRUCK_ARRIVED);
-                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+                simulatorController.updateScreen(TRUCK_ARRIVED, textArea);
 
             }
 
             if (randomNum > (2 * p) && randomNum <= ((2 * p) + q)) {
+                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //create a family sedan and add it to the list of generated vehicles
                 vehicles.add(new Vehicle(random.nextInt(30 - 12 + 1) + 12, random.nextInt(16 - 8 + 1) + 8, random.nextInt(18) + 12, CHANCE_OF_FAMILY_SEDAN_GOING_TO_SHOP, SIZE_OF_FAMILY_SEDAN, MAX_QUEUE_TIME_FAMILY_SEDAN));
-                this.applicationView.updateScreen(FAMILY_SEDAN);
+                simulatorController.updateScreen(FAMILY_SEDAN, textArea);
                 TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+
             }
         }catch (Exception e){
-            e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage());          
         }
         return vehicles;
     }
@@ -315,6 +319,18 @@ public class Application implements Simulator{
 
         //finally print out the money lost and gained.
         return START + "\n* Finances *\nMoney lost from Filling Station: $" + this.moneyLostFillingStation +"\nMoney lost from Shop: $" + this.moneyLostFromShop + "\nMoney gained: $" + this.moneyGained + "\n\n* Left over customers *\nFilling Station - Pumps: " + this.fillingStation.getLeftOverCustomers() + " " + vehicle + "\nShop - Tills: "+ this.shop.getLeftOverCustomers() + " " + driver +"\nShop - floor: " + this.shop.getShopFloor().size() + " " + tillDrivers;
+    }
+
+    public Double getMoneyLostFromShop(){
+        return this.moneyLostFromShop;
+    }
+
+    public Double getMoneyLostFillingStation(){
+        return this.moneyLostFillingStation;
+    }
+
+    public Double getMoneyGained(){
+        return this.moneyGained;
     }
 
     private String checkIfPlural(Integer num, String word){

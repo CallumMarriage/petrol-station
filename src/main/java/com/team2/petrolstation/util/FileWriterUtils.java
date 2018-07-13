@@ -1,11 +1,10 @@
 package com.team2.petrolstation.util;
 
-import com.team2.petrolstation.model.view.ApplicationView;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,8 +18,8 @@ import static com.team2.petrolstation.model.constant.PetrolStationConstants.RESU
  */
 public class FileWriterUtils {
 
-    private static File outputFile =  new File(OUTPUT_FILE +LocalDateTime.now()+ ".txt");
-    private static final Logger LOGGER = Logger.getLogger(ApplicationView.class.getName());
+    private static File outputFile =  new File(OUTPUT_FILE + getFormattedDate() + ".txt");
+    private static final Logger LOGGER = Logger.getLogger(FileWriterUtils.class.getName());
 
     private FileWriterUtils() {
         throw new IllegalStateException("Utility class");
@@ -29,7 +28,7 @@ public class FileWriterUtils {
     /**
      * Writes results to a file
      * Prints result to screen as its writing.
-     * Should file generation be part of the Application or the Application View??
+     * Should file generation be part of the Simulator or the Simulator View??
      *
      * @param results list of all of the results.
      */
@@ -38,9 +37,8 @@ public class FileWriterUtils {
         java.io.FileWriter fileWriter = null;
 
         try{
-            LocalDateTime currentDate = LocalDateTime.now();
-            //create the file writer using the location store as a constant
-            fileWriter = new java.io.FileWriter(RESULTS_DESTINATION_FILE+"-"+currentDate+".txt");
+            //create the file writer using the location store as a constant, get the current date and parse it into the format above because windows does not like : in file names
+            fileWriter = new java.io.FileWriter(RESULTS_DESTINATION_FILE+"-"+ getFormattedDate()+".txt");
             //create a buffered write with the file writer as an argument
             bufferedWriter = new BufferedWriter(fileWriter);
             //loop through the results list
@@ -72,9 +70,7 @@ public class FileWriterUtils {
     public static void updateOutputFile(String output){
         BufferedWriter bufferedWriter;
         try{
-
-            java.io.FileWriter fw = new java.io.FileWriter(outputFile.getAbsoluteFile(), true);
-            bufferedWriter= new BufferedWriter(fw);
+            bufferedWriter= new BufferedWriter(new java.io.FileWriter(outputFile.getAbsoluteFile(), true));
 
             bufferedWriter.write(output);
             bufferedWriter.close();
@@ -83,4 +79,9 @@ public class FileWriterUtils {
             e.printStackTrace();
         }
     }
+
+    private static String getFormattedDate(){
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss").format(LocalDateTime.now());
+    }
+
 }

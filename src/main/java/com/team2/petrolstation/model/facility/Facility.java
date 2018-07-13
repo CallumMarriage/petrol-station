@@ -17,7 +17,7 @@ public class Facility {
     ServiceMachine[] customerServers;
 
     /**
-     * Simulates a facility processing the customers at the front of the queues and adds those that have finished to a hashmap allong with the SM they have come from.
+     * Simulates a facility processing the customers at the front of the queues and adds those that have finished to a hashmap along with the SM they have come from.
      *
      * @return a map of customers to their service machines.
      */
@@ -33,8 +33,8 @@ public class Facility {
     }
 
     /**
-     * This method provides an interface to the Application class to access the facility adding methods,
-     * this reduces coupling by allowing changes to be made to the facility without having to change the Application class.
+     * This method provides an interface to the Simulator class to access the facility adding methods,
+     * this reduces coupling by allowing changes to be made to the facility without having to change the Simulator class.
      * Finds and adds each customer to the best free service machine.
      * If a vehicle does not find the best service machine it will leave the Petrol station and possible income will be added to lost money.
      * If a driver does not find the best service machine it will throw an exception.
