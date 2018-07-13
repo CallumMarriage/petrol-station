@@ -136,7 +136,7 @@ public class Simulator {
     /**
      * gets finished drivers from the shop and assigned new drivers to their relevant places in the shop (the queue for the till or the shop floor)
      *
-     *  @param finishedAtPump drivers and their service machines
+     * @param finishedAtPump drivers and their service machines
      * @param priceOfFuel price of fuel
      * @param random random
      * @return drivers who are finished and the pump where their vehicle is

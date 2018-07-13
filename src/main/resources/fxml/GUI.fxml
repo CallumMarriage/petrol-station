@@ -9,6 +9,7 @@
 <?import javafx.scene.control.* ?>
 <?import javafx.scene.layout.* ?>
 
+<?import javafx.scene.paint.Color?>
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="747.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Pane fx:id="variables" layoutX="25.0" layoutY="325.0" prefHeight="200.0" prefWidth="200.0">
@@ -62,7 +63,11 @@
             <Label layoutX="21.0" layoutY="70.0" text="Time:" />
          </children>
       </Pane>
-      <ColorPicker fx:id="colorPicker" layoutX="43.0" layoutY="667.0" onAction="#onColourChange"/>
+      <ColorPicker fx:id="colorPicker" layoutX="43.0" layoutY="667.0" onAction="#onColourChange">
+         <value>
+            <Color blue="0.902" red="0.902" green="0.902"/>
+         </value>
+      </ColorPicker>
       <Pane fx:id="serviceMachines" layoutX="63.0" layoutY="197.0" prefHeight="152.0" prefWidth="325.0">
          <children>
             <Spinner fx:id="numTills" layoutX="188.0" layoutY="93.0" prefHeight="31.0" prefWidth="99.0">
