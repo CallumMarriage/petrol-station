@@ -19,7 +19,7 @@ public class GUI extends Application{
         Parent root = fxmlLoader.load();
 
         final Scene scene = new Scene(root, 800, 747);
-
+        scene.getStylesheets().add("/css/application.css");
         primaryStage.setTitle("The Petrol Station Simulation");
         primaryStage.setScene(scene);
         primaryStage.show();
