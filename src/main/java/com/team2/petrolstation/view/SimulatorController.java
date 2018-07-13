@@ -33,10 +33,10 @@ public class SimulatorController {
     private TextField price;
 
     @FXML
-    private TextField numPumps;
+    private Spinner numPumps;
 
     @FXML
-    private TextField numTills;
+    private Spinner numTills;
 
     @FXML
     private TextField p;
@@ -67,11 +67,14 @@ public class SimulatorController {
 
 
         try {
+            activityFeed.setText("");
+            moneyGained.setText("");
+            moneyLost.setText("");
             Integer numOfTurns;
             Integer duration = getIntegerValueFromField(runTime);
             Double intPrice = getDoubleValueFromField(price);
-            Integer intNumPumps = 2;
-            Integer intNumTills = 2;
+            Integer intNumPumps = getIntegerValueFromSpinner(numPumps);
+            Integer intNumTills = getIntegerValueFromSpinner(numTills);
             Double dP = getDoubleValueFromField(p);
             Double dQ = getDoubleValueFromField(q);
             Double dT = getDoubleValueFromField(t);
@@ -114,6 +117,15 @@ public class SimulatorController {
         pane.setBackground(new Background(new BackgroundFill(Color.web(String.valueOf(colorPicker.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
+    private Integer getIntegerValueFromSpinner(Spinner spinner) throws InvalidInputException {
+        Integer i = null;
+        try {
+            i = Integer.valueOf(spinner.getValue() + "");
+        } catch (NumberFormatException ex) {
+            throw new InvalidInputException("Invalid input");
+        }
+        return i;
+    }
     private Integer getIntegerValueFromField(TextField object) throws InvalidInputException {
         Integer i = null;
         try {

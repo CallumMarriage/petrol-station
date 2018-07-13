@@ -12,6 +12,13 @@
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.util.* ?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.* ?>
+<?import javafx.scene.layout.* ?>
+
 
 <?import javafx.scene.layout.BorderPane?>
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="747.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
@@ -70,8 +77,16 @@
       <ColorPicker fx:id="colorPicker" layoutX="43.0" layoutY="667.0" onAction="#onColourChange"/>
       <Pane fx:id="serviceMachines" layoutX="63.0" layoutY="197.0" prefHeight="152.0" prefWidth="325.0">
          <children>
-            <Spinner layoutX="188.0" layoutY="93.0" prefHeight="31.0" prefWidth="99.0" />
-            <Spinner layoutX="188.0" layoutY="49.0" prefHeight="31.0" prefWidth="99.0" />
+            <Spinner fx:id="numTills" layoutX="188.0" layoutY="93.0" prefHeight="31.0" prefWidth="99.0">
+               <valueFactory>
+                  <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="10"/>
+               </valueFactory>
+            </Spinner>
+            <Spinner fx:id="numPumps" layoutX="188.0" layoutY="49.0" prefHeight="31.0" prefWidth="99.0">
+               <valueFactory>
+                  <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="10"/>
+               </valueFactory>
+            </Spinner>
             <Label layoutX="23.0" layoutY="54.0" prefHeight="21.0" prefWidth="165.0" text="Number of Pumps:" />
             <Label layoutX="23.0" layoutY="98.0" prefHeight="21.0" prefWidth="165.0" text="Number of Tills:" />
             <Label layoutX="57.0" layoutY="14.0" text="Service Machines Adjustment:">
