@@ -4,9 +4,13 @@ import com.team2.petrolstation.Simulator;
 import com.team2.petrolstation.model.exception.InvalidInputException;
 import com.team2.petrolstation.util.FileWriterUtils;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 import java.util.concurrent.TimeUnit;
 
@@ -52,64 +56,79 @@ public class SimulatorController {
     private TextField moneyGained;
 
     @FXML
-    public void submitButtonPressed(){
+    private ColorPicker colorPicker;
 
-        Integer numOfTurns;
-        Integer duration = getIntegerValueFromField(runTime);
-        Double intPrice = getDoubleValueFromField(price);
-        Integer intNumPumps = 2;
-        Integer intNumTills = 2;
-        Double dP = getDoubleValueFromField(p);
-        Double dQ = getDoubleValueFromField(q);
-        Double dT = getDoubleValueFromField(t);
+    @FXML
+    private Pane pane;
 
-        Simulator simulator = new Simulator();
+    @FXML
+    public void submitButtonPressed() throws InvalidInputException {
+
+
         try {
+            Integer numOfTurns;
+            Integer duration = getIntegerValueFromField(runTime);
+            Double intPrice = getDoubleValueFromField(price);
+            Integer intNumPumps = 2;
+            Integer intNumTills = 2;
+            Double dP = getDoubleValueFromField(p);
+            Double dQ = getDoubleValueFromField(q);
+            Double dT = getDoubleValueFromField(t);
+
+            if (duration == null | intPrice == null | intNumPumps == null | intNumTills == null | dP == null | dQ == null | dT == null) {
+                throw new InvalidInputException("error");
+            }
+            Simulator simulator = new Simulator();
             numOfTurns = convertTimeIntoTicks(duration, "s");
 
-        } catch(InvalidInputException e){
-            e.printStackTrace();
-            return;
+            updateScreen("**Welcome to the simulation**\nHere are the simulation details.\nThe duration will be " + (numOfTurns * SECONDS_PER_TICK)+ " seconds or " + (numOfTurns) + " ticks.", activityFeed);
+            try {
+                updateScreen("Number of Pumps: " + intNumPumps + "\n" + "Number of tills: " + intNumTills + "\n", activityFeed);
+                TimeUnit.MILLISECONDS.sleep(1000);
+                updateScreen("The simulation will begin shortly.\n", activityFeed);
+                TimeUnit.MILLISECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            //run the simulation using the inputed values
+            simulator.setP(dP);
+            simulator.setQ(dQ);
+            simulator.simulate(numOfTurns, intNumPumps, intNumTills, intPrice, true, activityFeed);
+
+            String results = simulator.getResults();
+
+            moneyLost.setText(simulator.getMoneyLostFromShop() + "");
+            moneyGained.setText(simulator.getMoneyGained() + "");
+            updateScreen(results, activityFeed);
+            generateResultsFile(results);
+        } catch (InvalidInputException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "You have inputted invalid values, please ensure that you have filled in each textbox and try again.", ButtonType.CLOSE);
+            alert.showAndWait();
         }
-        updateScreen("**Welcome to the simulation**\nHere are the simulation details.\nThe duration will be " + (numOfTurns * SECONDS_PER_TICK)+ " seconds or " + (numOfTurns) + " ticks.", activityFeed);
-        try {
-            updateScreen("Number of Pumps: " + intNumPumps + "\n" + "Number of tills: " + intNumTills + "\n", activityFeed);
-            TimeUnit.MILLISECONDS.sleep(1000);
-            updateScreen("The simulation will begin shortly.\n", activityFeed);
-            TimeUnit.MILLISECONDS.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        //run the simulation using the inputed values
-        simulator.setP(dP);
-        simulator.setQ(dQ);
-        simulator.simulate(numOfTurns, intNumPumps, intNumTills, intPrice, true, activityFeed);
-
-        String results = simulator.getResults();
-
-        moneyLost.setText(simulator.getMoneyLostFromShop() + "");
-        moneyGained.setText(simulator.getMoneyGained() + "");
-        updateScreen(results, activityFeed);
-        generateResultsFile(results);
     }
 
-    private Integer getIntegerValueFromField(TextField object) {
+    @FXML
+    public void onColourChange(){
+        pane.setBackground(new Background(new BackgroundFill(Color.web(String.valueOf(colorPicker.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));
+    }
+
+    private Integer getIntegerValueFromField(TextField object) throws InvalidInputException {
         Integer i = null;
         try {
             i = Integer.valueOf(object.getText());
         } catch (NumberFormatException ex) {
-            ex.printStackTrace();
+            throw new InvalidInputException("Invalid input");
         }
         return i;
     }
 
-    private Double getDoubleValueFromField(TextField object) {
+    private Double getDoubleValueFromField(TextField object) throws InvalidInputException {
         Double i = null;
         try {
             i = Double.valueOf(object.getText());
         } catch (NumberFormatException ex) {
-            ex.printStackTrace();
+            throw new InvalidInputException("Invalid input");
         }
         return i;
     }
