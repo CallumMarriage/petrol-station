@@ -55,7 +55,7 @@ public class Facility {
                 lostCustomers.add(customer);
             } else {
                 //finally add the customer to the machine found.
-                addCustomerToBestMachine(bestMachine, customer);
+                this.customerServers[bestMachine].addCustomer(customer);
             }
         }
         return lostCustomers;
@@ -100,16 +100,6 @@ public class Facility {
             //if it is invalid return -1 so that we can check if the method was successful
             return -1;
         }
-    }
-
-    /**
-     * Adds customer to the machine imputed
-     *
-     * @param positionOfPumpWithShortestTime best machine
-     * @param customer customer being added
-     */
-    void addCustomerToBestMachine(int positionOfPumpWithShortestTime, Customer customer){
-        this.customerServers[positionOfPumpWithShortestTime].addCustomer(customer);
     }
 
     /**

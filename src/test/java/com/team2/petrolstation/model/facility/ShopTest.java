@@ -22,7 +22,7 @@ public class ShopTest {
         Shop shop = new Shop(1);
 
         Driver driver = new Driver(5 * 1.20, 1);
-        shop.addCustomerToBestMachine(0, driver);
+        shop.getServiceMachines()[0].addCustomer(driver);
 
         Map<Integer, Customer> driverWithPump = shop.manageTransactions();
 
@@ -35,7 +35,7 @@ public class ShopTest {
 
         Shop facility = new Shop(1);
         for(int i = 0; i < 5; i++){
-            facility.addCustomerToBestMachine(0, new Driver(1 * 1.20, 1));
+            facility.getServiceMachines()[0].addCustomer(new Driver(1 * 1.20, 1));
         }
 
         assertEquals(5, facility.getServiceMachines()[0].getCustomersInQueue().size());

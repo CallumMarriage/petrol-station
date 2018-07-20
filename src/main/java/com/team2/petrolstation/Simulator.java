@@ -7,6 +7,7 @@ import com.team2.petrolstation.model.exception.PumpNotFoundException;
 import com.team2.petrolstation.model.facility.FillingStation;
 import com.team2.petrolstation.model.facility.Shop;
 import com.team2.petrolstation.view.SimulatorController;
+import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -41,52 +42,43 @@ public class Simulator {
     private Shop shop;
 
     private SimulatorController simulatorController;
-   
+
     @FXML
     private TextArea textArea;
 
-    public Simulator(){
+    public Simulator(int numPumps, int numTills, TextArea textArea){
+        this.shop = new Shop(numTills);
+        this.fillingStation = new FillingStation(numPumps);
         this.moneyLostFromShop = 0.0;
         this.moneyLostFillingStation = 0.0;
         this.moneyGained = 0.0;
         this.chanceOfTruck = 0.02;
         this.simulatorController = new SimulatorController();
+        this.textArea = textArea;
     }
 
-    /**
-     * Simulates the petrol station and calls simulateRound for as long as chosen.
-     *
-     * @param numOfTurns number of turns in seconds
-     * @param numPumps number of pumps
-     * @param numTills number of tills
-     */
-    public void simulate(Integer numOfTurns, Integer numPumps, Integer numTills, Double priceOfFuel, TextArea textArea){
-
-        this.textArea = textArea;
-        //build shop, filling station and the random that will be used throughout the application
-        this.shop = new Shop(numTills);
-        this.fillingStation = new FillingStation(numPumps);
+    public void simulate(Integer numOfTurns, Double intPrice){
         Random random = new Random(8);
 
         try {
             for (int i = 0; i < numOfTurns; i++) {
-                String round = simulateRound( random, priceOfFuel);
+                String round = simulateRound( random, intPrice);
                 if(!round.equals("")){
-                   simulatorController.updateScreen(round, textArea);
+                    simulatorController.updateScreen(round, textArea);
                 }
             }
         } catch (Exception e){
             LOGGER.log(Level.SEVERE, e.getMessage());
         }
-    }
 
+    }
     /**
      * Simulates a single round
      *
      * @param random the random that will be used to generate the vehicles
      * @throws PumpNotFoundException error trying to add customer to a service machine
      */
-    private String simulateRound( Random random, Double priceOfFuel) throws Exception {
+    public String simulateRound( Random random, Double priceOfFuel) throws Exception {
 
         //create the vehicles for the round and assign them to a pump
         String assigned = assignVehicles(generateVehicles(random), priceOfFuel);
@@ -248,36 +240,36 @@ public class Simulator {
 
         try {
             if (randomNum > p && randomNum <= (2 * p)) {
-                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+                //TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //create a motorbike and add it to the list of generated vehicles
                 vehicles.add(new Vehicle(0, 0, 5, 0.0, SIZE_OF_MOTORBIKE, 0));
-                simulatorController.updateScreen(MOTORBIKE_ARRIVED, textArea);
+                //simulatorController.updateScreen(MOTORBIKE_ARRIVED, textArea);
             }
 
             if (randomNum <= p) {
-                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+                //TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //create a small car and add it to the list of generated vehicles
                 vehicles.add(new Vehicle(random.nextInt(24 - 12 + 1) + 12, random.nextInt(10 -5 + 1) + 5, random.nextInt(9 - 7  + 1) + 7, CHANCE_OF_SMALL_CAR_GOING_TO_SHOP, SIZE_OF_SMALL_CAR, MAX_QUEUE_TIME_SMALL_CAR));
-                simulatorController.updateScreen(SMALL_CAR_ARRIVED, textArea);
+                //simulatorController.updateScreen(SMALL_CAR_ARRIVED, textArea);
             }
 
             if (randomNum > ((2 * p) + q) && randomNum <= (((2 * p) + q) + chanceOfTruck)) {
                 //create a Truck and add it to the list of generated vehicles
                 Vehicle vehicle = new Vehicle(random.nextInt(36 -24 +1  ) +24, random.nextInt(20 - 15 + 1) + 15, random.nextInt(40 - 30 + 1) + 30, CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
-                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+                //TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //tell that its a truck
                 vehicle.setIsTruck();
                 vehicles.add(vehicle);
-                simulatorController.updateScreen(TRUCK_ARRIVED, textArea);
+                //simulatorController.updateScreen(TRUCK_ARRIVED, textArea);
 
             }
 
             if (randomNum > (2 * p) && randomNum <= ((2 * p) + q)) {
-                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+                //TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
                 //create a family sedan and add it to the list of generated vehicles
                 vehicles.add(new Vehicle(random.nextInt(30 - 12 + 1) + 12, random.nextInt(16 - 8 + 1) + 8, random.nextInt(18) + 12, CHANCE_OF_FAMILY_SEDAN_GOING_TO_SHOP, SIZE_OF_FAMILY_SEDAN, MAX_QUEUE_TIME_FAMILY_SEDAN));
-                simulatorController.updateScreen(FAMILY_SEDAN, textArea);
-                TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+               // simulatorController.updateScreen(FAMILY_SEDAN, textArea);
+                //TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
 
             }
         }catch (Exception e){
@@ -298,7 +290,7 @@ public class Simulator {
                 if(vehicle.getTimeInQueue() < vehicle.getMaxQueueTime()){
                     this.chanceOfTruck += ((this.chanceOfTruck / 100) * 5);
                 } else {
-                    this.chanceOfTruck -= ((this.chanceOfTruck / 100) * 20) ;
+                    this.chanceOfTruck -= ((this.chanceOfTruck / 100) * 20);
                 }
             }
         }
