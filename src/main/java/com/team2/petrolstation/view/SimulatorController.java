@@ -121,8 +121,6 @@ public class SimulatorController {
             simulator.setP(dP);
             simulator.setQ(dQ);
             simulator.setChanceOfTruck(dT);
-           // simulator.simulate(numOfTurns, intNumPumps, intNumTills, intPrice, activityFeed);
-
             simulator.simulate(numOfTurns, intPrice);
             String results = simulator.getResults();
 
