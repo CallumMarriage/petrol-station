@@ -19,8 +19,6 @@ public class TimeUtils {
      * @throws InvalidInputException time could not be converted.
      */
     public static Integer convertTimeIntoTicks(Integer time, String identifier) throws InvalidInputException{
-
-        Integer number;
         try {
             Double doubleNumber = Double.parseDouble(time + "");
             //Do a check on the identifier each time, if its a day you will need to do all of the calculations,
@@ -49,11 +47,9 @@ public class TimeUtils {
                 doubleNumber /= SECONDS_PER_TICK;
             }
 
-            number = Integer.parseInt(Math.round(doubleNumber) + "");
+            return Integer.parseInt(Math.round(doubleNumber) + "");
         } catch (Exception e){
             throw new InvalidInputException(time + "");
         }
-
-        return number;
     }
 }

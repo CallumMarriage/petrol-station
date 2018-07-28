@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import static com.team2.petrolstation.model.constant.PetrolStationConstants.SECONDS_PER_TICK;
 import static com.team2.petrolstation.util.FileWriterUtils.generateResultsFile;
@@ -22,6 +23,8 @@ import static com.team2.petrolstation.util.FileWriterUtils.generateResultsFile;
  * @author callummarriage
  */
 public class SimulatorController {
+
+    private static final Logger LOGGER = Logger.getLogger(Simulator.class.getName());
 
     @FXML
     private Button run;
@@ -48,7 +51,7 @@ public class SimulatorController {
     private TextField t;
 
     @FXML
-    private TextArea activityFeed;
+    public TextArea activityFeed;
 
     @FXML
     private TextField moneyLost;
@@ -63,6 +66,9 @@ public class SimulatorController {
     private Pane pane;
 
     @FXML
+    private ChoiceBox<String> identifiers;
+
+    @FXML
     public void submitButtonPressed() throws InvalidInputException {
 
         try {
@@ -70,19 +76,36 @@ public class SimulatorController {
             moneyGained.setText("");
             moneyLost.setText("");
             Integer numOfTurns;
-            Integer duration = getIntegerValueFromField(runTime);
-            Double intPrice = getDoubleValueFromField(price);
-            Integer intNumPumps = getIntegerValueFromSpinner(numPumps);
-            Integer intNumTills = getIntegerValueFromSpinner(numTills);
-            Double dP = getDoubleValueFromField(p);
-            Double dQ = getDoubleValueFromField(q);
-            Double dT = getDoubleValueFromField(t);
 
-            if (duration == null | intPrice == null | intNumPumps == null | intNumTills == null | dP == null | dQ == null | dT == null) {
+            Integer duration;
+            Double intPrice;
+            Integer intNumPumps;
+            Integer intNumTills;
+            Double dP;
+            Double dQ;
+            Double dT;
+            String identifier;
+
+            try {
+                duration = Integer.valueOf(runTime.getText());
+                intPrice = Double.valueOf(price.getText());
+                intNumPumps = Integer.valueOf(numPumps.getValue() + "");
+                intNumTills = Integer.valueOf(numTills.getValue() + "");
+                dP = Double.valueOf(p.getText());
+                dQ = Double.valueOf(q.getText());
+                dT = Double.valueOf(t.getText());
+                identifier = this.identifiers.getValue();
+            }catch (NumberFormatException e){
+                throw new InvalidInputException("Invalid input");
+            }
+
+            if (duration == null | intNumPumps == null | intNumTills == null) {
                 throw new InvalidInputException("error");
             }
-            Simulator simulator = new Simulator();
-            numOfTurns = TimeUtils.convertTimeIntoTicks(duration, "s");
+
+            Simulator simulator = new Simulator(intNumPumps, intNumTills, activityFeed);
+
+            numOfTurns = TimeUtils.convertTimeIntoTicks(duration, identifier);
 
             updateScreen("**Welcome to the simulation**\nHere are the simulation details.\nThe duration will be " + (numOfTurns * SECONDS_PER_TICK)+ " seconds or " + (numOfTurns) + " ticks.", activityFeed);
             try {
@@ -98,8 +121,7 @@ public class SimulatorController {
             simulator.setP(dP);
             simulator.setQ(dQ);
             simulator.setChanceOfTruck(dT);
-            simulator.simulate(numOfTurns, intNumPumps, intNumTills, intPrice, activityFeed);
-
+            simulator.simulate(numOfTurns, intPrice);
             String results = simulator.getResults();
 
             moneyLost.setText(simulator.getMoneyLostFromShop() + "");
@@ -117,37 +139,9 @@ public class SimulatorController {
         pane.setBackground(new Background(new BackgroundFill(Color.web(String.valueOf(colorPicker.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
-    private Integer getIntegerValueFromSpinner(Spinner spinner) throws InvalidInputException {
-        Integer i = null;
-        try {
-            i = Integer.valueOf(spinner.getValue() + "");
-        } catch (NumberFormatException ex) {
-            throw new InvalidInputException("Invalid input");
-        }
-        return i;
-    }
-    private Integer getIntegerValueFromField(TextField object) throws InvalidInputException {
-        Integer i = null;
-        try {
-            i = Integer.valueOf(object.getText());
-        } catch (NumberFormatException ex) {
-            throw new InvalidInputException("Invalid input");
-        }
-        return i;
-    }
-
-    private Double getDoubleValueFromField(TextField object) throws InvalidInputException {
-        Double i = null;
-        try {
-            i = Double.valueOf(object.getText());
-        } catch (NumberFormatException ex) {
-            throw new InvalidInputException("Invalid input");
-        }
-        return i;
-    }
-
+    @FXML
     public void updateScreen(String results, TextArea activityFeed){
-        activityFeed.setText(activityFeed.getText() + "\n" +"> " + results);
+        activityFeed.setText(activityFeed.getText() + "\n" + "> " + results);
         FileWriterUtils.updateOutputFile(results + "\n");
     }
 }

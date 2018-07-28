@@ -80,11 +80,11 @@ public class FacilityTest {
         FillingStation fillingStation = new FillingStation(3);
         try {
             assertTrue(0 == fillingStation.findBestMachine(truck));
-            fillingStation.addCustomerToBestMachine(0, truck);
+            fillingStation.getServiceMachines()[0].addCustomer(truck);
             assertTrue(1 == fillingStation.findBestMachine(truck2));
-            fillingStation.addCustomerToBestMachine(1, truck2);
+            fillingStation.getServiceMachines()[1].addCustomer(truck2);
             assertTrue(2 == fillingStation.findBestMachine(truck3));
-            fillingStation.addCustomerToBestMachine(2, truck3);
+            fillingStation.getServiceMachines()[2].addCustomer(truck3);
             assertTrue(0 == fillingStation.findBestMachine(motorbike));
             assertTrue(-1 == fillingStation.findBestMachine(truck4));
             fillingStation.removeCustomerFromPump(0);

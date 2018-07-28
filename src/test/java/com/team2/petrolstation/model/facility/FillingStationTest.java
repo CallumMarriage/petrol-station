@@ -34,9 +34,9 @@ public class FillingStationTest {
 
         try {
             assertEquals(0, facility.findBestMachine(truck));
-            facility.addCustomerToBestMachine(0, truck);
+            facility.getServiceMachines()[0].addCustomer(truck);
             assertEquals(1, facility.findBestMachine(truck2));
-            facility.addCustomerToBestMachine(1, truck2);
+            facility.getServiceMachines()[1].addCustomer(truck2);
             assertEquals(-1, facility.findBestMachine(truck3));
         }catch (Exception e){
             e.printStackTrace();
