@@ -48,13 +48,13 @@ public class Simulator {
             simulator.setChanceOfTruck(Double.parseDouble(args[2]));
             simulator.setP(Double.parseDouble(args[3]));
             simulator.setQ(Double.parseDouble(args[4]));
-            simulator.simulate(Integer.parseInt(args[5]), Double.parseDouble(args[6]));
+            simulator.simulate(Integer.parseInt(args[5]), Double.parseDouble(args[6]), Integer.parseInt(args[7]));
         } else {
             Simulator simulator = new Simulator(1, 1);
             simulator.setChanceOfTruck(0.02);
             simulator.setP(0.02);
             simulator.setQ(0.02);
-            simulator.simulate(1000, 10.0);
+            simulator.simulate(1000, 10.0, 1);
         }
     }
 
@@ -72,7 +72,7 @@ public class Simulator {
         //this.textArea = textArea;
     }
 
-    public void simulate(Integer numOfTurns, Double intPrice){
+    public void simulate(Integer numOfTurns, Double intPrice, int seed){
         Random random = new Random(8);
 
         try {
