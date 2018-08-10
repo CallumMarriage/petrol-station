@@ -1,5 +1,6 @@
 package com.team2.petrolstation.view;
 
+/*
 import com.team2.petrolstation.Simulator;
 import com.team2.petrolstation.model.exception.InvalidInputException;
 import com.team2.petrolstation.util.FileWriterUtils;
@@ -24,6 +25,7 @@ import static com.team2.petrolstation.util.FileWriterUtils.generateResultsFile;
  */
 public class SimulatorController {
 
+    /*
     private static final Logger LOGGER = Logger.getLogger(Simulator.class.getName());
 
     @FXML
@@ -51,7 +53,7 @@ public class SimulatorController {
     private TextField t;
 
     @FXML
-    public TextArea activityFeed;
+    private TextArea activityFeed;
 
     @FXML
     private TextField moneyLost;
@@ -144,4 +146,5 @@ public class SimulatorController {
         activityFeed.setText(activityFeed.getText() + "\n" + "> " + results);
         FileWriterUtils.updateOutputFile(results + "\n");
     }
+    */
 }

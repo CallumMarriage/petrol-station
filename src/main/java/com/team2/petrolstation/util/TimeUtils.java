@@ -5,6 +5,8 @@ import com.team2.petrolstation.model.exception.InvalidInputException;
 import static com.team2.petrolstation.model.constant.PetrolStationConstants.SECONDS_PER_TICK;
 
 /**
+ * Utility for converting the time inputted by the user to ticks
+ *
  * @author callummarriage
  */
 public class TimeUtils {

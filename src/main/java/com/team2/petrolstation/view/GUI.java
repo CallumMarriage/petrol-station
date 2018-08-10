@@ -1,19 +1,17 @@
 package com.team2.petrolstation.view;
-
-
+/*
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
-
+*/
 /**
  * @author callummarriage
  */
-public class GUI extends Application{
 
+public class GUI {
+/*
     @Override
     public void start(Stage primaryStage) throws Exception {
         final FXMLLoader fxmlLoader = new FXMLLoader();
@@ -28,4 +26,6 @@ public class GUI extends Application{
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+}
+*/
 }
