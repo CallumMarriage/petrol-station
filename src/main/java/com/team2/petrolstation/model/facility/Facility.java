@@ -15,6 +15,7 @@ public class Facility {
 
     //service machines.
     ServiceMachine[] customerServers;
+    private Double moneyLost;
 
     /**
      * Simulates a facility processing the customers at the front of the queues and adds those that have finished to a hashmap along with the SM they have come from.
@@ -22,6 +23,7 @@ public class Facility {
      * @return a map of customers to their service machines.
      */
     public Map<Integer, Customer> manageTransactions() {
+        this.moneyLost = 0.0;
         Map<Integer, Customer> finishedCustomers = new HashMap<>();
         for(int i = 0; i < this.customerServers.length; i++) {
             Customer customer = this.customerServers[i].act();
@@ -32,33 +34,16 @@ public class Facility {
         return finishedCustomers;
     }
 
-    /**
-     * This method provides an interface to the Simulator class to access the facility adding methods,
-     * this reduces coupling by allowing changes to be made to the facility without having to change the Simulator class.
-     * Finds and adds each customer to the best free service machine.
-     * If a vehicle does not find the best service machine it will leave the Petrol station and possible income will be added to lost money.
-     * If a driver does not find the best service machine it will throw an exception.
-     *
-     * @param customers a list of drivers or vehicles to be added to service machines
-     * @return the amount of lost vehicles.
-     * @throws PumpNotFoundException pump not found
-     */
-    public Collection<Customer> addCustomerToMachine(Collection<Customer> customers ) throws PumpNotFoundException {
-
-        //keep track of the vehicles lost
-        Collection<Customer> lostCustomers = new ArrayList<>();
-
-        for (Customer customer : customers) {
-            //get the best machine for the customer
-            int bestMachine = findBestMachine(customer);
-            if (bestMachine < 0) {
-                lostCustomers.add(customer);
-            } else {
-                //finally add the customer to the machine found.
-                this.customerServers[bestMachine].addCustomer(customer);
-            }
+    Boolean addCustomerToMachine(Customer customer) throws PumpNotFoundException{
+        //get the best machine for the customer
+        int bestMachine = findBestMachine(customer);
+        if (bestMachine < 0) {
+            return false;
+        } else {
+            //finally add the customer to the machine found.
+            this.customerServers[bestMachine].addCustomer(customer);
+            return true;
         }
-        return lostCustomers;
     }
 
     /**
@@ -122,5 +107,17 @@ public class Facility {
         }
 
         return numCustomers;
+    }
+
+    public Double getMoneyLost() {
+        return moneyLost;
+    }
+
+    public void setMoneyLost(Double moneyLost) {
+        this.moneyLost = moneyLost;
+    }
+
+    public void addMoneyLost(Double moneyToAdd){
+        this.moneyLost += moneyToAdd;
     }
 }

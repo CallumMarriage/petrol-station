@@ -1,8 +1,19 @@
 package com.team2.petrolstation.model.facility;
 
+import com.team2.petrolstation.model.customer.Customer;
+import com.team2.petrolstation.model.customer.Vehicle;
 import com.team2.petrolstation.model.exception.PumpNotFoundException;
 import com.team2.petrolstation.model.servicemachine.Pump;
 import com.team2.petrolstation.model.servicemachine.ServiceMachine;
+import com.team2.petrolstation.util.VehicleGeneratorUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+
+import static com.team2.petrolstation.model.constant.PetrolStationConstants.*;
 
 
 /**
@@ -13,23 +24,46 @@ import com.team2.petrolstation.model.servicemachine.ServiceMachine;
  */
 public class FillingStation extends Facility {
 
+
+
     public FillingStation(Integer numOfServiceMachines) {
         this.customerServers = new ServiceMachine[numOfServiceMachines];
-        for(int i = 0; i < numOfServiceMachines; i++){
+        for (int i = 0; i < numOfServiceMachines; i++) {
             this.customerServers[i] = new Pump();
         }
     }
 
     /**
      * Remove vehicle from pump based on the pump number, this gets called when a customer has left teh shop
+     *
      * @param pumpNumber number of the pump.
      * @throws PumpNotFoundException the pump specified could not be found
      */
-    public void removeCustomerFromPump(Integer pumpNumber) throws PumpNotFoundException{
-        if(this.customerServers[pumpNumber] == null){
+    public void removeCustomerFromPump(Integer pumpNumber) throws PumpNotFoundException {
+        if (this.customerServers[pumpNumber] == null) {
             throw new PumpNotFoundException(pumpNumber);
         }
         this.customerServers[pumpNumber].getCustomersInQueue().remove();
+
+    }
+
+    private void calculateLoss(Vehicle vehicle, Double priceOfFuel){
+        addMoneyLost((double) (Math.round(vehicle.getMaxFuel() * priceOfFuel)*100/100));
+    }
+
+    public String addVehicleToPetrolStation(Vehicle vehicle, Double priceOfFuel){
+        String output = MOTORBIKE_ARRIVED +"\n";
+        try {
+            Boolean wasAssigned = this.addCustomerToMachine(vehicle);
+            if (!wasAssigned){
+                calculateLoss(vehicle, priceOfFuel);
+                output += "A motorbike has had to leave!";
+            }
+        } catch (PumpNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return output;
 
     }
 }

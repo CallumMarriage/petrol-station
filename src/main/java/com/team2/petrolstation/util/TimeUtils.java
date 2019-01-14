@@ -15,6 +15,7 @@ public class TimeUtils {
      * Should this be in application?
      *
      * @param time the amount of time the simulation will execute for.
+     * @param identifier identifier
      * @return time in seconds
      * @throws InvalidInputException time could not be converted.
      */

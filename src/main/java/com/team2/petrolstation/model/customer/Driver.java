@@ -64,4 +64,11 @@ public class Driver implements Customer {
     public Integer getPumpNumber() {
         return this.pumpNumber;
     }
+
+    public void setShopInfo(Vehicle vehicle ){
+        addToCurrentSpend(vehicle.getShopPurchase());
+        //add the time the driver will be spending in the shop.
+        setTimeInShop(vehicle.getShopTime());
+        //add the customers that are going to the shop to the list.s
+    }
 }

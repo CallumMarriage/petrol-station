@@ -21,7 +21,9 @@
 *.zip
 *.tar.gz
 *.rar
-
+.classpath
+.project
+.settings
 *.iml
 
 *.DS_Store
@@ -40,3 +42,4 @@ build
 results*
 output*
 !*.css
+

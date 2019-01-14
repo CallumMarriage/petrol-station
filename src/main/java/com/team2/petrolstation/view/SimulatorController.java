@@ -103,7 +103,7 @@ public class SimulatorController {
                 throw new InvalidInputException("error");
             }
 
-            Simulator simulator = new Simulator(intNumPumps, intNumTills, activityFeed);
+            Simulator simulator = new Simulator(intNumPumps, intNumTills, activityFeed, dP, dQ, dT);
 
             numOfTurns = TimeUtils.convertTimeIntoTicks(duration, identifier);
 
@@ -118,14 +118,11 @@ public class SimulatorController {
             }
 
             //run the simulation using the inputed values
-            simulator.setP(dP);
-            simulator.setQ(dQ);
-            simulator.setChanceOfTruck(dT);
             simulator.simulate(numOfTurns, intPrice);
             String results = simulator.getResults();
 
-            moneyLost.setText(simulator.getMoneyLostFromShop() + "");
-            moneyGained.setText(simulator.getMoneyGained() + "");
+            moneyLost.setText(simulator.getShop().getMoneyLost() + "");
+            moneyGained.setText(simulator.getShop().getMoneyGained() + "");
             updateScreen(results, activityFeed);
             generateResultsFile(results);
         } catch (InvalidInputException e){
