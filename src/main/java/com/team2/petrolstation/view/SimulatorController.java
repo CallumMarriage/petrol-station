@@ -103,7 +103,7 @@ public class SimulatorController {
                 throw new InvalidInputException("error");
             }
 
-            Simulator simulator = new Simulator(intNumPumps, intNumTills, activityFeed, dP, dQ, dT);
+            Simulator simulator = new Simulator(intNumPumps, intNumTills, dP, dQ, dT, activityFeed);
 
             numOfTurns = TimeUtils.convertTimeIntoTicks(duration, identifier);
 

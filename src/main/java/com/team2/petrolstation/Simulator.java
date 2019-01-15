@@ -43,7 +43,7 @@ public class Simulator {
     @FXML
     private TextArea textArea;
 
-    public Simulator(int numPumps, int numTills, TextArea textArea, Double p, Double q, Double chanceOfTruck){
+    public Simulator(int numPumps, int numTills, Double p, Double q, Double chanceOfTruck, TextArea textArea){
         this.shop = new Shop(numTills);
         this.fillingStation = new FillingStation(numPumps);
         this.simulatorController = new SimulatorController();
@@ -60,6 +60,7 @@ public class Simulator {
             for (int i = 0; i < numOfTurns; i++) {
                 String round = simulateRound( random, intPrice);
                 if(!round.equals("")){
+            //        System.out.println(round);
                     simulatorController.updateScreen(round, textArea);
                 }
             }
@@ -83,7 +84,7 @@ public class Simulator {
         //create the vehicles for the round and assign them to a pump
         String assigned = generateVehicles(random, priceOfFuel);
         String removed = removeCustomers(runShop( runFillingStation(), priceOfFuel, random));
-
+        assigned = assigned.trim();
         if(!assigned.equals("") && !removed.equals("")){
             assigned += "\n";
         }

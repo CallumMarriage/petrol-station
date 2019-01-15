@@ -24,8 +24,6 @@ import static com.team2.petrolstation.model.constant.PetrolStationConstants.*;
  */
 public class FillingStation extends Facility {
 
-
-
     public FillingStation(Integer numOfServiceMachines) {
         this.customerServers = new ServiceMachine[numOfServiceMachines];
         for (int i = 0; i < numOfServiceMachines; i++) {
