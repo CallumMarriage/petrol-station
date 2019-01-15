@@ -119,10 +119,10 @@ public class SimulatorController {
 
             //run the simulation using the inputed values
             simulator.simulate(numOfTurns, intPrice);
-            String results = simulator.getResults();
+            String results = simulator.getFinalResults();
 
-            moneyLost.setText(simulator.getShop().getMoneyLost() + "");
-            moneyGained.setText(simulator.getShop().getMoneyGained() + "");
+            moneyLost.setText(simulator.getPetrolStation().getMoneyLost() + "");
+            moneyGained.setText(simulator.getPetrolStation().getShop().getMoneyGained() + "");
             updateScreen(results, activityFeed);
             generateResultsFile(results);
         } catch (InvalidInputException e){

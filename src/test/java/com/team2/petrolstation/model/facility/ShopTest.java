@@ -41,4 +41,9 @@ public class ShopTest {
         assertEquals(5, facility.getServiceMachines()[0].getCustomersInQueue().size());
     }
 
+    @Test
+    public void testAssignShoppers(){
+
+    }
+
 }

@@ -32,7 +32,6 @@ public class VehicleGeneratorUtils {
     }
 
     public static Vehicle generateTruck(Random random){
-        int i = (36 -24 +1);
         Vehicle vehicle = new Vehicle(
                 random.nextInt(36 -24 +1  ) +24,
                 random.nextInt(20 - 15 + 1) + 15,

@@ -2,6 +2,7 @@ package com.team2.petrolstation.model.facility;
 
 import com.team2.petrolstation.model.customer.Vehicle;
 import com.team2.petrolstation.model.exception.PumpNotFoundException;
+import com.team2.petrolstation.util.VehicleGeneratorUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,10 +32,10 @@ public class FacilityTest {
     @Before
     public void setup(){
         Random random = new Random(3);
-        truck = new Vehicle((random.nextInt(36 -24 +1  ) +24), (random.nextInt(20 - 15 + 1) + 15), (random.nextInt(40 - 30 + 1) + 30), CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
-        car = new Vehicle((random.nextInt(24 - 12 + 1) + 12), (random.nextInt(10 -5 + 1) + 5), (random.nextInt(9 - 7  + 1) + 7), CHANCE_OF_SMALL_CAR_GOING_TO_SHOP, SIZE_OF_SMALL_CAR, MAX_QUEUE_TIME_SMALL_CAR);
-        motorbike = new Vehicle(0, 0, 5, 0.0, SIZE_OF_MOTORBIKE, 0);
-        familySedan = new Vehicle((random.nextInt(30 - 12 + 1) + 12), random.nextInt(16 - 8 + 1) + 8, random.nextInt(18) + 12, CHANCE_OF_FAMILY_SEDAN_GOING_TO_SHOP, SIZE_OF_FAMILY_SEDAN, MAX_QUEUE_TIME_SMALL_CAR);
+        truck = VehicleGeneratorUtils.generateTruck(random);
+        car = VehicleGeneratorUtils.generateSmallCar(random);
+        motorbike = VehicleGeneratorUtils.generateMotorbike();
+        familySedan = VehicleGeneratorUtils.generateFamilySedan(random);
         facility = new FillingStation(1);
 
     }
@@ -64,12 +65,11 @@ public class FacilityTest {
     @Test
     public void testFindBestServiceMachine(){
         Random random = new Random();
-        Vehicle truck = new Vehicle((random.nextInt(36 -24 +1  ) +24), (random.nextInt(20 - 15 + 1) + 15), (random.nextInt(40 - 30 + 1) + 30), CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
-        Vehicle truck2 = new Vehicle((random.nextInt(36 -24 +1  ) +24), (random.nextInt(20 - 15 + 1) + 15), (random.nextInt(40 - 30 + 1) + 30), CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
-        Vehicle truck3 = new Vehicle((random.nextInt(36 -24 +1  ) +24), (random.nextInt(20 - 15 + 1) + 15), (random.nextInt(40 - 30 + 1) + 30), CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
-        Vehicle truck4 = new Vehicle((random.nextInt(36 -24 +1  ) +24), (random.nextInt(20 - 15 + 1) + 15), (random.nextInt(40 - 30 + 1) + 30), CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
-        Vehicle motorbike = new Vehicle(0, 0, 5, 0.0, SIZE_OF_MOTORBIKE, 0);
-
+        Vehicle truck = VehicleGeneratorUtils.generateTruck(random);
+        Vehicle truck2 = VehicleGeneratorUtils.generateTruck(random);
+        Vehicle truck3 = VehicleGeneratorUtils.generateTruck(random);
+        Vehicle truck4 = VehicleGeneratorUtils.generateTruck(random);
+        Vehicle motorbike = VehicleGeneratorUtils.generateMotorbike();
         FillingStation fillingStation = new FillingStation(3);
         try {
             assertTrue(0 == fillingStation.findBestMachine(truck));

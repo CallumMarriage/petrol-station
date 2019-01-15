@@ -24,6 +24,7 @@ public class Shop extends Facility {
 
 
     public Shop(Integer numOfServiceMachines){
+        super();
         //generate the service machines based on the number provided.
         this.customerServers = new ServiceMachine[numOfServiceMachines];
         for(int i = 0; i < numOfServiceMachines; i++){
@@ -40,7 +41,7 @@ public class Shop extends Facility {
         addMoneyGained(driver.getCurrentSpend());
         getServiceMachines()[customerEntry.getKey()].removeCustomer();
 
-        return "A customer has left spending $" +driver.getCurrentSpend() ;
+        return "> A customer has left spending $" +driver.getCurrentSpend() ;
     }
 
     public void addToShopFloor(List<Driver> drivers){

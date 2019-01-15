@@ -1,12 +1,15 @@
 package com.team2.petrolstation.model.facility;
 
 import com.team2.petrolstation.model.customer.Vehicle;
+import com.team2.petrolstation.util.VehicleGeneratorUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Random;
 
 import static com.team2.petrolstation.model.constant.VehicleConstants.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -14,6 +17,13 @@ import static org.junit.Assert.assertEquals;
  */
 public class FillingStationTest {
 
+    private FillingStation fillingStation;
+
+    @Before
+    public void setup(){
+        fillingStation = new FillingStation(2);
+
+    }
     @Test
     public void testManageTransactionsForFillingStation(){
 
@@ -23,11 +33,11 @@ public class FillingStationTest {
     public void testMaximumVehicles(){
 
         Random random = new Random(2);
-        Vehicle truck = new Vehicle((random.nextInt(36 -24 +1  ) +24), (random.nextInt(20 - 15 + 1) + 15), (random.nextInt(40 - 30 + 1) + 30), CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
+        Vehicle truck = VehicleGeneratorUtils.generateTruck(random);
         truck.setIsTruck();
-        Vehicle truck2 = new Vehicle((random.nextInt(36 -24 +1  ) +24), (random.nextInt(20 - 15 + 1) + 15), (random.nextInt(40 - 30 + 1) + 30), CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
+        Vehicle truck2 = VehicleGeneratorUtils.generateTruck(random);
         truck2.setIsTruck();
-        Vehicle truck3 = new Vehicle((random.nextInt(36 -24 +1  ) +24), (random.nextInt(20 - 15 + 1) + 15), (random.nextInt(40 - 30 + 1) + 30), CHANCE_OF_TRUCK_GOING_TO_SHOP, SIZE_OF_TRUCK, MAX_QUEUE_TIME_TRUCK);
+        Vehicle truck3 = VehicleGeneratorUtils.generateTruck(random);
         truck3.setIsTruck();
 
         FillingStation facility = new FillingStation(2);
@@ -41,5 +51,24 @@ public class FillingStationTest {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testAddVehicleToPetrolStation(){
+        fillingStation = new FillingStation(1);
+
+        Random random = new Random(2);
+
+        Vehicle truck = VehicleGeneratorUtils.generateTruck(random);
+        Vehicle truck2 = VehicleGeneratorUtils.generateTruck(random);
+        Vehicle truck3 = VehicleGeneratorUtils.generateTruck(random);
+
+        fillingStation.addVehicleToPetrolStation(truck, 1.0);
+        assertTrue(fillingStation.getMoneyLost() == 0.0);
+        fillingStation.addVehicleToPetrolStation(truck2, 1.0);
+        assertTrue(fillingStation.getMoneyLost() == 31.0);
+        fillingStation.addVehicleToPetrolStation(truck3, 62.0);
+
+
     }
 }

@@ -25,6 +25,8 @@ import static com.team2.petrolstation.model.constant.PetrolStationConstants.*;
 public class FillingStation extends Facility {
 
     public FillingStation(Integer numOfServiceMachines) {
+        super();
+
         this.customerServers = new ServiceMachine[numOfServiceMachines];
         for (int i = 0; i < numOfServiceMachines; i++) {
             this.customerServers[i] = new Pump();
@@ -50,18 +52,16 @@ public class FillingStation extends Facility {
     }
 
     public String addVehicleToPetrolStation(Vehicle vehicle, Double priceOfFuel){
-        String output = MOTORBIKE_ARRIVED +"\n";
         try {
-            Boolean wasAssigned = this.addCustomerToMachine(vehicle);
-            if (!wasAssigned){
+            if (!this.addCustomerToMachine(vehicle)){
                 calculateLoss(vehicle, priceOfFuel);
-                output += "A motorbike has had to leave!";
+                return "> A vehicle has had to leave!";
             }
         } catch (PumpNotFoundException e) {
             e.printStackTrace();
         }
 
-        return output;
+        return "";
 
     }
 }

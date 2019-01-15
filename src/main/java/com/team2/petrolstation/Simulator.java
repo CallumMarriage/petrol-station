@@ -1,5 +1,6 @@
 package com.team2.petrolstation;
 
+import com.team2.petrolstation.model.PetrolStation;
 import com.team2.petrolstation.model.customer.Customer;
 import com.team2.petrolstation.model.customer.Driver;
 import com.team2.petrolstation.model.customer.Vehicle;
@@ -32,20 +33,19 @@ public class Simulator {
 
     private static final Logger LOGGER = Logger.getLogger(Simulator.class.getName());
 
-    private FillingStation fillingStation;
-    private Shop shop;
     private SimulatorController simulatorController;
 
     private Double p;
     private Double q;
     private Double chanceOfTruck;
 
+    private PetrolStation petrolStation;
+
     @FXML
     private TextArea textArea;
 
     public Simulator(int numPumps, int numTills, Double p, Double q, Double chanceOfTruck, TextArea textArea){
-        this.shop = new Shop(numTills);
-        this.fillingStation = new FillingStation(numPumps);
+        this.petrolStation = new PetrolStation(numTills, numPumps);
         this.simulatorController = new SimulatorController();
         this.textArea = textArea;
         this.p = p;
@@ -83,7 +83,15 @@ public class Simulator {
 
         //create the vehicles for the round and assign them to a pump
         String assigned = generateVehicles(random, priceOfFuel);
-        String removed = removeCustomers(runShop( runFillingStation(), priceOfFuel, random));
+
+        Map<Integer, Customer> finishedAtPump = petrolStation.runFillingStation();
+
+        //if there are finished vehicles set the chance of trucks spawning
+        if(finishedAtPump.size() > 0) {
+            setChanceOfTruck(finishedAtPump.values());
+        }
+
+        String removed = this.petrolStation.removeCustomers(this.petrolStation.runShop( finishedAtPump, priceOfFuel, random));
         assigned = assigned.trim();
         if(!assigned.equals("") && !removed.equals("")){
             assigned += "\n";
@@ -107,7 +115,7 @@ public class Simulator {
                 output.append(MOTORBIKE_ARRIVED +"\n");
 
                 Vehicle motorbike = VehicleGeneratorUtils.generateMotorbike();
-                output.append(this.fillingStation.addVehicleToPetrolStation(motorbike, priceOfFuel));
+                output.append(this.petrolStation.addVehicleToPetrolStation(motorbike, priceOfFuel));
             }
 
             if (randomNum <= p) {
@@ -116,7 +124,7 @@ public class Simulator {
                 output.append(SMALL_CAR_ARRIVED + "\n");
 
                 Vehicle smallCar = VehicleGeneratorUtils.generateSmallCar(random);
-                output.append(this.fillingStation.addVehicleToPetrolStation(smallCar, priceOfFuel));
+                output.append(this.petrolStation.addVehicleToPetrolStation(smallCar, priceOfFuel));
 
             }
 
@@ -124,7 +132,7 @@ public class Simulator {
                 output.append(TRUCK_ARRIVED + "\n");
 
                 Vehicle truck = VehicleGeneratorUtils.generateTruck(random);
-                output.append(this.fillingStation.addVehicleToPetrolStation(truck, priceOfFuel));
+                output.append(this.petrolStation.addVehicleToPetrolStation(truck, priceOfFuel));
 
             }
 
@@ -134,7 +142,7 @@ public class Simulator {
                 output.append(FAMILY_SEDAN + "\n");
 
                 Vehicle sedan = VehicleGeneratorUtils.generateFamilySedan(random);
-                output.append(this.fillingStation.addVehicleToPetrolStation(sedan, priceOfFuel));
+                output.append(this.petrolStation.addVehicleToPetrolStation(sedan, priceOfFuel));
 
             }
         }catch (Exception e){
@@ -161,91 +169,11 @@ public class Simulator {
         }
     }
 
-    /**
-     * Manages the transactions for the filling station, then sets the chance of trucks arriving based on this information.
-     *
-     * @return finished drivers with the pump number they have left behind
-     */
-    private Map<Integer, Customer> runFillingStation() {
-        //Get the finished vehicles in the system
-        Map<Integer, Customer> finishedAtPump = this.fillingStation.manageTransactions();
-
-        //if there are finished vehicles set the chance of trucks spawning
-        if(finishedAtPump.size() > 0) {
-            setChanceOfTruck(finishedAtPump.values());
-        }
-
-        return finishedAtPump;
+    public String getFinalResults(){
+        return this.petrolStation.getResults();
     }
 
-    /**
-     * gets finished drivers from the shop and assigned new drivers to their relevant places in the shop (the queue for the till or the shop floor)
-     *
-     * @param finishedAtPump drivers and their service machines
-     * @param priceOfFuel price of fuel
-     * @param random random
-     * @return drivers who are finished and the pump where their vehicle is
-     * @throws PumpNotFoundException could not find a valid service machine, this is only thrown if for drivers
-     */
-    private Map<Integer, Customer> runShop(Map<Integer, Customer> finishedAtPump, Double priceOfFuel, Random random) throws Exception {
-        //get the finished shoppers in the system first so that they do not interfere with the new shoppers
-        Map<Integer, Customer> finishedCustomers = shop.manageTransactions();
-        //add the new shoppers to the correct locations, some shoppers will go to the shop floor, others straight to the tills.
-        this.shop.assignShoppers(finishedAtPump, priceOfFuel, random);
-        return finishedCustomers;
-    }
-
-    /**
-     * Removes customers from tills and their vehicles pumps once they have finished.
-     *
-     * @param finishedCustomers customers finished at the shop with their vehicles.
-     * @throws PumpNotFoundException pump associated with a customer was not found
-     */
-    private String removeCustomers(Map<Integer, Customer> finishedCustomers) throws PumpNotFoundException {
-        StringBuilder sb = new StringBuilder();
-        //remove the finished vehicles and shoppers from their pumps
-        for (Entry<Integer, Customer> customerEntry : finishedCustomers.entrySet()) {
-            this.fillingStation.removeCustomerFromPump(((Driver) customerEntry.getValue()).getPumpNumber());
-            sb.append(this.shop.removeDriversFromShop(customerEntry));
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Get Results based on performance
-     *
-     * @return return all of the contents
-     */
-    public String getResults(){
-
-        //just to make the results look cleaner make sure the right ending word is used
-        String vehicle = checkIfPlural(this.fillingStation.getLeftOverCustomers(), "vehicle");
-        String driver = checkIfPlural(this.shop.getShopFloor().size(), "driver");
-        String tillDrivers = checkIfPlural(this.shop.getLeftOverCustomers(), "driver");
-
-        //finally print out the money lost and gained.
-        return START + "\n* Finances *\nMoney lost from Filling Station: $" + this.fillingStation.getMoneyLost() +
-                "\nMoney lost from Shop: $" + this.shop.getMoneyLost() +
-                "\nMoney gained: $" + this.shop.getMoneyGained() +
-                "\n\n* Left over customers *\nFilling Station - Pumps: " + this.fillingStation.getLeftOverCustomers() + " " + vehicle +
-                "\nShop - Tills: "+ this.shop.getLeftOverCustomers() + " " + driver +
-                "\nShop - floor: " + this.shop.getShopFloor().size() + " " + tillDrivers;
-    }
-
-
-    private String checkIfPlural(Integer num, String word){
-        if(num > 1 || num == 0 ){
-            word += "s";
-        }
-
-        return word;
-    }
-
-    public FillingStation getFillingStation() {
-        return fillingStation;
-    }
-
-    public Shop getShop() {
-        return shop;
+    public PetrolStation getPetrolStation(){
+        return this.petrolStation;
     }
 }
